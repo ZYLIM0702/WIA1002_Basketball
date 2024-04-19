@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Location Table</title>
+    </head>
+    <body>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Distance ID</th>
+                    <th>City1 location id</th>
+                    <th>City2 location id</th>
+                    <th>City1 Team Name</th>
+                    <th>City2 Team Name</th>
+                    <th>City1 City Name</th>
+                    <th>City2 City Name</th>
+                    <th>Distance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="location : ${locations}">
+                    <td th:text="${location.distance_id}"></td>
+                    <td th:text="${location.city1.locationId}"></td>
+                    <td th:text="${location.city2.locationId}"></td>
+                    <td th:text="${location.city1.teamName}"></td>
+                    <td th:text="${location.city2.teamName}"></td>
+                    <td th:text="${location.city1.cityName}"></td>
+                    <td th:text="${location.city2.cityName}"></td>
+                    <td th:text="${location.distance}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
+

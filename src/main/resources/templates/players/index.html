@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>All Players</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 20px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                background-color: #fff;
+                border: 1px solid #ddd;
+            }
+            th, td {
+                padding: 10px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+            button {
+                padding: 5px 10px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                cursor: pointer;
+                border-radius: 3px;
+            }
+            button:hover {
+                background-color: #45a049;
+            }
+        </style>
+    </head>
+    <body>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Player ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Height</th>
+                    <th>Weight</th>
+                    <th>Image</th>
+                    <th>Jersey Number</th>
+                    <th>Position</th>
+                    <th>Salary</th>
+                    <th>Is_Added</th>
+                    <th>Points</th>
+                    <th>Blocks</th>
+                    <th>Steals</th>
+                    <th>Assists</th>
+                    <th>Rebounds</th>
+                    <th>Contract Status</th>
+                    <th>Injury</th>
+                    <th>Show Profile</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="player : ${players}">
+                    <td th:text="${player.playerId}"></td>
+                    <td th:text="${player.name}"></td>
+                    <td th:text="${player.age}"></td>
+                    <td th:text="${player.height}"></td>
+                    <td th:text="${player.weight}"></td>
+                    <td><img th:src="${player.Image}" width="320"/></td>
+                    <td th:text="${player.jerseyNum}"></td>
+                    <td th:text="${player.position}"></td>
+                    <td th:text="${player.salary}"></td>
+                    <td th:text="${player.is_added}"></td>
+                    <td th:text="${player.points}"></td>
+                    <td th:text="${player.blocks}"></td>
+                    <td th:text="${player.steals}"></td>
+                    <td th:text="${player.assists}"></td>
+                    <td th:text="${player.rebounds}"></td>
+                    <td th:text="${player.contractStatus}"></td>
+                    <td th:text="${player.injuryDetails}"></td>
+
+                    <td>
+                        <form th:action="@{/players/profile/{playerId}(playerId=${player.playerId})}" method="get">
+                            <button type="submit">View Profile</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/players/edit" method="get">
+                            <input type="hidden" name="playerId" th:value="${player.playerId}" />
+                            <button type="submit">Edit</button>
+                        </form>
+                    </td>
+
+
+                </tr>
+            </tbody>
+
+        </table>
+
+
+    </body>
+</html>

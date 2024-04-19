@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Add Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0; 
+            padding: 20px;
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;">Add Player</h2>
+    <form action="/players/add" method="post" th:action="@{/players/add}" th:object="${player}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" th:field="*{name}" />
+
+        <label for="age">Age:</label>
+        <input type="text" id="age" name="age" th:field="*{age}" />
+
+        <label for="height">Height:</label>
+        <input type="text" id="height" name="height" th:field="*{height}" />
+
+        <label for="weight">Weight:</label>
+        <input type="text" id="weight" name="weight" th:field="*{weight}" />
+
+        <label for="Image">Image:</label>
+        <input type="text" id="Image" name="Image" th:field="*{Image}" />
+
+        <label for="jerseyNum">Jersey Number:</label>
+        <input type="text" id="jerseyNum" name="jerseyNum" th:field="*{jerseyNum}" />
+
+        <label for="position">Position:</label>
+        <input type="text" id="position" name="position" th:field="*{position}" />
+
+        <label for="salary">Salary:</label>
+        <input type="text" id="salary" name="salary" th:field="*{salary}" />
+
+        <label for="is_added">Is Added:</label>
+        <input type="text" id="is_added" name="is_added" th:field="*{is_added}" />
+
+        <label for="points">Points:</label>
+        <input type="text" id="points" name="points" th:field="*{points}" />
+
+        <label for="blocks">Blocks:</label>
+        <input type="text" id="blocks" name="blocks" th:field="*{blocks}" />
+
+        <label for="steals">Steals:</label>
+        <input type="text" id="steals" name="steals" th:field="*{steals}" />
+
+        <label for="assists">Assists:</label>
+        <input type="text" id="assists" name="assists" th:field="*{assists}" />
+
+        <label for="rebounds">Rebounds:</label>
+        <input type="text" id="rebounds" name="rebounds" th:field="*{rebounds}" />
+
+        <label for="contractStatus">Contract Status:</label>
+        <input type="text" id="contractStatus" name="contractStatus" th:field="*{contractStatus}" />
+
+        <label for="injury">Injury:</label>
+        <input type="text" id="injury" name="injury" th:field="*{injury}" />
+
+        <label for="injuryDetails">Injury Details:</label>
+        <input type="text" id="injuryDetails" name="injuryDetails" th:field="*{injuryDetails}" />
+
+        <label for="dateCreated">Date Created:</label>
+        <input type="date" id="dateCreated" name="dateCreated" th:field="*{dateCreated}" />
+        <button type="submit">Add Player</button>
+    </form>
+</body>
+</html>
