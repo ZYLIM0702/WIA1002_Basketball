@@ -10,15 +10,16 @@ package com.basketball.cms.model;
  */
 import jakarta.persistence.*;
 import java.util.Date;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "PLAYER")
 @SecondaryTables({
     @SecondaryTable(name = "STATISTIC", pkJoinColumns = @PrimaryKeyJoinColumn(name = "player_id")),
-    @SecondaryTable(name = "STATUS", pkJoinColumns = @PrimaryKeyJoinColumn(name = "player_id")),
     @SecondaryTable(name = "CONTRACT", pkJoinColumns = @PrimaryKeyJoinColumn(name = "player_id"))
 })
+
 public class Player {
 
     @Id
@@ -36,14 +37,6 @@ public class Player {
     private double weight;
     @Column(name = "Image", table = "PLAYER")
     private String Image;
-
-    public String getImage() {
-        return Image;
-    }
-
-    public void setImage(String Image) {
-        this.Image = Image;
-    }
     @Column(name = "jersey_num", table = "PLAYER")
     private int jerseyNum;
 
@@ -69,8 +62,31 @@ public class Player {
     @Column(name = "steals", table = "STATISTIC")
     private double steals;
 
-    @Column(name = "injury", table = "STATUS")
-    private int injury;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "date_created", table = "CONTRACT")
+    private Date dateCreated;
+
+    @Column(name = "contract_status", table = "CONTRACT")
+    private String contractStatus;
+    @Column(name= "status_id")
+    private int statusId;
+
+    public int getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
+    }
+   
+
+    public String getImage() {
+        return Image;
+    }
+
+    public void setImage(String Image) {
+        this.Image = Image;
+    }
 
     public int getPlayerId() {
         return playerId;
@@ -176,22 +192,6 @@ public class Player {
         this.steals = steals;
     }
 
-    public int getInjury() {
-        return injury;
-    }
-
-    public void setInjury(int injury) {
-        this.injury = injury;
-    }
-
-    public String getInjuryDetails() {
-        return injuryDetails;
-    }
-
-    public void setInjuryDetails(String injuryDetails) {
-        this.injuryDetails = injuryDetails;
-    }
-    
     public Date getDateCreated() {
         return dateCreated;
     }
@@ -216,14 +216,7 @@ public class Player {
         this.is_added = is_added;
     }
 
-    @Column(name = "injury_details", table = "STATUS")
-    private String injuryDetails;
-    
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "date_created", table = "CONTRACT")
-    private Date dateCreated;
-
-    @Column(name = "contract_status", table = "CONTRACT")
-    private String contractStatus;
-
 }
+
+
+

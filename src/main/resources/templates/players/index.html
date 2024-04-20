@@ -64,7 +64,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <th>Assists</th>
                     <th>Rebounds</th>
                     <th>Contract Status</th>
-                    <th>Injury</th>
+                    <th>Status</th>
+<!--                    <th>Injury Details</th>-->
                     <th>Show Profile</th>
                     <th>Action</th>
                 </tr>
@@ -87,7 +88,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <td th:text="${player.assists}"></td>
                     <td th:text="${player.rebounds}"></td>
                     <td th:text="${player.contractStatus}"></td>
-                    <td th:text="${player.injuryDetails}"></td>
+                    <td th:text="${player.statusId}"></td>
+<!--                    <td th:text="${player.injuryDetails}"></td>-->
 
                     <td>
                         <form th:action="@{/players/profile/{playerId}(playerId=${player.playerId})}" method="get">

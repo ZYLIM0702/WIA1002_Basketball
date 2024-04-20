@@ -17,3 +17,4 @@ import org.springframework.data.repository.query.Param;
 public interface PlayerRepository extends JpaRepository<Player, Integer>{
 
 }
+

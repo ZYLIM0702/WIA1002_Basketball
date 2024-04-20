@@ -89,11 +89,11 @@
             <label for="contractStatus">Contract Status:</label>
             <input type="text" id="contractStatus" name="contractStatus" th:value="${player.contractStatus}" />
 
-            <label for="injury">Injury:</label>
-            <input type="text" id="injury" name="injury" th:value="${player.injury}" />
+            <label for="statusId">Status:</label>
+            <input type="text" id="statusId" name="statusId" th:value="${player.statusId}" />
 
-            <label for="injuryDetails">Injury Details:</label>
-            <input type="text" id="injuryDetails" name="injuryDetails" th:value="${player.injuryDetails}" />
+<!--            <label for="injuryDetails">Injury Details:</label>
+            <input type="text" id="injuryDetails" name="injuryDetails" th:value="${player.injuryDetails}" />-->
 
             <label for="dateCreated">Date Created:</label>
             <input type="date" id="dateCreated" name="dateCreated" th:value="${#dates.format(player.dateCreated, 'yyyy-MM-dd')}" />
