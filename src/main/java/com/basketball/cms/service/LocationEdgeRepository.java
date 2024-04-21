@@ -4,12 +4,12 @@
  */
 package com.basketball.cms.service;
 
-import com.basketball.cms.model.LocationNode;
+import com.basketball.cms.model.LocationEdge;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author limziyang
  */
-public interface LocationRepository extends JpaRepository<LocationNode, Integer>{
+public interface LocationEdgeRepository extends JpaRepository<LocationEdge, Integer>{
 }
