@@ -68,15 +68,22 @@ public class Player {
 
     @Column(name = "contract_status", table = "CONTRACT")
     private String contractStatus;
-    @Column(name= "status_id")
-    private int statusId;
 
-    public int getStatusId() {
-        return statusId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_id", nullable = false)
+    private Status status;
+
+    // methods
+    public Status getStatus() {
+        return status;
     }
 
-    public void setStatusId(int statusId) {
-        this.statusId = statusId;
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public int getStatusId() {
+        return this.status.getStatusId();
     }
    
 
