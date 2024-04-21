@@ -14,8 +14,8 @@ public class LocationNodeList {
     private LocationNode city;
     private ArrayList<LocationNodeList> neighbour = new ArrayList<>();
     private ArrayList<Double> neighbourDistance = new ArrayList<>();
-    private LocationNode parentPath;
-    private int shortestDistFromSun;
+    private LocationNodeList parentPath;
+    private double shortestDistFromSun;
 
     public LocationNodeList(LocationNode city) {
         this.city = city;
@@ -23,19 +23,19 @@ public class LocationNodeList {
         this.shortestDistFromSun = Integer.MAX_VALUE;
     }
 
-    public LocationNode getParentPath() {
+    public LocationNodeList getParentPath() {
         return parentPath;
     }
 
-    public void setParentPath(LocationNode parentPath) {
+    public void setParentPath(LocationNodeList parentPath) {
         this.parentPath = parentPath;
     }
 
-    public int getShortestDistFromSun() {
+    public double getShortestDistFromSun() {
         return shortestDistFromSun;
     }
 
-    public void setShortestDistFromSun(int shortestDistFromSun) {
+    public void setShortestDistFromSun(double shortestDistFromSun) {
         this.shortestDistFromSun = shortestDistFromSun;
     }
 
