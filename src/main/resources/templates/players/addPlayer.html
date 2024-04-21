@@ -95,6 +95,8 @@
         <label for="dateCreated">Date Created:</label>
         <input type="date" id="dateCreated" name="dateCreated" th:field="*{dateCreated}" />
         <button type="submit">Add Player</button>
+        <label for="starred">Starred:</label>
+            <input type="text" id="starred" name="starred" th:value="${player.starred}" />
     </form>
 </body>
 </html>

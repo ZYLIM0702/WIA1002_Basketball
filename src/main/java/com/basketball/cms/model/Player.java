@@ -79,6 +79,9 @@ public class Player {
     @Column(name = "country", table = "PLAYER")
     private String country;
 
+    @Column(name = "starred", table = "PLAYER")
+    private int starred;
+    
     public String getCountry() {
         return country;
     }
@@ -239,6 +242,14 @@ public class Player {
 
     public void setIs_added(int is_added) {
         this.is_added = is_added;
+    }
+
+    public int getStarred() {
+        return starred;
+    }
+
+    public void setStarred(int starred) {
+        this.starred = starred;
     }
  
 }

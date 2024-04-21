@@ -58,6 +58,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <th>Country</th>
                     <th>Position</th>
                     <th>Salary</th>
+                    <th>Starred</th>
                     <th>Is_Added</th>
                     <th>Points</th>
                     <th>Blocks</th>
@@ -84,6 +85,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <td th:text="${player.country}"></td>
                     <td th:text="${player.position}"></td>
                     <td th:text="${player.salary}"></td>
+                    <td>
+                        <img th:if="${player.starred == 0}" th:src="@{https://png.pngtree.com/png-vector/20190725/ourmid/pngtree-vector-star-icon-png-image_1577370.jpg}" />
+                        <img th:if="${player.starred == 1}" th:src="@{https://png.pngtree.com/png-vector/20190419/ourmid/pngtree-vector-star-icon-png-image_956428.jpg}" />
+                    </td>
                     <td th:text="${player.is_added}"></td>
                     <td th:text="${player.points}"></td>
                     <td th:text="${player.blocks}"></td>
