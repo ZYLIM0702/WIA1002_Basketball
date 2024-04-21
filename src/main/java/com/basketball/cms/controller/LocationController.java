@@ -29,6 +29,9 @@ import java.util.PriorityQueue;
 @Controller
 @RequestMapping("/locations")
 public class LocationController {
+    
+    private ArrayList<LocationNodeList> nodeLists = new ArrayList<>();
+    
     private Map<LocationNode, LocationNodeList> getNodeLists(){
         List<LocationEdge> nodeEdges = repoEdge.findAll();
         
@@ -73,13 +76,17 @@ public class LocationController {
             return "redirect:/locations";
         }
         
-        ArrayList<LocationNodeList> nodeLists = new ArrayList<>();
+        
         Map<LocationNode, LocationNodeList> nodeMap = getNodeLists();
         nodeLists.addAll(nodeMap.values());
         LocationNodeList source = nodeMap.get(sourLocationNode);
         LocationNodeList destination = nodeMap.get(destLocationNode);
         
-
+        calculateShortestPath(source);
+        List<LocationNodeList> shortestPath = getShortestPath(destination);
+        for(LocationNodeList path : shortestPath){
+            System.out.println(path.getCity() + " -> ");
+        }
 
         //model.addAttribute("destination", destLocationNode);
         return "locations/graph";
