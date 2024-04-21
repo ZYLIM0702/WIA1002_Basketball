@@ -9,7 +9,16 @@ package com.basketball.cms.controller;
  * @author limziyang
  */
 import com.basketball.cms.model.Player;
+import com.basketball.cms.model.Status;
 import com.basketball.cms.service.PlayerRepository;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +42,7 @@ public class PlayerController {
 
     @GetMapping({"", "/"})
     public String showPlayerList(Model model) {
-        List<Player> players = repo.findAll(Sort.by(Sort.Direction.DESC, "name"));
+        List<Player> players = repo.findAll(Sort.by(Sort.Direction.ASC, "age"));
         model.addAttribute("players", players);
         return "players/index";
     }
@@ -48,6 +57,7 @@ public class PlayerController {
         model.addAttribute("player", player);
         return "players/edit";
     }
+   
 
     @PostMapping("/update")
     public String updatePlayer(@ModelAttribute("player") @DateTimeFormat(pattern = "yyyy-MM-dd") Player player) {
@@ -78,7 +88,6 @@ public class PlayerController {
         repo.save(player);
         return "redirect:/players";
     }
-   
 
 
 }

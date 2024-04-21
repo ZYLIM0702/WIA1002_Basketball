@@ -55,6 +55,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <th>Weight</th>
                     <th>Image</th>
                     <th>Jersey Number</th>
+                    <th>Country</th>
                     <th>Position</th>
                     <th>Salary</th>
                     <th>Is_Added</th>
@@ -64,6 +65,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <th>Assists</th>
                     <th>Rebounds</th>
                     <th>Contract Status</th>
+                    <th>Contract Date Created</th>
                     <th>Status</th>
                     <th>Injury Details</th>
                     <th>Show Profile</th>
@@ -79,6 +81,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <td th:text="${player.weight}"></td>
                     <td><img th:src="${player.Image}" width="320"/></td>
                     <td th:text="${player.jerseyNum}"></td>
+                    <td th:text="${player.country}"></td>
                     <td th:text="${player.position}"></td>
                     <td th:text="${player.salary}"></td>
                     <td th:text="${player.is_added}"></td>
@@ -88,6 +91,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <td th:text="${player.assists}"></td>
                     <td th:text="${player.rebounds}"></td>
                     <td th:text="${player.contractStatus}"></td>
+                    <td th:text="${#dates.format(player.dateCreated, 'yyyy-MM-dd')}"></td>
                     <td th:text="${player.statusId}"></td>
                     <td th:text="${player.status.injuryDetails}"></td>
 

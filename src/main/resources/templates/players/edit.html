@@ -61,6 +61,9 @@
 
             <label for="jerseyNum">Jersey Number:</label>
             <input type="text" id="jerseyNum" name="jerseyNum" th:value="${player.jerseyNum}" />
+            
+            <label for="country">Country:</label>
+            <input type="text" id="country" name="country" th:value="${player.country}" />
 
             <label for="position">Position:</label>
             <input type="text" id="position" name="position" th:value="${player.position}" />
@@ -92,12 +95,14 @@
             <label for="statusId">Status:</label>
             <input type="text" id="statusId" name="statusId" th:value="${player.statusId}" />
 
-            <label for="injuryDetails">Injury Details:</label>
-            <input type="text" id="injuryDetails" name="injuryDetails" th:value="${player.status.injuryDetails}" />
+<!--            <label for="injuryDetails">Injury Details:</label>
+            <input type="text" id="injuryDetails" name="injuryDetails" th:value="${player.status.injuryDetails}" />-->
 
             <label for="dateCreated">Date Created:</label>
             <input type="date" id="dateCreated" name="dateCreated" th:value="${#dates.format(player.dateCreated, 'yyyy-MM-dd')}" />
             <button type="submit">Save</button>
+                <button type="button" onclick="removePlayer()">Remove Player</button>
+
         </form>
     </body>
 </html>

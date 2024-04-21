@@ -16,7 +16,7 @@ public class Status {
 
     @Id
     @Column(name = "status_id")
-    private int statusId;
+    public int statusId;
 
     @Column(name = "injury_details", columnDefinition = "TEXT")
     private String injuryDetails;

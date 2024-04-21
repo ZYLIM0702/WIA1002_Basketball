@@ -9,8 +9,8 @@ package com.basketball.cms.model;
  * @author limziyang
  */
 import jakarta.persistence.*;
+import java.util.Calendar;
 import java.util.Date;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -22,6 +22,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class Player {
 
+   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "player_id")
@@ -64,28 +65,44 @@ public class Player {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "date_created", table = "CONTRACT")
-    private Date dateCreated;
+    private Date dateCreated ;
 
     @Column(name = "contract_status", table = "CONTRACT")
     private String contractStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "status_id", nullable = false)
+    @JoinColumn(name = "status_id", insertable = false, updatable = false)
     private Status status;
 
-    // methods
-    public Status getStatus() {
-        return status;
+    @Column(name = "status_id", table = "PLAYER")
+    private int statusId;
+
+    @Column(name = "country", table = "PLAYER")
+    private String country;
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public void setStatus(Status status) {
         this.status = status;
     }
 
-    public int getStatusId() {
-        return this.status.getStatusId();
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
     }
-   
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public int getStatusId() {
+        return status != null ? status.getStatusId() : 0;
+    }
 
     public String getImage() {
         return Image;
@@ -200,11 +217,19 @@ public class Player {
     }
 
     public Date getDateCreated() {
-        return dateCreated;
+        if("0001-01-01 00:00:00.0".equals(dateCreated.toString()))
+            return null;
+        else{
+            return dateCreated;
+        }
     }
 
     public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
+        if("0001-01-01 00:00:00.0".equals(dateCreated.toString()))
+            this.dateCreated = null;
+        else{
+            this.dateCreated = dateCreated;
+        }
     }
 
     public String getContractStatus() {
@@ -224,6 +249,3 @@ public class Player {
     }
 
 }
-
-
-
