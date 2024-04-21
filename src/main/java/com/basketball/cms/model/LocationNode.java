@@ -50,5 +50,10 @@ public class LocationNode {
         this.cityName = cityName;
     }
 
+    @Override
+    public String toString() {
+        return "LocationNode{" + "locationId=" + locationId + ", cityName=" + cityName + ", teamName=" + teamName + '}';
+    }
+
 }
 

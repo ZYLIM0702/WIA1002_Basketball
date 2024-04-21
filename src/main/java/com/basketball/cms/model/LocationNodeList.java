@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  * @author szeyu
  */
-public class LocationNodeList {
+public class LocationNodeList implements Comparable<LocationNodeList> {
     private LocationNode city;
     private ArrayList<LocationNodeList> neighbour = new ArrayList<>();
     private ArrayList<Double> neighbourDistance = new ArrayList<>();
@@ -51,4 +51,9 @@ public class LocationNodeList {
         return neighbourDistance;
     }
     
+// Implementing compareTo method from Comparable interface
+    @Override
+    public int compareTo(LocationNodeList other) {
+        return Double.compare(this.shortestDistFromSun, other.shortestDistFromSun);
+    }
 }

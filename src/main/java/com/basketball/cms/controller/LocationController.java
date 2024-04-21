@@ -30,11 +30,17 @@ import java.util.PriorityQueue;
 @RequestMapping("/locations")
 public class LocationController {
     
+    @Autowired
+    private LocationEdgeRepository repoEdge;
+    
+    @Autowired
+    private LocationNodeRepository repoNode;
+    
     private ArrayList<LocationNodeList> nodeLists = new ArrayList<>();
     
     private Map<LocationNode, LocationNodeList> getNodeLists(){
         List<LocationEdge> nodeEdges = repoEdge.findAll();
-        
+
         Map<LocationNode, LocationNodeList> nodeMap = new HashMap<>();
 
         for (LocationEdge nodeEdge : nodeEdges) {
@@ -42,8 +48,9 @@ public class LocationController {
             LocationNode neighbour = nodeEdge.getCity2();
             double distance = nodeEdge.getDistance();
 
-            LocationNodeList cityNodeList = nodeMap.getOrDefault(city, new LocationNodeList(city));
-            LocationNodeList neighbourNodeList = nodeMap.getOrDefault(neighbour, new LocationNodeList(neighbour));
+            // Initialize LocationNodeList objects if not already present in the map
+            LocationNodeList cityNodeList = nodeMap.computeIfAbsent(city, LocationNodeList::new);
+            LocationNodeList neighbourNodeList = nodeMap.computeIfAbsent(neighbour, LocationNodeList::new);
 
             // Add neighbour and distance to city node list
             cityNodeList.getNeighbour().add(neighbourNodeList);
@@ -54,14 +61,10 @@ public class LocationController {
             nodeMap.put(neighbour, neighbourNodeList);
         }
 
-        // Populate nodeLists from nodeMap
         return nodeMap;
     }
 
-    @Autowired
-    private LocationEdgeRepository repoEdge;
-    private LocationNodeRepository repoNode;
-    
+
     @GetMapping({"","/"})
     public String showLocationGraph(Model model) {
         return "locations/index";
@@ -69,15 +72,22 @@ public class LocationController {
     
     @GetMapping("/path/{destinationId}")
     public String showDijkstra(@PathVariable int destinationId, Model model) {
-        Optional<LocationNode> sourLocationNode = repoNode.findById(1);
+        System.out.println("Destination ID : " + destinationId);
+        LocationNode sourLocationNode = repoNode.findById(1).orElse(null);
         LocationNode destLocationNode = repoNode.findById(destinationId).orElse(null);
-        if (destLocationNode == null || sourLocationNode.equals(destLocationNode)) {
+        
+        // Print statements for troubleshooting
+        System.out.println("Source Location Node: " + sourLocationNode.getCityName());
+        System.out.println("Destination Location Node: " + destLocationNode.getCityName());
+        
+        if (destLocationNode == null || destinationId == 1) {
             // Handle player not found error  and  destination is same as the source
             return "redirect:/locations";
         }
         
         
         Map<LocationNode, LocationNodeList> nodeMap = getNodeLists();
+        // Populate nodeLists from nodeMap
         nodeLists.addAll(nodeMap.values());
         LocationNodeList source = nodeMap.get(sourLocationNode);
         LocationNodeList destination = nodeMap.get(destLocationNode);
