@@ -12,7 +12,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "CITY_DISTANCE")
-public class LocationNodeList {
+public class LocationEdge {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -4,14 +4,14 @@
  */
 package com.basketball.cms.controller;
 
-import com.basketball.cms.model.LocationNodeList;
-import com.basketball.cms.service.LocationRepository;
+import com.basketball.cms.model.LocationEdge;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.basketball.cms.service.LocationEdgeRepository;
 
 /**
  *
@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/locations")
 public class LocationRestController {
     @Autowired
-    private LocationRepository repo;
+    private LocationEdgeRepository repo;
     
     @GetMapping("/graph-data")
     public List<Object> getGraphData() {
         
-        List<LocationNodeList> nodes = repo.findAll();
+        List<LocationEdge> nodes = repo.findAll();
         List<Object> graphData = nodes.stream().map(node -> {
             Object graphObject = new Object(){
                 public final String source = node.getCity1().getCityName();
