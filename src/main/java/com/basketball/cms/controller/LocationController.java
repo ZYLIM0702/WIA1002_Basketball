@@ -10,6 +10,7 @@ package com.basketball.cms.controller;
  */
 import com.basketball.cms.model.LocationEdge;
 import com.basketball.cms.model.LocationNode;
+import com.basketball.cms.model.LocationNodeList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.basketball.cms.service.LocationEdgeRepository;
 import com.basketball.cms.service.LocationNodeRepository;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -43,11 +48,39 @@ public class LocationController {
         }
         
         
+        
+        
 
 
         //model.addAttribute("destination", destLocationNode);
         return "locations/graph";
     }
     
+    private ArrayList<LocationNodeList> getNodeLists(){
+        List<LocationEdge> nodeEdges = repoEdge.findAll();
+        ArrayList<LocationNodeList> nodeLists = new ArrayList<>();
+        
+        Map<LocationNode, LocationNodeList> nodeMap = new HashMap<>();
 
+        for (LocationEdge nodeEdge : nodeEdges) {
+            LocationNode city = nodeEdge.getCity1();
+            LocationNode neighbour = nodeEdge.getCity2();
+            double distance = nodeEdge.getDistance();
+
+            LocationNodeList cityNodeList = nodeMap.getOrDefault(city, new LocationNodeList(city));
+            LocationNodeList neighbourNodeList = nodeMap.getOrDefault(neighbour, new LocationNodeList(neighbour));
+
+            // Add neighbour and distance to city node list
+            cityNodeList.getNeighbour().add(neighbourNodeList);
+            cityNodeList.getNeighbourDistance().add(distance);
+
+            // Add city and neighbour to the map
+            nodeMap.put(city, cityNodeList);
+            nodeMap.put(neighbour, neighbourNodeList);
+        }
+
+        // Populate nodeLists from nodeMap
+        nodeLists.addAll(nodeMap.values());
+        return nodeLists;
+    }
 }
