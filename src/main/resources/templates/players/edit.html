@@ -95,13 +95,9 @@
             <label for="statusId">Status:</label>
             <input type="text" id="statusId" name="statusId" th:value="${player.statusId}" />
 
-<!--            <label for="injuryDetails">Injury Details:</label>
-            <input type="text" id="injuryDetails" name="injuryDetails" th:value="${player.status.injuryDetails}" />-->
-
             <label for="dateCreated">Date Created:</label>
             <input type="date" id="dateCreated" name="dateCreated" th:value="${#dates.format(player.dateCreated, 'yyyy-MM-dd')}" />
             <button type="submit">Save</button>
-                <button type="button" onclick="removePlayer()">Remove Player</button>
 
         </form>
     </body>

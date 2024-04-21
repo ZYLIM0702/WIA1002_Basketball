@@ -5,16 +5,25 @@
 package com.basketball.cms.service;
 
 import com.basketball.cms.model.Player;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
 /**
  *
  * @author limziyang
  */
 public interface PlayerRepository extends JpaRepository<Player, Integer>{
+
+    public List<Player> findByNameContainingIgnoreCase(String name);
+
+    public List<Player> findByHeightGreaterThanEqual(Double minHeight);
+
+    public List<Player> findByAgeLessThanEqual(Integer maxAge);
+
+    public List<Player> findByHeightLessThanEqual(Double maxHeight);
+
+    public List<Player> findByAgeGreaterThanEqual(Integer minAge);
+
+    public List<Player> findByPosition(String position);
 
 }
 

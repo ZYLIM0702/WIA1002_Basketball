@@ -9,7 +9,6 @@ package com.basketball.cms.model;
  * @author limziyang
  */
 import jakarta.persistence.*;
-import java.util.Calendar;
 import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -217,19 +216,13 @@ public class Player {
     }
 
     public Date getDateCreated() {
-        if("0001-01-01 00:00:00.0".equals(dateCreated.toString()))
-            return null;
-        else{
-            return dateCreated;
-        }
+        return dateCreated;
+        
     }
-
+ 
     public void setDateCreated(Date dateCreated) {
-        if("0001-01-01 00:00:00.0".equals(dateCreated.toString()))
-            this.dateCreated = null;
-        else{
-            this.dateCreated = dateCreated;
-        }
+        this.dateCreated = dateCreated;
+        
     }
 
     public String getContractStatus() {
@@ -247,5 +240,5 @@ public class Player {
     public void setIs_added(int is_added) {
         this.is_added = is_added;
     }
-
+ 
 }
