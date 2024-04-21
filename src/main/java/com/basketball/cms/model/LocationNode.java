@@ -11,57 +11,44 @@ package com.basketball.cms.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "CITY_DISTANCE")
+@Table(name = "LOCATION")
 public class LocationNode {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "distance_id")
-    private int distance_id;
+    @Column(name = "location_id")
+    private int locationId;
 
-    @ManyToOne
-    @JoinColumn(name = "city1_id", referencedColumnName = "location_id")
-    private Location city1;
-
-    @ManyToOne
-    @JoinColumn(name = "city2_id", referencedColumnName = "location_id")
-    private Location city2;
-
-    @Column(name = "distance")
-    private double distance;
-
-
-    public int getDistance_id() {
-        return distance_id;
-    }
-
-    public void setDistance_id(int distance_id) {
-        this.distance_id = distance_id;
-    }
-
-    public Location getCity1() {
-        return city1;
-    }
-
-    public void setCity1(Location city1) {
-        this.city1 = city1;
-    }
-
-    public Location getCity2() {
-        return city2;
-    }
-
-    public void setCity2(Location city2) {
-        this.city2 = city2;
-    }
-
-    public double getDistance() {
-        return distance;
-    }
-
-    public void setDistance(double distance) {
-        this.distance = distance;
-    }
+    @Column(name = "city")
+    private String cityName;
     
+    @Column(name = "team_name")
+    private String teamName;
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+
+    public int getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(int locationId) {
+        this.locationId = locationId;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
 
 }
+
