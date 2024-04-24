@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Sorted Players</title>
+    <style>
+        .player-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .player-table th, .player-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .player-table th {
+            background-color: #f2f2f2;
+        }
+        .player-table tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Sorted Players</h1>
+        
+        <!-- Toggle button for sorting -->
+        <form th:action="@{/players/sort}" method="get">
+            <button type="submit" name="order" value="asc">Sort by Lowest Overall Score</button>
+            <button type="submit" name="order" value="desc">Sort by Highest Overall Score</button>
+        </form>
+
+        <table class="player-table">
+            <tr>
+                <th>Name</th>
+                <th>Overall Score</th>
+                <th>Age</th>
+                <th>Height</th>
+                <th>Position</th>
+                <th>Country Code</th>
+                <th>View Profile</th>
+            </tr>
+            <tr th:each="player : ${players}">
+                <td th:text="${player.name}"></td>
+                <td th:text="${#numbers.formatDecimal(player.overallScore, 2, 'POINT', 2, 'POINT')}"></td>
+                <td th:text="${player.age}"></td>
+                <td th:text="${player.height}"></td>
+                <td th:text="${player.position}"></td>
+                <td th:text="${player.country}"></td>
+                <td>
+                    <form th:action="@{/players/profile/{playerId}(playerId=${player.playerId})}" method="get">
+                        <button type="submit">View Profile</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
+
+

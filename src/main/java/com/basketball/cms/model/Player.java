@@ -19,7 +19,7 @@ import org.springframework.format.annotation.DateTimeFormat;
     @SecondaryTable(name = "CONTRACT", pkJoinColumns = @PrimaryKeyJoinColumn(name = "player_id"))
 })
 
-public class Player {
+public class Player{
 
    
     @Id
@@ -92,15 +92,32 @@ public class Player {
         return overallScore;
     }
 
-    public void setOverallScore(double overallScore) {
-        this.overallScore = overallScore;
+    public void setOverallScore() {
+        if (position.equalsIgnoreCase("GUARD")) {
+            overallScore = (0.3 * assists / 36) + (0.2 * steals / 36) + (0.25 * points / 36) + (0.15 * blocks / 36) + (0.1 * rebounds / 36);
+        } else if (position.equalsIgnoreCase("FORWARD")) {
+            overallScore = (0.25 * assists / 36) + (0.15 * steals / 36) + (0.3 * points / 36) + (0.2 * blocks / 36) + (0.1 * rebounds / 36);
+        } else if (position.equalsIgnoreCase("CENTER")) {
+            overallScore = (0.15 * assists / 36) + (0.1 * steals / 36) + (0.3 * points / 36) + (0.3 * blocks / 36) + (0.15 * rebounds / 36);
+        } else if (position.equalsIgnoreCase("FORWARD-CENTER") || position.equalsIgnoreCase("CENTER-FORWARD")) {
+            double forwardScore = (0.25 * assists / 36) + (0.15 * steals / 36) + (0.3 * points / 36) + (0.2 * blocks / 36) + (0.1 * rebounds / 36);
+            double centerScore = (0.15 * assists / 36) + (0.1 * steals / 36) + (0.3 * points / 36) + (0.3 * blocks / 36) + (0.15 * rebounds / 36);
+            overallScore = Math.max(forwardScore, centerScore);
+        } else if (position.equalsIgnoreCase("FORWARD-GUARD") || position.equalsIgnoreCase("GUARD-FORWARD")) {
+            double forwardScore = (0.25 * assists / 36) + (0.15 * steals / 36) + (0.3 * points / 36) + (0.2 * blocks / 36) + (0.1 * rebounds / 36);
+            double guardScore = (0.3 * assists / 36) + (0.2 * steals / 36) + (0.25 * points / 36) + (0.15 * blocks / 36) + (0.1 * rebounds / 36);
+            overallScore = Math.max(forwardScore, guardScore);
+        } else { // guard and center
+            double guardScore = (0.3 * assists / 36) + (0.2 * steals / 36) + (0.25 * points / 36) + (0.15 * blocks / 36) + (0.1 * rebounds / 36);
+            double centerScore = (0.15 * assists / 36) + (0.1 * steals / 36) + (0.3 * points / 36) + (0.3 * blocks / 36) + (0.15 * rebounds / 36);
+            overallScore = Math.max(guardScore, centerScore);
+        }
+        this.overallScore = overallScore*100; // Set the overallScore of the player object and make it in percentage
     }
 
+
     public boolean getIsStarPlayer() {
-        if(points>=20)
-           return true;
-        else 
-           return false;
+        return points>=20;
     }
 
     public void setIsStarPlayer(boolean isStarPlayer) {

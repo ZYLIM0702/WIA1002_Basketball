@@ -7,6 +7,7 @@
     <body>
         <div>
             <h1>Player Search</h1>
+            <a th:href="@{/players/sort}">Sort Players by Overall Score</a> <!-- Add this line here -->
             <button id="autoUpdateToggle">Live Search</button>
 
             
@@ -40,10 +41,10 @@
 
                                 <label for="maxHeight">Maximum Height:</label>
                                 <input type="number" step="any" id="maxHeight" name="maxHeight" th:value="${param.maxHeight}">
-                                    
-                                        <!-- Checkbox for Rank -->
+
                                     <label for="rank">Rank:</label>
-                                    <input type="checkbox" id="rank" name="rank">
+                                    <input type="checkbox" id="rank" name="rank" value="true">
+
                     
 
                                     <button type="submit">Search</button>
@@ -54,6 +55,7 @@
                                         <table border="1" class="player-row">
                                             <tr>
                                                 <th>Name</th>
+                                                <th>Overall Score</th>
                                                 <th>Age</th>
                                                 <th>Height</th>
                                                 <th>Position</th>
@@ -62,6 +64,7 @@
                                             </tr>
                                             <tr th:each="player : ${players}">
                                                 <td th:text="${player.name}"></td>
+                                                <td th:text="${#numbers.formatDecimal(player.overallScore, 2, 'POINT', 2, 'POINT')}"></td>
                                                 <td th:text="${player.age}"></td>
                                                 <td th:text="${player.height}"></td>
                                                 <td th:text="${player.position}"></td>
@@ -123,7 +126,6 @@
                                             });
                                         });
                                     </script>
-
                                     <style>
 
                                         body {

@@ -11,6 +11,7 @@ package com.basketball.cms.controller;
 import com.basketball.cms.model.Player;
 import com.basketball.cms.service.PlayerRepository;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,7 +89,8 @@ public class PlayerController {
             @RequestParam(required = false) Double maxHeight,
             @RequestParam(required = false) String position,
             @RequestParam(required = false) String country,
-            @RequestParam(required = false, defaultValue = "false")boolean ranked,
+            @RequestParam(required = false, defaultValue = "false") boolean rank,
+            @RequestParam(required = false) Double overallScore,
             Model model) {
 
         List<Player> players;
@@ -137,8 +139,15 @@ public class PlayerController {
                 .collect(Collectors.toList());
         }
         
-       
-
+        for (Player player : players) { //calculate overallScore
+            player.setOverallScore();
+        }
+        
+        if (rank) {
+        players = players.stream()
+                .sorted(Comparator.comparingDouble(Player::getOverallScore).reversed())
+                .collect(Collectors.toList());
+        }
         model.addAttribute("players", players);
         return "players/search";
     }
@@ -156,5 +165,30 @@ public class PlayerController {
         positions.add("GUARD-FORWARD");
         return positions;
     }
- 
+    
+    
+    @GetMapping("/sort")
+    public String sortPlayersByOverallScore(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
+        List<Player> players = repo.findAll();
+
+        // Calculate overall score for each player
+        for (Player player : players) {
+            player.setOverallScore();
+        }
+
+        if ("asc".equals(order)) {
+            players = players.stream()
+                    .sorted(Comparator.comparingDouble(Player::getOverallScore))
+                    .collect(Collectors.toList());
+        } else if ("desc".equals(order)) {
+            players = players.stream()
+                    .sorted(Comparator.comparingDouble(Player::getOverallScore).reversed())
+                    .collect(Collectors.toList());
+        }
+
+        model.addAttribute("players", players);
+        model.addAttribute("order", order); // Add order pass the sort order to the view
+        return "players/sort"; 
+    }
+
 }
