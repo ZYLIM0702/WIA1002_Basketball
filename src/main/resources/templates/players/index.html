@@ -60,6 +60,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <th>Salary</th>
                     <th>Starred</th>
                     <th>Is_Added</th>
+                    <th>Star Player</th>
                     <th>Points</th>
                     <th>Blocks</th>
                     <th>Steals</th>
@@ -90,6 +91,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <img th:if="${player.starred == 1}" th:src="@{https://png.pngtree.com/png-vector/20190419/ourmid/pngtree-vector-star-icon-png-image_956428.jpg}" />
                     </td>
                     <td th:text="${player.is_added}"></td>
+                    <td th:text="${player.isStarPlayer}"></td>
                     <td th:text="${player.points}"></td>
                     <td th:text="${player.blocks}"></td>
                     <td th:text="${player.steals}"></td>

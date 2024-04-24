@@ -81,6 +81,32 @@ public class Player {
 
     @Column(name = "starred", table = "PLAYER")
     private int starred;
+     
+    @Transient
+    private double overallScore;
+    
+    @Transient
+    private boolean isStarPlayer;
+
+    public double getOverallScore() {
+        return overallScore;
+    }
+
+    public void setOverallScore(double overallScore) {
+        this.overallScore = overallScore;
+    }
+
+    public boolean getIsStarPlayer() {
+        if(points>=20)
+           return true;
+        else 
+           return false;
+    }
+
+    public void setIsStarPlayer(boolean isStarPlayer) {
+        this.isStarPlayer = isStarPlayer;
+    }
+   
     
     public String getCountry() {
         return country;
@@ -252,4 +278,5 @@ public class Player {
         this.starred = starred;
     }
  
+    
 }
