@@ -9,7 +9,7 @@
             margin: 0;
             padding: 20px;
             background-image: url('https://img.freepik.com/premium-vector/basketball-court-special-table-tactics_391563-488.jpg?size=626&ext=jpg');
-            background-size: 85%;
+            background-size: cover;
             background-repeat: no-repeat;
 
         }
@@ -47,7 +47,76 @@
         button:hover {
             background-color: #45a049;
         }
+        #guard1{
+            width: 150px;
+            height: 150px;
+            margin: 20px;
+            border: 2px dashed #fff;
+            position: absolute;
+            top: 410px;
+            left: 980px;
+        }
+        #guard2{
+            width: 150px;
+            height: 150px;
+            margin: 20px;
+            border: 2px dashed #fff;
+            position: absolute;
+            top: 130px;
+            left: 760px;
+        }
+        #forward1{
+            width: 150px;
+            height: 150px;
+            margin: 20px;
+            border: 2px dashed #fff;
+            position: absolute;
+            top: 590px;
+            left: 760px;
+        }
+        #forward2{
+            width: 150px;
+            height: 150px;
+            margin: 20px;
+            border: 2px dashed #fff;
+            position: absolute;
+            top: 410px;
+            left: 530px;
+        }
+        #center{
+            width: 150px;
+            height: 150px;
+            margin: 20px;
+            border: 2px dashed #fff;
+            position: absolute;
+            top: 410px;
+            left: 200px;
+        }
+        #bench{
+            width: 850px;
+            height: 100px;
+            margin: 20px;
+            border: 2px dashed #fff;
+            position: absolute;
+            top: -10px;
+            left: 650px;
+        }
     </style>
+    <script>
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+  
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+  
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+    </script>
 </head>
 <body>
 <form action="/players/update" method="post" th:action="@{/players/update}" th:object="${player}">
@@ -55,5 +124,46 @@
     <input type="text" id="name" name="name" th:value="${player.name}" />
     <button type="submit">Search</button>
 </form>
+
+<div class="guard1" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <div id="guard1">
+        <p style="color: black; font-size: 30px; text-align: center; margin-top: 60px;">Guard</p>
+    </div>
+</div>
+<div class="guard2" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <div id="guard2">
+        <p style="color: black; font-size: 30px; text-align: center; margin-top: 60px;">Guard</p>
+    </div>
+</div>
+<div class="forward1" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <div id="forward1">
+        <p style="color: black; font-size: 30px; text-align: center; margin-top: 60px;">Forward</p>
+    </div>
+</div>
+<div class="forward2" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <div id="forward2">
+        <p style="color: black; font-size: 30px; text-align: center; margin-top: 60px;">Forward</p>
+    </div>
+</div>
+<div class="center" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <div id="center">
+        <p style="color: black; font-size: 30px; text-align: center; margin-top: 60px;">Center</p>
+    </div>
+</div>
+
+<br>
+
+<div class="benchCon">
+    <div id="bench" style= "display: flew; align-items: container">
+        <img id="img1" draggable="true" ondragstart="drag(event)" src= "https://cdn.nba.com/headshots/nba/latest/1040x760/201566.png" alt= "Player Image" width= "100" height= "100" >
+        <img id="img2" draggable="true" ondragstart="drag(event)" src= "https://cdn.nba.com/headshots/nba/latest/1040x760/202331.png" alt= "Player Image" width= "100" height= "100">
+        <img id="img3" draggable="true" ondragstart="drag(event)" src= "https://cdn.nba.com/headshots/nba/latest/1040x760/1628374.png" alt= "Player Image" width= "100" height= "100">
+        <img id="img4" draggable="true" ondragstart="drag(event)" src= "https://cdn.nba.com/headshots/nba/latest/1040x760/202681.png" alt= "Player Image" width= "100" height= "100">
+        <img id="img5" draggable="true" ondragstart="drag(event)" src= "https://cdn.nba.com/headshots/nba/latest/1040x760/203076.png" alt= "Player Image" width= "100" height= "100">
+        <img id="img6" draggable="true" ondragstart="drag(event)" src= "https://cdn.nba.com/headshots/nba/latest/1040x760/1630162.png" alt= "Player Image" width= "100" height= "100">
+        <img id="img7" draggable="true" ondragstart="drag(event)" src= "https://cdn.nba.com/headshots/nba/latest/1040x760/1641705.png" alt= "Player Image" width= "100" height= "100">
+        <img id="img8" draggable="true" ondragstart="drag(event)" src= "https://cdn.nba.com/headshots/nba/latest/1040x760/201142.png" alt= "Player Image" width= "100" height= "100">
+    </div>
+</div>
 </body>
 </html>
