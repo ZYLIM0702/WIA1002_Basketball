@@ -13,17 +13,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface PlayerRepository extends JpaRepository<Player, Integer>{
 
-    public List<Player> findByNameContainingIgnoreCase(String name);
-
-    public List<Player> findByHeightGreaterThanEqual(Double minHeight);
-
-    public List<Player> findByAgeLessThanEqual(Integer maxAge);
-
-    public List<Player> findByHeightLessThanEqual(Double maxHeight);
-
-    public List<Player> findByAgeGreaterThanEqual(Integer minAge);
-
-    public List<Player> findByPosition(String position);
 
 }
 

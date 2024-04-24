@@ -87,6 +87,8 @@ public class PlayerController {
             @RequestParam(required = false) Double minHeight,
             @RequestParam(required = false) Double maxHeight,
             @RequestParam(required = false) String position,
+            @RequestParam(required = false) String country,
+            @RequestParam(required = false, defaultValue = "false")boolean ranked,
             Model model) {
 
         List<Player> players;
@@ -128,6 +130,14 @@ public class PlayerController {
                     .filter(player -> player.getPosition().equalsIgnoreCase(position))
                     .collect(Collectors.toList());
         }
+        
+        if (country != null && !country.isEmpty()) { 
+            players = players.stream()
+                .filter(player -> player.getCountry().equalsIgnoreCase(country))
+                .collect(Collectors.toList());
+        }
+        
+       
 
         model.addAttribute("players", players);
         return "players/search";
@@ -146,5 +156,5 @@ public class PlayerController {
         positions.add("GUARD-FORWARD");
         return positions;
     }
-
+ 
 }

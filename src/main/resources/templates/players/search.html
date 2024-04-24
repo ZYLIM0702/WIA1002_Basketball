@@ -9,9 +9,16 @@
             <h1>Player Search</h1>
             <button id="autoUpdateToggle">Live Search</button>
 
+            
             <form id="searchForm">
+                
+                
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" th:value="${param.name}">
+                    
+                
+                <label for="country">Country Code:</label>
+                        <input type="text" id="country" name="country" th:value="${param.maxAge}">
 
                     <label>Position:</label>
                     <select id="position" name="position">
@@ -33,6 +40,11 @@
 
                                 <label for="maxHeight">Maximum Height:</label>
                                 <input type="number" step="any" id="maxHeight" name="maxHeight" th:value="${param.maxHeight}">
+                                    
+                                        <!-- Checkbox for Rank -->
+                                    <label for="rank">Rank:</label>
+                                    <input type="checkbox" id="rank" name="rank">
+                    
 
                                     <button type="submit">Search</button>
                                     </form>
@@ -45,12 +57,20 @@
                                                 <th>Age</th>
                                                 <th>Height</th>
                                                 <th>Position</th>
+                                                <th>Country Code</th>
+                                                <th>View Profile</th>
                                             </tr>
                                             <tr th:each="player : ${players}">
                                                 <td th:text="${player.name}"></td>
                                                 <td th:text="${player.age}"></td>
                                                 <td th:text="${player.height}"></td>
                                                 <td th:text="${player.position}"></td>
+                                                <td th:text="${player.country}"></td>
+                                                <td>
+                                                  <form th:action="@{/players/profile/{playerId}(playerId=${player.playerId})}" method="get">
+                                                        <button type="submit">View Profile</button>
+                                                  </form>
+                                                </td>
                                             </tr>
                                         </table>
                                     </div>
@@ -133,10 +153,20 @@
                                             flex-wrap: wrap;
                                             justify-content: space-between;
                                         }
-
+                                        
+                                        #rank {
+                                            width: 20px;
+                                            height: 20px;
+                                            display: block;
+                                            margin: 0 auto;
+                                            margin-right: 800px;
+                                        }
+                                        
+                                        
                                         form label {
                                             flex-basis: 30%;
                                             margin-bottom: 10px;
+                                            padding-left: 10px
                                         }
 
                                         form input[type="text"],
@@ -150,7 +180,8 @@
                                         }
 
                                         form button[type="submit"] {
-                                            flex-basis: 100%;
+                                            flex-basis: 20%;
+                                            margin: 0  auto;
                                         }
 
 
@@ -193,7 +224,7 @@
                                             background-color: #1e466c;
                                         }
                                         table {
-                                            width: 80%;
+                                            width: 100%; /*increase size from 80%*/
                                             align-items:  center;
                                             border-collapse: collapse;
                                             background-color: #fff;
