@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Team</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-image: url('https://img.freepik.com/premium-vector/basketball-court-special-table-tactics_391563-488.jpg?size=626&ext=jpg');
+            background-size: 85%;
+            background-repeat: no-repeat;
+
+        }
+        form {
+            max-width: 600px;
+            height: 70px;
+            margin: 0;
+            margin-right: auto;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 10px;
+            position: relative;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            position: absolute;
+            bottom: 1px;
+            right: 10px;
+            padding: 1px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<form action="/players/update" method="post" th:action="@{/players/update}" th:object="${player}">
+    <label for="search">Searching Player: </label>
+    <input type="text" id="name" name="name" th:value="${player.name}" />
+    <button type="submit">Search</button>
+</form>
+</body>
+</html>
