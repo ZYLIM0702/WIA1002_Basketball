@@ -28,6 +28,7 @@
                             <option th:value="${position}" th:text="${position}" 
                                     th:selected="${position == param.position}"></option>
                         </div>
+                        
                     </select>
 
                     <label for="minAge">Minimum Age:</label>
@@ -45,7 +46,15 @@
                                     <label for="rank">Rank:</label>
                                     <input type="checkbox" id="rank" name="rank" value="true">
 
-                    
+                                        <label for="rankBy">Rank By:</label>
+                                        <select id="rankBy" name="rankBy">
+                                            <option value="">Select Subject</option>
+                                            <option value="rebounds">Rebounds</option>
+                                            <option value="blocks">Blocks</option>
+                                            <option value="steals">Steals</option>
+                                            <option value="points">Points</option>
+                                            <option value="assists">Assists</option>
+                                        </select>
 
                                     <button type="submit">Search</button>
                                     </form>
@@ -60,6 +69,7 @@
                                                 <th>Height</th>
                                                 <th>Position</th>
                                                 <th>Country Code</th>
+                                          <!--- <th>testing blocks</th> >this is the place for testing<--->
                                                 <th>View Profile</th>
                                             </tr>
                                             <tr th:each="player : ${players}">
@@ -69,6 +79,7 @@
                                                 <td th:text="${player.height}"></td>
                                                 <td th:text="${player.position}"></td>
                                                 <td th:text="${player.country}"></td>
+                                             <!--<td th:text="${player.blocks}"></td> this is the place for testing--->
                                                 <td>
                                                   <form th:action="@{/players/profile/{playerId}(playerId=${player.playerId})}" method="get">
                                                         <button type="submit">View Profile</button>
@@ -160,14 +171,13 @@
                                             width: 20px;
                                             height: 20px;
                                             display: block;
-                                            margin: 0 auto;
-                                            margin-right: 800px;
+                                            margin-right:800px;
+                                            /*margin-left : -300px;*/
                                         }
-                                        
                                         
                                         form label {
                                             flex-basis: 30%;
-                                            margin-bottom: 10px;
+                                            margin-bottom: 20px;
                                             padding-left: 10px
                                         }
 
