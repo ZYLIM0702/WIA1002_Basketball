@@ -39,6 +39,11 @@ public class PlayerController {
         model.addAttribute("players", players);
         return "players/index";
     }
+   
+    @GetMapping("/team")
+        public String showTeam(Model model) {
+        return "players/team";
+    }
 
     @GetMapping("/edit")
     public String showEditPlayerPage(@RequestParam int playerId, Model model) {
