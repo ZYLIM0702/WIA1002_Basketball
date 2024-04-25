@@ -41,6 +41,24 @@ public class PlayerController {
         return "players/index";
     }
 
+    @GetMapping("/team")
+    public String showTeam(
+        @RequestParam(required = false) String name,
+        Model model
+    ) {
+        List<Player> players = repo.findAll();
+
+        if (name != null && !name.isEmpty()) {
+            players = players.stream()
+                .filter(player -> player.getName().toLowerCase().contains(name.toLowerCase()))
+                .collect(Collectors.toList());
+        }
+
+        model.addAttribute("players", players);
+        return "players/team";
+    }
+
+    
     @GetMapping("/edit")
     public String showEditPlayerPage(@RequestParam int playerId, Model model) {
         Player player = repo.findById(playerId).orElse(null);

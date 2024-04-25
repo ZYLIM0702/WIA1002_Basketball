@@ -37,7 +37,7 @@ public class LocationRestController {
                     return source + " -> " + target + " : " + distance;
                 }
             };
-            System.out.println("Graph Object: " + graphObject.toString()); // Log the graph object
+            //System.out.println("Graph Object: " + graphObject.toString()); // Log the graph object
             return graphObject;
         }).collect(Collectors.toList());
         System.out.println("Graph Data: " + graphData.toString()); // Log the graph data
