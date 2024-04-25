@@ -1,81 +1,326 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>UI Layout</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            font-family: Arial, sans-serif;
-        }
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Team Page</title>
+        <style>
+            body {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin: 0;
+                padding: 0;
+                height: 100vh;
+                font-family: Arial, sans-serif;
+            }
+            .scrollable-container {
+                height: 400px;
+                overflow-y: auto;
+            }
 
-        .sidebar {
-            width: 250px;
-            height: 100%;
-            background-color: #f4f4f4;
-            padding: 20px;
-        }
 
-        .search-bar {
-            margin-bottom: 20px;
-        }
+            .sidebar {
+                width: 300px;
+                height: 100%;
+                background-color: #f4f4f4;
+                padding: 20px;
+            }
 
-        .table {
-            border: 1px solid #ccc;
-            border-collapse: collapse;
-            width: 100%;
-        }
+            .table {
+                border: 1px solid #ccc;
+                border-collapse: collapse;
+                width: 100%;
+                margin-bottom: 20px;
+            }
 
-        .table th, .table td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ccc;
-        }
+            .table th,
+            .table td {
+                padding: 10px;
+                text-align: left;
+                border: 1px solid #ccc;
+            }
 
-        .image-container {
-            flex: 1;
-            padding: 20px;
-        }
+            .image-container {
+                flex: 1;
+                padding: 20px;
+            }
 
-        .image {
-            max-width: 100%;
-            max-height: 100%;
-        }
-    </style>
-</head>
-<body>
-    <div class="sidebar">
-        <div class="search-bar">
-            <input type="text" placeholder="Search...">
-            <button>Search</button>
-        </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Age</th>
-                    <th>Email</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>John Doe</td>
-                    <td>30</td>
-                    <td>john@example.com</td>
-                </tr>
-                <!-- Add more rows as needed -->
-            </tbody>
-        </table>
-    </div>
-    <div class="image-container">
-        <img class="image" src="https://static.vecteezy.com/system/resources/previews/001/346/644/large_2x/top-down-view-of-basketball-court-free-vector.jpg" alt="Image">
-    </div>
-</body>
-</html>
+            .image {
+                max-width: 100%;
+                max-height: 100%;
+            }
+
+            .card-container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+
+            .card {
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                padding: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .card img {
+                width: 100%;
+                height: auto;
+                background-color: #333;
+                max-width: 100%;
+                border-radius: 2px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+            }
+
+            .card h2 {
+                font-size: 18px;
+                margin-bottom: 5px;
+            }
+
+            .card p {
+                font-size: 14px;
+                margin: 5px 0;
+            }
+
+            .drop-zone {
+                border: 2px solid #ccc;
+                border-radius: 8px;
+                width: 150px;
+                min-height: 100px;
+                margin: 5px;
+                display: inline-block;
+            }
+            .remove-button{
+                z-index: 100;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="sidebar">
+            <h2>Player Search</h2>
+            <form id="searchForm">
+                <input type="text" id="name" name="name" placeholder="Search by Name">
+                    <select id="position" name="position">
+                        <option value="">Select Position</option>
+                        <option value="Guard">Guard</option>
+                        <option value="Forward">Forward</option>
+                        <option value="Center">Center</option>
+                    </select>
+
+                    <label for="starred">Starred:</label>
+                    <input type="checkbox" id="starred" name="starred">
+                        <button type="submit">Search</button>
+                        </form>
+                        <select id="sortCriteria">
+                            <option value="">Sort By</option>
+                            <option value="name">Name</option>
+                            <option value="overallScore">Overall Score</option>
+                            <option value="isStarred">Starred</option>
+                            <!-- Add more options for sorting criteria if needed -->
+                        </select>
+
+
+                        <div style="display:none;" class="card-container">
+                            <!-- Loop through search results and generate cards dynamically -->
+                            <div th:each="player : ${players}" class="card" draggable="true" ondragstart="drag(event)" th:id="${player.playerId}">
+                                <img th:src="${player.Image}" alt="Player Image" >
+
+                                    <div class="card-content">
+                                        <h2 th:text="${player.name}"></h2>
+                                        <p th:text="'Overall Score: ' + ${#numbers.formatDecimal(player.overallScore, 2, 'POINT', 2, 'POINT')}"></p>
+                                        <p th:text="'Age: ' + ${player.age}"></p>
+                                        <p th:text="'Height: ' + ${player.height}"></p>
+                                        <p th:text="'Position: ' + ${player.position}"></p>
+                                        <p th:text="'Country Code: ' + ${player.country}"></p>
+                                        <form th:action="@{/players/profile/{playerId}(playerId=${player.playerId})}" method="get">
+                                            <button type="submit">View Profile</button>
+                                        </form>
+                                    </div>
+                            </div>
+                        </div>
+
+
+                        <div class="scrollable-container">
+                            <div id="searchResults" >
+
+                            </div>
+
+                        </div>
+
+                        </div>
+                        <div class="drop-container">
+                            <div id="dropZone1" class="drop-zone" ondrop="drop(event, 'dropZone1')" ondragover="allowDrop(event)">
+                                <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
+
+                            </div>
+                            <div id="dropZone2" class="drop-zone" ondrop="drop(event, 'dropZone2')" ondragover="allowDrop(event)">
+                                <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
+                            </div>
+                            <div id="dropZone3" class="drop-zone" ondrop="drop(event, 'dropZone3')" ondragover="allowDrop(event)">
+                                <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
+                            </div>
+                            <div id="dropZone4" class="drop-zone" ondrop="drop(event, 'dropZone4')" ondragover="allowDrop(event)">
+                                <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
+                            </div>
+                            <div id="dropZone5" class="drop-zone" ondrop="drop(event, 'dropZone5')" ondragover="allowDrop(event)">
+                                <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
+                            </div>
+                            <div id="dropZone6" class="drop-zone" ondrop="drop(event, 'dropZone6')" ondragover="allowDrop(event)">
+                                <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
+                            </div>
+                            <div id="dropZone7" class="drop-zone" ondrop="drop(event, 'dropZone7')" ondragover="allowDrop(event)">
+                                <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
+                            </div>
+                            <div id="dropZone8" class="drop-zone" ondrop="drop(event, 'dropZone8')" ondragover="allowDrop(event)">
+                                <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
+                            </div>
+                            <div id="dropZone9" class="drop-zone" ondrop="drop(event, 'dropZone9')" ondragover="allowDrop(event)">
+                                <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
+                            </div>
+                            <div id="dropZone10" class="drop-zone" ondrop="drop(event, 'dropZone10')" ondragover="allowDrop(event)">
+                                <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
+                            </div>
+                            <div id="dropZone11" class="drop-zone" ondrop="drop(event, 'dropZone11')" ondragover="allowDrop(event)">
+                                <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
+                            </div>
+                            <div id="dropZone12" class="drop-zone" ondrop="drop(event, 'dropZone12')" ondragover="allowDrop(event)">
+                                <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
+                            </div>
+                            <div id="dropZone13" class="drop-zone" ondrop="drop(event, 'dropZone13')" ondragover="allowDrop(event)">
+                                <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
+                            </div>
+                            <div id="dropZone14" class="drop-zone" ondrop="drop(event, 'dropZone14')" ondragover="allowDrop(event)">
+                                <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
+                            </div>
+                            <div id="dropZone15" class="drop-zone" ondrop="drop(event, 'dropZone15')" ondragover="allowDrop(event)">
+                                <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
+                            </div>
+                        </div>
+
+
+                        <div class="image-container">
+
+                            <img class="image" src="https://static.vecteezy.com/system/resources/previews/001/346/644/large_2x/top-down-view-of-basketball-court-free-vector.jpg" alt="Basketball Court">
+                        </div>
+
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <script>
+                                    // Array to store dropped player IDs
+                                    var droppedPlayers = [];
+                                    // Function to load search results
+                                    function loadSearchResults(formData) {
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: '/players/team',
+                                            data: formData,
+                                            success: function (response) {
+                                                $('#searchResults').empty();
+                                                var table = $('<div>').addClass('card-container');
+                                                $('#searchResults').append(table);
+                                                $(response).find('.card').each(function () {
+                                                    // Check if the card's ID is not in the dropped players array
+                                                    if (!droppedPlayers.includes($(this).attr('id'))) {
+                                                        table.append($(this));
+                                                    }
+                                                });
+                                            },
+                                            error: function (xhr, status, error) {
+                                                console.error(xhr.responseText);
+                                            }
+                                        });
+                                    }
+
+                                    $(document).ready(function () {
+
+
+
+                                        // Trigger form submission on page load
+                                        loadSearchResults('');
+
+                                        // Intercept form submission and load search results via AJAX
+                                        $('#searchForm').on('submit', function (event) {
+                                            event.preventDefault(); // Prevent default form submission behavior
+                                            var formData = $(this).serialize();
+                                            loadSearchResults(formData);
+                                        });
+
+                                    });
+
+                                    function drag(ev) {
+                                        // Set the dragged card's id as data
+                                        ev.dataTransfer.setData("cardId", ev.target.id);
+                                    }
+
+                                    function allowDrop(ev) {
+                                        ev.preventDefault();
+                                    }
+
+                                    function drop(ev, dropZoneId) {
+                                        ev.preventDefault();
+
+                                        var cardId = ev.dataTransfer.getData("cardId");
+                                        var card = document.getElementById(cardId);
+                                        // Check if the dragged element is a valid player card
+                                        if (card.classList.contains('card')) {
+                                            var dropZone = document.getElementById(dropZoneId);
+
+                                            // Check if drop zone already contains a card
+                                            if (dropZone.childElementCount === 1) {
+                                                // Append the dragged card to the drop zone
+                                                dropZone.appendChild(card);
+                                                var removeButton = dropZone.querySelector('.remove-button');
+
+                                                // Make sure removeButton is not null before attempting to access its style
+                                                if (removeButton) {
+                                                    removeButton.style.display = 'block';
+                                                }
+
+                                                // Add dropped player ID to the array
+                                                droppedPlayers.push(cardId);
+                                                loadSearchResults($('#searchForm').serialize());
+                                            } else {
+                                                // Show pop-up toast indicating that the box is already filled
+                                                alert("This box already contains an item. Remove it before adding a new one.");
+                                            }
+                                        }
+                                    }
+
+                                    function removePlayer(button) {
+                                        var dropZone = button.parentNode;
+                                        var card = dropZone.querySelector('.card');
+
+                                        if (card) {
+                                            card.remove();
+
+                                            // Remove dropped player ID from the array
+                                            var index = droppedPlayers.indexOf(card.id);
+                                            if (index !== -1) {
+                                                droppedPlayers.splice(index, 1);
+                                            }
+                                        }
+                                        loadSearchResults($('#searchForm').serialize());
+
+                                        button.style.display = 'none';
+                                    }
+                                    $('#sortCriteria').on('change', function () {
+                                        var sortCriteria = $(this).val();
+                                        if (sortCriteria) {
+                                            var formData = $('#searchForm').serialize() + '&sort=' + sortCriteria;
+                                            loadSearchResults(formData);
+                                        }
+                                    });
+
+                                    $('#searchForm').on('input', function () {
+                                        var formData = $(this).serialize();
+                                        loadSearchResults(formData);
+                                    });
+
+
+                        </script>
+
+                        </body>
+                        </html>

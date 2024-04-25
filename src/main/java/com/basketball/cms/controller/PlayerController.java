@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/players")
@@ -243,95 +244,61 @@ public class PlayerController {
         return "players/sort";
     }
 
-    @GetMapping("/team")
-    public String teamPlayersSidebar(@RequestParam(required = false) String name,
-            @RequestParam(required = false) Integer minAge,
-            @RequestParam(required = false) Integer maxAge,
-            @RequestParam(required = false) Double minHeight,
-            @RequestParam(required = false) Double maxHeight,
-            @RequestParam(required = false) String position,
-            @RequestParam(required = false) String country,
-            @RequestParam(required = false, defaultValue = "false") boolean rank,
-            @RequestParam(required = false) Double overallScore,
-            @RequestParam(required = false) String rankBy,
-            Model model) {
+@GetMapping("/team")
+public String teamPlayersSidebar(@RequestParam(required = false) String name,
+        @RequestParam(required = false) String position,
+        @RequestParam(required = false, defaultValue = "false") boolean starred,
+        @RequestParam(required = false, defaultValue = "name") String sort,
+        Model model) {
 
-        List<Player> players;
+    List<Player> players;
 
-        players = repo.findAll();
-
-        if (name != null && !name.isEmpty()) {
-            players = players.stream()
-                    .filter(player -> player.getName().toLowerCase().contains(name.toLowerCase()))
-                    .collect(Collectors.toList());
-        }
-
-        if (minAge != null) {
-            players = players.stream()
-                    .filter(player -> player.getAge() >= minAge)
-                    .collect(Collectors.toList());
-        }
-
-        if (maxAge != null) {
-            players = players.stream()
-                    .filter(player -> player.getAge() <= maxAge)
-                    .collect(Collectors.toList());
-        }
-
-        if (minHeight != null) {
-            players = players.stream()
-                    .filter(player -> player.getHeight() >= minHeight)
-                    .collect(Collectors.toList());
-        }
-
-        if (maxHeight != null) {
-            players = players.stream()
-                    .filter(player -> player.getHeight() <= maxHeight)
-                    .collect(Collectors.toList());
-        }
-
-        if (position != null && !position.isEmpty()) {
-            players = players.stream()
-                    .filter(player -> player.getPosition().equalsIgnoreCase(position))
-                    .collect(Collectors.toList());
-        }
-
-        if (country != null && !country.isEmpty()) {
-            players = players.stream()
-                    .filter(player -> player.getCountry().equalsIgnoreCase(country))
-                    .collect(Collectors.toList());
-        }
-
-        for (Player player : players) { //calculate overallScore
+    players = repo.findAll();
+    for (Player player : players) {
             player.setOverallScore();
         }
 
-        if (rankBy != null && !rankBy.isEmpty() && rank) {
-            players = (List<Player>) players.stream()
-                    .sorted((p1, p2) -> {
-                        switch (rankBy) {
-                            case "rebounds":
-                                return Double.compare(p2.getRebounds(), p1.getRebounds());
-                            case "blocks":
-                                return Double.compare(p2.getBlocks(), p1.getBlocks());
-                            case "steals":
-                                return Double.compare(p2.getSteals(), p1.getSteals());
-                            case "points":
-                                return Double.compare(p2.getPoints(), p1.getPoints());
-                            case "assists":
-                                return Double.compare(p2.getAssists(), p1.getAssists());
-                            default:
-                                return 0;
-                        }
-                    }).collect(Collectors.toList());
-        } else if (rank) {
-            players = players.stream()
-                    .sorted(Comparator.comparingDouble(Player::getOverallScore).reversed())
-                    .collect(Collectors.toList());
-        }
 
-        model.addAttribute("players", players);
-        return "players/team";
+    // Filter players based on search criteria
+    if (name != null && !name.isEmpty()) {
+        players = players.stream()
+                .filter(player -> player.getName().toLowerCase().contains(name.toLowerCase()))
+                .collect(Collectors.toList());
     }
+
+    if (position != null && !position.isEmpty()) {
+        players = players.stream()
+                .filter(player -> player.getPosition().equalsIgnoreCase(position))
+                .collect(Collectors.toList());
+    }
+    if (starred == true) {
+        players = players.stream()
+            .filter(player -> player.getStarred() == 1)
+            .collect(Collectors.toList());
+    }
+
+   
+
+    // Sort players based on the selected criteria
+    switch (sort) {
+        case "name":
+            players.sort(Comparator.comparing(Player::getName));
+            break;
+        case "overallScore":
+            players.sort(Comparator.comparing(Player::getOverallScore).reversed());
+            break;
+        case "isStarred":
+            players.sort(Comparator.comparing(Player::getStarred).reversed());
+            break;
+        // Add more cases for sorting by other criteria if needed
+        default:
+            // Default sorting by name
+            players.sort(Comparator.comparing(Player::getName));
+            break;
+    }
+
+    model.addAttribute("players", players);
+    return "players/team";
+}
 
 }

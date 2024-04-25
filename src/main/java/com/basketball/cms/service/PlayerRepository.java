@@ -5,7 +5,6 @@
 package com.basketball.cms.service;
 
 import com.basketball.cms.model.Player;
-import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 /**
  *
@@ -15,4 +14,3 @@ public interface PlayerRepository extends JpaRepository<Player, Integer>{
 
 
 }
-

@@ -10,254 +10,256 @@
             <a th:href="@{/players/sort}">Sort Players by Overall Score</a> <!-- Add this line here -->
             <button id="autoUpdateToggle">Live Search</button>
 
-            
+
             <form id="searchForm">
-                
-                
+
+
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" th:value="${param.name}">
-                    
-                
-                <label for="country">Country Code:</label>
-                        <input type="text" id="country" name="country" th:value="${param.maxAge}">
 
-                    <label>Position:</label>
-                    <select id="position" name="position">
-                        <option value="">Select Position</option>
-                        <div th:each="position : ${allPositions}">
-                            <option th:value="${position}" th:text="${position}" 
-                                    th:selected="${position == param.position}"></option>
-                        </div>
-                        
-                    </select>
 
-                    <label for="minAge">Minimum Age:</label>
-                    <input type="number" id="minAge" name="minAge" th:value="${param.minAge}">
+                    <label for="country">Country Code:</label>
+                    <input type="text" id="country" name="country" th:value="${param.maxAge}">
 
-                        <label for="maxAge">Maximum Age:</label>
-                        <input type="number" id="maxAge" name="maxAge" th:value="${param.maxAge}">
+                        <label>Position:</label>
+                        <select id="position" name="position">
+                            <option value="">Select Position</option>
+                            <div th:each="position : ${allPositions}">
+                                <option th:value="${position}" th:text="${position}" 
+                                        th:selected="${position == param.position}"></option>
+                            </div>
 
-                            <label for="minHeight">Minimum Height:</label>
-                            <input type="number" step="any" id="minHeight" name="minHeight" th:value="${param.minHeight}">
+                        </select>
 
-                                <label for="maxHeight">Maximum Height:</label>
-                                <input type="number" step="any" id="maxHeight" name="maxHeight" th:value="${param.maxHeight}">
+                        <label for="minAge">Minimum Age:</label>
+                        <input type="number" id="minAge" name="minAge" th:value="${param.minAge}">
 
-                                    <label for="rank">Rank:</label>
-                                    <input type="checkbox" id="rank" name="rank" value="true">
+                            <label for="maxAge">Maximum Age:</label>
+                            <input type="number" id="maxAge" name="maxAge" th:value="${param.maxAge}">
 
-                                        <label for="rankBy">Rank By:</label>
-                                        <select id="rankBy" name="rankBy">
-                                            <option value="">Select Subject</option>
-                                            <option value="rebounds">Rebounds</option>
-                                            <option value="blocks">Blocks</option>
-                                            <option value="steals">Steals</option>
-                                            <option value="points">Points</option>
-                                            <option value="assists">Assists</option>
-                                        </select>
+                                <label for="minHeight">Minimum Height:</label>
+                                <input type="number" step="any" id="minHeight" name="minHeight" th:value="${param.minHeight}">
 
-                                    <button type="submit">Search</button>
-                                    </form>
-                                    </div>
-                                    <div style="display:none;">
-                                        <h2>Search Results</h2>
-                                        <table border="1" class="player-row">
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Overall Score</th>
-                                                <th>Age</th>
-                                                <th>Height</th>
-                                                <th>Position</th>
-                                                <th>Country Code</th>
-                                          <!--- <th>testing blocks</th> >this is the place for testing<--->
-                                                <th>View Profile</th>
-                                            </tr>
-                                            <tr th:each="player : ${players}">
-                                                <td th:text="${player.name}"></td>
-                                                <td th:text="${#numbers.formatDecimal(player.overallScore, 2, 'POINT', 2, 'POINT')}"></td>
-                                                <td th:text="${player.age}"></td>
-                                                <td th:text="${player.height}"></td>
-                                                <td th:text="${player.position}"></td>
-                                                <td th:text="${player.country}"></td>
-                                             <!--<td th:text="${player.blocks}"></td> this is the place for testing--->
-                                                <td>
-                                                  <form th:action="@{/players/profile/{playerId}(playerId=${player.playerId})}" method="get">
-                                                        <button type="submit">View Profile</button>
-                                                  </form>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
+                                    <label for="maxHeight">Maximum Height:</label>
+                                    <input type="number" step="any" id="maxHeight" name="maxHeight" th:value="${param.maxHeight}">
 
-                                    <div id="searchResults"></div>
-                                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                                    <script>
-                                        $(document).ready(function () {
-                                            var timeoutId;
-                                            var autoUpdateEnabled = false;
+                                        <label for="rank">Rank:</label>
+                                        <input type="checkbox" id="rank" name="rank" value="true">
 
-                                            $('#autoUpdateToggle').click(function () {
-                                                autoUpdateEnabled = !autoUpdateEnabled;
-                                                if (autoUpdateEnabled) {
-                                                    $('#autoUpdateToggle').text('Disable Live Search');
-                                                    updateSearchAutomatically();
-                                                } else {
-                                                    $('#autoUpdateToggle').text('Live Search');
-                                                    clearTimeout(timeoutId);
-                                                }
-                                            });
+                                            <label for="rankBy">Rank By:</label>
+                                            <select id="rankBy" name="rankBy">
+                                                <option value="">Select Subject</option>
+                                                <option value="rebounds">Rebounds</option>
+                                                <option value="blocks">Blocks</option>
+                                                <option value="steals">Steals</option>
+                                                <option value="points">Points</option>
+                                                <option value="assists">Assists</option>
+                                            </select>
 
-                                            function updateSearchAutomatically() {
-                                                timeoutId = setTimeout(function () {
-                                                    $('#searchForm').trigger('submit');
-                                                    updateSearchAutomatically();
-                                                }, 1000);
-                                            }
+                                            <button type="submit">Search</button>
+                                            </form>
+                                            </div>
+                                            <div style="display:none;">
+                                                <h2>Search Results</h2>
+                                                <table border="1" class="player-row">
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Image</th>
+                                                        <th>Overall Score</th>
+                                                        <th>Age</th>
+                                                        <th>Height</th>
+                                                        <th>Position</th>
+                                                        <th>Country Code</th>
+                                                        <!--- <th>testing blocks</th> >this is the place for testing<--->
+                                                        <th>View Profile</th>
+                                                    </tr>
+                                                    <tr th:each="player : ${players}">
+                                                        <td th:text="${player.name}"></td>
+                                                        <td><img th:src="${player.Image}" width="320"/></td>
+                                                        <td th:text="${#numbers.formatDecimal(player.overallScore, 2, 'POINT', 2, 'POINT')}"></td>
+                                                        <td th:text="${player.age}"></td>
+                                                        <td th:text="${player.height}"></td>
+                                                        <td th:text="${player.position}"></td>
+                                                        <td th:text="${player.country}"></td>
+                                                        <!--<td th:text="${player.blocks}"></td> this is the place for testing--->
+                                                        <td>
+                                                            <form th:action="@{/players/profile/{playerId}(playerId=${player.playerId})}" method="get">
+                                                                <button type="submit">View Profile</button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
 
-                                            $('#searchForm').submit(function (event) {
-                                                event.preventDefault();
-                                                var formData = $(this).serialize();
+                                            <div id="searchResults"></div>
+                                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                            <script>
+                                                $(document).ready(function () {
+                                                    var timeoutId;
+                                                    var autoUpdateEnabled = false;
 
-                                                $.ajax({
-                                                    type: 'GET',
-                                                    url: '/players/search',
-                                                    data: formData,
-                                                    success: function (response) {
-                                                        $('#searchResults').empty();
-                                                        var table = $('<table>').addClass('search-results-table');
-                                                        $('#searchResults').append(table);
-                                                        $(response).find('.player-row').each(function () {
-                                                            table.append($(this));
-                                                        });
-                                                    },
-                                                    error: function (xhr, status, error) {
-                                                        console.error(xhr.responseText);
+                                                    $('#autoUpdateToggle').click(function () {
+                                                        autoUpdateEnabled = !autoUpdateEnabled;
+                                                        if (autoUpdateEnabled) {
+                                                            $('#autoUpdateToggle').text('Disable Live Search');
+                                                            updateSearchAutomatically();
+                                                        } else {
+                                                            $('#autoUpdateToggle').text('Live Search');
+                                                            clearTimeout(timeoutId);
+                                                        }
+                                                    });
+
+                                                    function updateSearchAutomatically() {
+                                                        timeoutId = setTimeout(function () {
+                                                            $('#searchForm').trigger('submit');
+                                                            updateSearchAutomatically();
+                                                        }, 1000);
                                                     }
+
+                                                    $('#searchForm').submit(function (event) {
+                                                        event.preventDefault();
+                                                        var formData = $(this).serialize();
+
+                                                        $.ajax({
+                                                            type: 'GET',
+                                                            url: '/players/search',
+                                                            data: formData,
+                                                            success: function (response) {
+                                                                $('#searchResults').empty();
+                                                                var table = $('<table>').addClass('search-results-table');
+                                                                $('#searchResults').append(table);
+                                                                $(response).find('.player-row').each(function () {
+                                                                    table.append($(this));
+                                                                });
+                                                            },
+                                                            error: function (xhr, status, error) {
+                                                                console.error(xhr.responseText);
+                                                            }
+                                                        });
+                                                    });
                                                 });
-                                            });
-                                        });
-                                    </script>
-                                    <style>
+                                            </script>
+                                            <style>
 
-                                        body {
-                                            font-family: Arial, sans-serif;
-                                            margin: 0;
-                                            padding: 0;
-                                            background-color: #f0f0f0;
-                                        }
+                                                body {
+                                                    font-family: Arial, sans-serif;
+                                                    margin: 0;
+                                                    padding: 0;
+                                                    background-color: #f0f0f0;
+                                                }
 
-                                        .container {
-                                            max-width: 800px;
-                                            margin: 0 auto;
-                                            padding: 20px;
-                                        }
+                                                .container {
+                                                    max-width: 800px;
+                                                    margin: 0 auto;
+                                                    padding: 20px;
+                                                }
 
-                                        h1 {
-                                            text-align: center;
-                                            color: #333;
-                                        }
+                                                h1 {
+                                                    text-align: center;
+                                                    color: #333;
+                                                }
 
-                                        form {
-                                            background-color: #fff;
-                                            padding: 20px;
-                                            border-radius: 8px;
-                                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                                            display: flex;
-                                            flex-wrap: wrap;
-                                            justify-content: space-between;
-                                        }
-                                        
-                                        #rank {
-                                            width: 20px;
-                                            height: 20px;
-                                            display: block;
-                                            margin-right:800px;
-                                            /*margin-left : -300px;*/
-                                        }
-                                        
-                                        form label {
-                                            flex-basis: 30%;
-                                            margin-bottom: 20px;
-                                            padding-left: 10px
-                                        }
+                                                form {
+                                                    background-color: #fff;
+                                                    padding: 20px;
+                                                    border-radius: 8px;
+                                                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                                                    display: flex;
+                                                    flex-wrap: wrap;
+                                                    justify-content: space-between;
+                                                }
 
-                                        form input[type="text"],
-                                        form input[type="number"],
-                                        form select {
-                                            flex-basis: 65%;
-                                            padding: 10px;
-                                            margin-bottom: 10px;
-                                            border: 1px solid #ccc;
-                                            border-radius: 5px;
-                                        }
+                                                #rank {
+                                                    width: 20px;
+                                                    height: 20px;
+                                                    display: block;
+                                                    margin-right:800px;
+                                                    /*margin-left : -300px;*/
+                                                }
 
-                                        form button[type="submit"] {
-                                            flex-basis: 20%;
-                                            margin: 0  auto;
-                                        }
+                                                form label {
+                                                    flex-basis: 30%;
+                                                    margin-bottom: 20px;
+                                                    padding-left: 10px
+                                                }
+
+                                                form input[type="text"],
+                                                form input[type="number"],
+                                                form select {
+                                                    flex-basis: 65%;
+                                                    padding: 10px;
+                                                    margin-bottom: 10px;
+                                                    border: 1px solid #ccc;
+                                                    border-radius: 5px;
+                                                }
+
+                                                form button[type="submit"] {
+                                                    flex-basis: 20%;
+                                                    margin: 0  auto;
+                                                }
 
 
-                                        .search-results {
-                                            margin-top: 20px;
-                                        }
+                                                .search-results {
+                                                    margin-top: 20px;
+                                                }
 
-                                        .search-results table {
-                                            width: 80%;
-                                            border-collapse: collapse;
-                                        }
+                                                .search-results table {
+                                                    width: 80%;
+                                                    border-collapse: collapse;
+                                                }
 
-                                        .search-results th,
-                                        .search-results td {
-                                            padding: 10px;
-                                            border: 1px solid #ddd;
-                                            text-align: left;
-                                        }
+                                                .search-results th,
+                                                .search-results td {
+                                                    padding: 10px;
+                                                    border: 1px solid #ddd;
+                                                    text-align: left;
+                                                }
 
-                                        .search-results th {
-                                            background-color: #f2f2f2;
-                                        }
+                                                .search-results th {
+                                                    background-color: #f2f2f2;
+                                                }
 
-                                        #autoUpdateToggle {
-                                            display: block;
-                                            margin: 20px auto;
-                                            padding: 10px 20px;
-                                            background-color: #337ab7;
-                                            color: #fff;
-                                            border: none;
-                                            border-radius: 5px;
-                                            cursor: pointer;
-                                        }
+                                                #autoUpdateToggle {
+                                                    display: block;
+                                                    margin: 20px auto;
+                                                    padding: 10px 20px;
+                                                    background-color: #337ab7;
+                                                    color: #fff;
+                                                    border: none;
+                                                    border-radius: 5px;
+                                                    cursor: pointer;
+                                                }
 
-                                        #autoUpdateToggle:hover {
-                                            background-color: #23527c;
-                                        }
+                                                #autoUpdateToggle:hover {
+                                                    background-color: #23527c;
+                                                }
 
-                                        #autoUpdateToggle:active {
-                                            background-color: #1e466c;
-                                        }
-                                        table {
-                                            width: 100%; /*increase size from 80%*/
-                                            align-items:  center;
-                                            border-collapse: collapse;
-                                            background-color: #fff;
-                                            border: 1px solid #ddd;
-                                        }
-                                        th, td {
-                                            padding: 10px;
-                                            text-align: left;
-                                            border-bottom: 1px solid #ddd;
-                                        }
-                                        th {
-                                            background-color: #f2f2f2;
-                                        }
-                                        img {
-                                            max-width: 100%;
-                                            height: auto;
-                                        }
+                                                #autoUpdateToggle:active {
+                                                    background-color: #1e466c;
+                                                }
+                                                table {
+                                                    width: 100%; /*increase size from 80%*/
+                                                    align-items:  center;
+                                                    border-collapse: collapse;
+                                                    background-color: #fff;
+                                                    border: 1px solid #ddd;
+                                                }
+                                                th, td {
+                                                    padding: 10px;
+                                                    text-align: left;
+                                                    border-bottom: 1px solid #ddd;
+                                                }
+                                                th {
+                                                    background-color: #f2f2f2;
+                                                }
+                                                img {
+                                                    max-width: 100%;
+                                                    height: auto;
+                                                }
 
 
 
-                                    </style>
+                                            </style>
 
-                                    </body>
-                                    </html>
+                                            </body>
+                                            </html>
