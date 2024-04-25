@@ -133,41 +133,41 @@ public class PlayerController {
                     .filter(player -> player.getPosition().equalsIgnoreCase(position))
                     .collect(Collectors.toList());
         }
-        
-        if (country != null && !country.isEmpty()) { 
+
+        if (country != null && !country.isEmpty()) {
             players = players.stream()
-                .filter(player -> player.getCountry().equalsIgnoreCase(country))
-                .collect(Collectors.toList());
+                    .filter(player -> player.getCountry().equalsIgnoreCase(country))
+                    .collect(Collectors.toList());
         }
-        
+
         for (Player player : players) { //calculate overallScore
             player.setOverallScore();
         }
-        
-        
+
         if (rankBy != null && !rankBy.isEmpty() && rank) {
-        players = (List<Player>) players.stream()
-                .sorted((p1, p2) -> {
-                    switch (rankBy) {
-                        case "rebounds":
-                            return Double.compare(p2.getRebounds(), p1.getRebounds());
-                        case "blocks":
-                            return Double.compare(p2.getBlocks(), p1.getBlocks());
-                        case "steals":
-                            return Double.compare(p2.getSteals(), p1.getSteals());
-                        case "points":
-                            return Double.compare(p2.getPoints(), p1.getPoints());
-                        case "assists":
-                            return Double.compare(p2.getAssists(), p1.getAssists());
-                        default:
-                            return 0;
-                    }
-                }).collect(Collectors.toList());
-        }else if (rank) {
+            players = (List<Player>) players.stream()
+                    .sorted((p1, p2) -> {
+                        switch (rankBy) {
+                            case "rebounds":
+                                return Double.compare(p2.getRebounds(), p1.getRebounds());
+                            case "blocks":
+                                return Double.compare(p2.getBlocks(), p1.getBlocks());
+                            case "steals":
+                                return Double.compare(p2.getSteals(), p1.getSteals());
+                            case "points":
+                                return Double.compare(p2.getPoints(), p1.getPoints());
+                            case "assists":
+                                return Double.compare(p2.getAssists(), p1.getAssists());
+                            default:
+                                return 0;
+                        }
+                    }).collect(Collectors.toList());
+        } else if (rank) {
             players = players.stream()
                     .sorted(Comparator.comparingDouble(Player::getOverallScore).reversed())
-                    .collect(Collectors.toList());}
-        
+                    .collect(Collectors.toList());
+        }
+
         model.addAttribute("players", players);
         return "players/search";
     }
@@ -185,9 +185,9 @@ public class PlayerController {
         positions.add("GUARD-FORWARD");
         return positions;
     }
-    
+
     @ModelAttribute()
-    
+
     @GetMapping("/sort")
 //    public String sortPlayersByOverallScore(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
 //        List<Player> players = repo.findAll();
@@ -212,34 +212,126 @@ public class PlayerController {
 //        return "players/sort"; 
 //    }
     public String sortStarredPlayersByOverallScore(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
-            List<Player> players = repo.findAll();
+        List<Player> players = repo.findAll();
 
-    //    // Filter and calculate overall score for only starred players
-    //    List<Player> starredPlayers = players.stream()
-    //            .filter(Player::getIsStarPlayer)
-    //            .peek(Player::setOverallScore) // Calculate overall score
-    //            .collect(Collectors.toList());
-            // Find all added players
-            List<Player> addedPlayers = players.stream()
-                    .filter(player -> player.getIs_added() > 0)
-                    .collect(Collectors.toList());
+        //    // Filter and calculate overall score for only starred players
+        //    List<Player> starredPlayers = players.stream()
+        //            .filter(Player::getIsStarPlayer)
+        //            .peek(Player::setOverallScore) // Calculate overall score
+        //            .collect(Collectors.toList());
+        // Find all added players
+        List<Player> addedPlayers = players.stream()
+                .filter(player -> player.getIs_added() > 0)
+                .collect(Collectors.toList());
 
-            // Calculate overall score for each player
-            for (Player player : addedPlayers) {
-                player.setOverallScore();
-            }
-            if ("asc".equals(order)) {
-                addedPlayers = addedPlayers.stream()
-                        .sorted(Comparator.comparingDouble(Player::getOverallScore))
-                        .collect(Collectors.toList());
-            } else if ("desc".equals(order)) {
-                addedPlayers = addedPlayers.stream()
-                        .sorted(Comparator.comparingDouble(Player::getOverallScore).reversed())
-                        .collect(Collectors.toList());
-            }
-
-            model.addAttribute("players", addedPlayers);
-            model.addAttribute("order", order); // Add order to pass the sort order to the view
-            return "players/sort";
+        // Calculate overall score for each player
+        for (Player player : addedPlayers) {
+            player.setOverallScore();
         }
+        if ("asc".equals(order)) {
+            addedPlayers = addedPlayers.stream()
+                    .sorted(Comparator.comparingDouble(Player::getOverallScore))
+                    .collect(Collectors.toList());
+        } else if ("desc".equals(order)) {
+            addedPlayers = addedPlayers.stream()
+                    .sorted(Comparator.comparingDouble(Player::getOverallScore).reversed())
+                    .collect(Collectors.toList());
+        }
+
+        model.addAttribute("players", addedPlayers);
+        model.addAttribute("order", order); // Add order to pass the sort order to the view
+        return "players/sort";
     }
+
+    @GetMapping("/team")
+    public String teamPlayersSidebar(@RequestParam(required = false) String name,
+            @RequestParam(required = false) Integer minAge,
+            @RequestParam(required = false) Integer maxAge,
+            @RequestParam(required = false) Double minHeight,
+            @RequestParam(required = false) Double maxHeight,
+            @RequestParam(required = false) String position,
+            @RequestParam(required = false) String country,
+            @RequestParam(required = false, defaultValue = "false") boolean rank,
+            @RequestParam(required = false) Double overallScore,
+            @RequestParam(required = false) String rankBy,
+            Model model) {
+
+        List<Player> players;
+
+        players = repo.findAll();
+
+        if (name != null && !name.isEmpty()) {
+            players = players.stream()
+                    .filter(player -> player.getName().toLowerCase().contains(name.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+
+        if (minAge != null) {
+            players = players.stream()
+                    .filter(player -> player.getAge() >= minAge)
+                    .collect(Collectors.toList());
+        }
+
+        if (maxAge != null) {
+            players = players.stream()
+                    .filter(player -> player.getAge() <= maxAge)
+                    .collect(Collectors.toList());
+        }
+
+        if (minHeight != null) {
+            players = players.stream()
+                    .filter(player -> player.getHeight() >= minHeight)
+                    .collect(Collectors.toList());
+        }
+
+        if (maxHeight != null) {
+            players = players.stream()
+                    .filter(player -> player.getHeight() <= maxHeight)
+                    .collect(Collectors.toList());
+        }
+
+        if (position != null && !position.isEmpty()) {
+            players = players.stream()
+                    .filter(player -> player.getPosition().equalsIgnoreCase(position))
+                    .collect(Collectors.toList());
+        }
+
+        if (country != null && !country.isEmpty()) {
+            players = players.stream()
+                    .filter(player -> player.getCountry().equalsIgnoreCase(country))
+                    .collect(Collectors.toList());
+        }
+
+        for (Player player : players) { //calculate overallScore
+            player.setOverallScore();
+        }
+
+        if (rankBy != null && !rankBy.isEmpty() && rank) {
+            players = (List<Player>) players.stream()
+                    .sorted((p1, p2) -> {
+                        switch (rankBy) {
+                            case "rebounds":
+                                return Double.compare(p2.getRebounds(), p1.getRebounds());
+                            case "blocks":
+                                return Double.compare(p2.getBlocks(), p1.getBlocks());
+                            case "steals":
+                                return Double.compare(p2.getSteals(), p1.getSteals());
+                            case "points":
+                                return Double.compare(p2.getPoints(), p1.getPoints());
+                            case "assists":
+                                return Double.compare(p2.getAssists(), p1.getAssists());
+                            default:
+                                return 0;
+                        }
+                    }).collect(Collectors.toList());
+        } else if (rank) {
+            players = players.stream()
+                    .sorted(Comparator.comparingDouble(Player::getOverallScore).reversed())
+                    .collect(Collectors.toList());
+        }
+
+        model.addAttribute("players", players);
+        return "players/team";
+    }
+
+}
