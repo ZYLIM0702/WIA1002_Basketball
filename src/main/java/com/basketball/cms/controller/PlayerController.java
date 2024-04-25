@@ -96,6 +96,7 @@ public class PlayerController {
             @RequestParam(required = false) String country,
             @RequestParam(required = false, defaultValue = "false") boolean rank,
             @RequestParam(required = false) Double overallScore,
+            @RequestParam(required = false) String rankBy,
             Model model) {
 
         List<Player> players;
@@ -148,11 +149,30 @@ public class PlayerController {
             player.setOverallScore();
         }
         
-        if (rank) {
-        players = players.stream()
-                .sorted(Comparator.comparingDouble(Player::getOverallScore).reversed())
-                .collect(Collectors.toList());
-        }
+        
+        if (rankBy != null && !rankBy.isEmpty() && rank) {
+        players = (List<Player>) players.stream()
+                .sorted((p1, p2) -> {
+                    switch (rankBy) {
+                        case "rebounds":
+                            return Double.compare(p2.getRebounds(), p1.getRebounds());
+                        case "blocks":
+                            return Double.compare(p2.getBlocks(), p1.getBlocks());
+                        case "steals":
+                            return Double.compare(p2.getSteals(), p1.getSteals());
+                        case "points":
+                            return Double.compare(p2.getPoints(), p1.getPoints());
+                        case "assists":
+                            return Double.compare(p2.getAssists(), p1.getAssists());
+                        default:
+                            return 0;
+                    }
+                }).collect(Collectors.toList());
+        }else if (rank) {
+            players = players.stream()
+                    .sorted(Comparator.comparingDouble(Player::getOverallScore).reversed())
+                    .collect(Collectors.toList());}
+        
         model.addAttribute("players", players);
         return "players/search";
     }
@@ -171,29 +191,60 @@ public class PlayerController {
         return positions;
     }
     
+    @ModelAttribute()
     
     @GetMapping("/sort")
-    public String sortPlayersByOverallScore(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
-        List<Player> players = repo.findAll();
+//    public String sortPlayersByOverallScore(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
+//        List<Player> players = repo.findAll();
+//
+//        // Calculate overall score for each player
+//        for (Player player : players) {
+//            player.setOverallScore();
+//        }
+//
+//        if ("asc".equals(order)) {
+//            players = players.stream()
+//                    .sorted(Comparator.comparingDouble(Player::getOverallScore))
+//                    .collect(Collectors.toList());
+//        } else if ("desc".equals(order)) {
+//            players = players.stream()
+//                    .sorted(Comparator.comparingDouble(Player::getOverallScore).reversed())
+//                    .collect(Collectors.toList());
+//        }
+//
+//        model.addAttribute("players", players);
+//        model.addAttribute("order", order); // Add order pass the sort order to the view
+//        return "players/sort"; 
+//    }
+    public String sortStarredPlayersByOverallScore(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
+            List<Player> players = repo.findAll();
 
-        // Calculate overall score for each player
-        for (Player player : players) {
-            player.setOverallScore();
-        }
-
-        if ("asc".equals(order)) {
-            players = players.stream()
-                    .sorted(Comparator.comparingDouble(Player::getOverallScore))
+    //    // Filter and calculate overall score for only starred players
+    //    List<Player> starredPlayers = players.stream()
+    //            .filter(Player::getIsStarPlayer)
+    //            .peek(Player::setOverallScore) // Calculate overall score
+    //            .collect(Collectors.toList());
+            // Find all added players
+            List<Player> addedPlayers = players.stream()
+                    .filter(player -> player.getIs_added() > 0)
                     .collect(Collectors.toList());
-        } else if ("desc".equals(order)) {
-            players = players.stream()
-                    .sorted(Comparator.comparingDouble(Player::getOverallScore).reversed())
-                    .collect(Collectors.toList());
-        }
 
-        model.addAttribute("players", players);
-        model.addAttribute("order", order); // Add order pass the sort order to the view
-        return "players/sort"; 
+            // Calculate overall score for each player
+            for (Player player : addedPlayers) {
+                player.setOverallScore();
+            }
+            if ("asc".equals(order)) {
+                addedPlayers = addedPlayers.stream()
+                        .sorted(Comparator.comparingDouble(Player::getOverallScore))
+                        .collect(Collectors.toList());
+            } else if ("desc".equals(order)) {
+                addedPlayers = addedPlayers.stream()
+                        .sorted(Comparator.comparingDouble(Player::getOverallScore).reversed())
+                        .collect(Collectors.toList());
+            }
+
+            model.addAttribute("players", addedPlayers);
+            model.addAttribute("order", order); // Add order to pass the sort order to the view
+            return "players/sort";
+        }
     }
-
-}
