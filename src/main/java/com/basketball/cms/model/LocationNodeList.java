@@ -5,6 +5,8 @@
 package com.basketball.cms.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  *
@@ -51,9 +53,49 @@ public class LocationNodeList implements Comparable<LocationNodeList> {
         return neighbourDistance;
     }
     
+    // Method to sort neighbors and their corresponding distances in ascending order
+    public void sortNeighboursByDistance() {
+        ArrayList<Pair> pairs = new ArrayList<>();
+        for (int i = 0; i < neighbour.size(); i++) {
+            pairs.add(new Pair(neighbour.get(i), neighbourDistance.get(i)));
+        }
+
+        Collections.sort(pairs, Comparator.comparingDouble(Pair::getDistance));
+
+        neighbour.clear();
+        neighbourDistance.clear();
+
+        for (Pair pair : pairs) {
+            neighbour.add(pair.nodeList);
+            neighbourDistance.add(pair.distance);
+        }
+    }
+
+    // Helper class to store pairs of nodeList and distance
+    private class Pair {
+        LocationNodeList nodeList;
+        double distance;
+
+        public Pair(LocationNodeList nodeList, double distance) {
+            this.nodeList = nodeList;
+            this.distance = distance;
+        }
+
+        public double getDistance() {
+            return distance;
+        }
+    }
+    
 // Implementing compareTo method from Comparable interface
     @Override
     public int compareTo(LocationNodeList other) {
         return Double.compare(this.shortestDistFromSun, other.shortestDistFromSun);
     }
+
+    @Override
+    public String toString() {
+        return "LocationNodeList{" + "city=" + city + '}';
+    }
+    
+    
 }

@@ -21,9 +21,11 @@ import com.basketball.cms.service.LocationEdgeRepository;
 import com.basketball.cms.service.LocationNodeRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/locations")
@@ -36,11 +38,43 @@ public class LocationController {
     private LocationNodeRepository repoNode;
     
     private ArrayList<LocationNodeList> nodeLists = new ArrayList<>();
+    private Map<LocationNode, LocationNodeList> nodeMap = new HashMap<>();
+    private List<LocationNodeList> path = new ArrayList<>();
     
-    private Map<LocationNode, LocationNodeList> getNodeLists(){
-        List<LocationEdge> nodeEdges = repoEdge.findAll();
+    private boolean graphBuilt = false;
 
-        Map<LocationNode, LocationNodeList> nodeMap = new HashMap<>();
+    @GetMapping({"","/"})
+    public String showLocationGraph(Model model) {
+        return "locations/index";
+    }
+    
+    @GetMapping("/path")
+    public String showGreedyPath(Model model) {
+        LocationNode sourceLocationNode = repoNode.findById(1).orElse(null);
+        if(!graphBuilt)
+            buildGraph();
+        
+        if (sourceLocationNode == null) {
+            // Handle error if source location not found
+            return "redirect:/locations";
+        }
+        
+        double optimumDist = greedyPathDist(nodeMap.get(sourceLocationNode));
+
+
+        // Print the path and total distance traveled
+        System.out.println("Optimal travel path: " + path);
+        System.out.println("Optimal distance: " + optimumDist);
+
+        // Add necessary attributes to the model
+        model.addAttribute("path", path);
+        model.addAttribute("optimumDist", optimumDist);
+
+        return "locations/graph";
+    }
+    
+    private void buildGraph() {
+        List<LocationEdge> nodeEdges = repoEdge.findAll();
 
         for (LocationEdge nodeEdge : nodeEdges) {
             LocationNode city = nodeEdge.getCity1();
@@ -59,18 +93,44 @@ public class LocationController {
             nodeMap.put(city, cityNodeList);
             nodeMap.put(neighbour, neighbourNodeList);
         }
-
-        return nodeMap;
+        
+        // Populate nodeLists from nodeMap
+        nodeLists.addAll(nodeMap.values());
+        graphBuilt = true;
+        System.out.println("Node list : " + nodeLists);
     }
 
+    private double greedyPathDist(LocationNodeList source) {
+        double optimumDist = 0;
+        Set<LocationNodeList> visited = new HashSet<>();
+        LocationNodeList current = source;
 
-    @GetMapping({"","/"})
-    public String showLocationGraph(Model model) {
-        return "locations/index";
+        while (visited.size() != nodeLists.size()) {
+            if (!visited.contains(current)) {
+                path.add(current);
+                visited.add(current);
+                
+                current.sortNeighboursByDistance();
+                ArrayList<LocationNodeList> neighbours = current.getNeighbour();
+                                
+                for (int i = 0; i < neighbours.size(); i++) {
+                    LocationNodeList neighbour = neighbours.get(i);
+                    if (visited.contains(neighbour)) {
+                        continue;
+                    }
+                    current = neighbour;
+                    optimumDist += neighbour.getNeighbourDistance().get(i);
+                    break;
+                }
+            }
+        }
+        return optimumDist;
     }
     
     @GetMapping("/path/{destinationId}")
     public String showDijkstra(@PathVariable int destinationId, Model model) {
+        if(!graphBuilt)
+            buildGraph();
         System.out.println("Destination ID : " + destinationId);
         LocationNode sourLocationNode = repoNode.findById(1).orElse(null);
         LocationNode destLocationNode = repoNode.findById(destinationId).orElse(null);
@@ -84,15 +144,11 @@ public class LocationController {
             return "redirect:/locations";
         }
         
-        
-        Map<LocationNode, LocationNodeList> nodeMap = getNodeLists();
-        // Populate nodeLists from nodeMap
-        nodeLists.addAll(nodeMap.values());
         LocationNodeList source = nodeMap.get(sourLocationNode);
         LocationNodeList destination = nodeMap.get(destLocationNode);
         
-        calculateShortestPath(source);
-        List<LocationNodeList> shortestPath = getShortestPath(destination);
+        calculateShortestPathDijkstra(source);
+        List<LocationNodeList> shortestPath = getShortestPathDijkstra(destination);
         for(LocationNodeList path : shortestPath){
             System.out.println(path.getCity() + " -> ");
         }
@@ -102,7 +158,7 @@ public class LocationController {
     }
     
     
-    public static void calculateShortestPath(LocationNodeList source) {
+    public static void calculateShortestPathDijkstra(LocationNodeList source) {
         source.setShortestDistFromSun(0.0);
         PriorityQueue<LocationNodeList> priorityQueue = new PriorityQueue<>();
         priorityQueue.add(source);
@@ -124,7 +180,7 @@ public class LocationController {
         }
     }
 
-    public static List<LocationNodeList> getShortestPath(LocationNodeList destination) {
+    public static List<LocationNodeList> getShortestPathDijkstra(LocationNodeList destination) {
         List<LocationNodeList> shortestPath = new ArrayList<>();
         for (LocationNodeList node = destination; node != null; node = node.getParentPath()) {
             shortestPath.add(node);
