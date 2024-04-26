@@ -41,23 +41,6 @@ public class PlayerController {
         return "players/index";
     }
 
-    @GetMapping("/team")
-    public String showTeam(
-        @RequestParam(required = false) String name,
-        Model model
-    ) {
-        List<Player> players = repo.findAll();
-
-        if (name != null && !name.isEmpty()) {
-            players = players.stream()
-                .filter(player -> player.getName().toLowerCase().contains(name.toLowerCase()))
-                .collect(Collectors.toList());
-        }
-
-        model.addAttribute("players", players);
-        return "players/team";
-    }
-
     
     @GetMapping("/edit")
     public String showEditPlayerPage(@RequestParam int playerId, Model model) {
@@ -285,10 +268,11 @@ public String teamPlayersSidebar(@RequestParam(required = false) String name,
     }
 
     if (position != null && !position.isEmpty()) {
-        players = players.stream()
-                .filter(player -> player.getPosition().equalsIgnoreCase(position))
-                .collect(Collectors.toList());
-    }
+    players = players.stream()
+            .filter(player -> player.getPosition().toUpperCase().contains(position.toUpperCase()))
+            .collect(Collectors.toList());
+}
+
     if (starred == true) {
         players = players.stream()
             .filter(player -> player.getStarred() == 1)

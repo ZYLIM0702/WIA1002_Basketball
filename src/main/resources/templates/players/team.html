@@ -106,9 +106,9 @@
                 <input type="text" id="name" name="name" placeholder="Search by Name">
                     <select id="position" name="position">
                         <option value="">Select Position</option>
-                        <option value="Guard">Guard</option>
-                        <option value="Forward">Forward</option>
-                        <option value="Center">Center</option>
+                        <option value="GUARD">Guard</option>
+                        <option value="FORWARD">Forward</option>
+                        <option value="CENTER">Center</option>
                     </select>
 
                     <label for="starred">Starred:</label>
@@ -120,12 +120,10 @@
                             <option value="name">Name</option>
                             <option value="overallScore">Overall Score</option>
                             <option value="isStarred">Starred</option>
-                            <!-- Add more options for sorting criteria if needed -->
                         </select>
 
 
                         <div style="display:none;" class="card-container">
-                            <!-- Loop through search results and generate cards dynamically -->
                             <div th:each="player : ${players}" class="card" draggable="true" ondragstart="drag(event)" th:id="${player.playerId}">
                                 <img th:src="${player.Image}" alt="Player Image" >
 
@@ -259,27 +257,28 @@
                                         ev.preventDefault();
                                     }
 
-                                    function drop(ev, dropZoneId) {
+                                       function drop(ev, dropZoneId) {
     ev.preventDefault();
 
     var cardId = ev.dataTransfer.getData("cardId");
     var card = document.getElementById(cardId);
-    
-    // Get the position of the dropped player
-    var playerPosition = card.getAttribute("data-position");
-    console.log(playerPosition);
-    // Define valid positions for each drop zone
+    var playerPosition = card.querySelector("#playerPosition").getAttribute("data-position");
     var validPositions = {
-        "dropZone1": ["FORWARD"],
-        "dropZone2": ["Guard"],
-        "dropZone3": ["Guard"],
-        "dropZone4": ["Guard"],
-        "dropZone5": ["Guard"],
-        "dropZone6": ["Guard"],
-        "dropZone7": ["Center"],
-        "dropZone8": ["Center"],
-        "dropZone9": ["Center"],
-        "dropZone10": ["Center"]
+        "dropZone1": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
+        "dropZone2": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
+        "dropZone3": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
+        "dropZone4": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
+        "dropZone5": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
+        "dropZone6": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
+        "dropZone7": ["CENTER", "FORWARD-CENTER","CENTER-FORWARD"],
+        "dropZone8": ["CENTER", "FORWARD-CENTER","CENTER-FORWARD"],
+        "dropZone9": ["CENTER", "FORWARD-CENTER","CENTER-FORWARD"],
+        "dropZone10": ["FORWARD", "FORWARD-GUARD","GUARD-FORWARD","FORWARD-CENTER","CENTER-FORWARD"],
+        "dropZone11": ["FORWARD", "FORWARD-GUARD","GUARD-FORWARD","FORWARD-CENTER","CENTER-FORWARD"],
+        "dropZone12": ["FORWARD", "FORWARD-GUARD","GUARD-FORWARD","FORWARD-CENTER","CENTER-FORWARD"],
+        "dropZone13": ["FORWARD", "FORWARD-GUARD","GUARD-FORWARD","FORWARD-CENTER","CENTER-FORWARD"],
+        "dropZone14": ["FORWARD", "FORWARD-GUARD","GUARD-FORWARD","FORWARD-CENTER","CENTER-FORWARD"],
+        "dropZone15": ["FORWARD", "FORWARD-GUARD","GUARD-FORWARD","FORWARD-CENTER","CENTER-FORWARD"]
     };
 
     // Check if the dropped position is valid for the drop zone
@@ -307,6 +306,29 @@
     } else {
         // Show pop-up indicating that the position is not valid for this drop zone
         alert("Invalid position for this drop zone.");
+    }
+}
+
+function handleValidDrop(card, dropZoneId) {
+    var dropZone = document.getElementById(dropZoneId);
+
+    // Check if drop zone already contains a card
+    if (dropZone.childElementCount === 1) {
+        // Append the dragged card to the drop zone
+        dropZone.appendChild(card);
+        var removeButton = dropZone.querySelector('.remove-button');
+
+        // Make sure removeButton is not null before attempting to access its style
+        if (removeButton) {
+            removeButton.style.display = 'block';
+        }
+
+        // Add dropped player ID to the array
+        droppedPlayers.push(cardId);
+        loadSearchResults($('#searchForm').serialize());
+    } else {
+        // Show pop-up toast indicating that the box is already filled
+        alert("This box already contains an item. Remove it before adding a new one.");
     }
 }
 
