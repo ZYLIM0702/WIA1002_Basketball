@@ -301,11 +301,11 @@
             loadSearchResults($('#searchForm').serialize());
         } else {
             // Show pop-up toast indicating that the box is already filled
-            alert("This box already contains an item. Remove it before adding a new one.");
+            alert("This position already contains a player. Remove him before adding a new one.");
         }
     } else {
         // Show pop-up indicating that the position is not valid for this drop zone
-        alert("Invalid position for this drop zone.");
+        alert("Invalid position for the player.");
     }
 }
 
@@ -328,7 +328,7 @@ function handleValidDrop(card, dropZoneId) {
         loadSearchResults($('#searchForm').serialize());
     } else {
         // Show pop-up toast indicating that the box is already filled
-        alert("This box already contains an item. Remove it before adding a new one.");
+            alert("This position already contains a player. Remove him before adding a new one.");
     }
 }
 
