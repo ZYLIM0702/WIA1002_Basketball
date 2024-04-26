@@ -134,7 +134,7 @@
                                         <p th:text="'Overall Score: ' + ${#numbers.formatDecimal(player.overallScore, 2, 'POINT', 2, 'POINT')}"></p>
                                         <p th:text="'Age: ' + ${player.age}"></p>
                                         <p th:text="'Height: ' + ${player.height}"></p>
-                                        <p th:text="'Position: ' + ${player.position}"></p>
+                                        <p id="playerPosition" th:attr="data-position=${player.position}" th:text="'Position: ' + ${player.position}"></p>
                                         <p th:text="'Country Code: ' + ${player.country}"></p>
                                         <form th:action="@{/players/profile/{playerId}(playerId=${player.playerId})}" method="get">
                                             <button type="submit">View Profile</button>
@@ -260,34 +260,56 @@
                                     }
 
                                     function drop(ev, dropZoneId) {
-                                        ev.preventDefault();
+    ev.preventDefault();
 
-                                        var cardId = ev.dataTransfer.getData("cardId");
-                                        var card = document.getElementById(cardId);
-                                        // Check if the dragged element is a valid player card
-                                        if (card.classList.contains('card')) {
-                                            var dropZone = document.getElementById(dropZoneId);
+    var cardId = ev.dataTransfer.getData("cardId");
+    var card = document.getElementById(cardId);
+    
+    // Get the position of the dropped player
+    var playerPosition = card.getAttribute("data-position");
+    console.log(playerPosition);
+    // Define valid positions for each drop zone
+    var validPositions = {
+        "dropZone1": ["FORWARD"],
+        "dropZone2": ["Guard"],
+        "dropZone3": ["Guard"],
+        "dropZone4": ["Guard"],
+        "dropZone5": ["Guard"],
+        "dropZone6": ["Guard"],
+        "dropZone7": ["Center"],
+        "dropZone8": ["Center"],
+        "dropZone9": ["Center"],
+        "dropZone10": ["Center"]
+    };
 
-                                            // Check if drop zone already contains a card
-                                            if (dropZone.childElementCount === 1) {
-                                                // Append the dragged card to the drop zone
-                                                dropZone.appendChild(card);
-                                                var removeButton = dropZone.querySelector('.remove-button');
+    // Check if the dropped position is valid for the drop zone
+    if (validPositions[dropZoneId].includes(playerPosition)) {
+        var dropZone = document.getElementById(dropZoneId);
 
-                                                // Make sure removeButton is not null before attempting to access its style
-                                                if (removeButton) {
-                                                    removeButton.style.display = 'block';
-                                                }
+        // Check if drop zone already contains a card
+        if (dropZone.childElementCount === 1) {
+            // Append the dragged card to the drop zone
+            dropZone.appendChild(card);
+            var removeButton = dropZone.querySelector('.remove-button');
 
-                                                // Add dropped player ID to the array
-                                                droppedPlayers.push(cardId);
-                                                loadSearchResults($('#searchForm').serialize());
-                                            } else {
-                                                // Show pop-up toast indicating that the box is already filled
-                                                alert("This box already contains an item. Remove it before adding a new one.");
-                                            }
-                                        }
-                                    }
+            // Make sure removeButton is not null before attempting to access its style
+            if (removeButton) {
+                removeButton.style.display = 'block';
+            }
+
+            // Add dropped player ID to the array
+            droppedPlayers.push(cardId);
+            loadSearchResults($('#searchForm').serialize());
+        } else {
+            // Show pop-up toast indicating that the box is already filled
+            alert("This box already contains an item. Remove it before adding a new one.");
+        }
+    } else {
+        // Show pop-up indicating that the position is not valid for this drop zone
+        alert("Invalid position for this drop zone.");
+    }
+}
+
 
                                     function removePlayer(button) {
                                         var dropZone = button.parentNode;
