@@ -10,21 +10,28 @@ package com.basketball.cms.controller;
  */
 import com.basketball.cms.model.Player;
 import com.basketball.cms.service.PlayerRepository;
+import com.basketball.cms.service.PlayerService;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 @RequestMapping("/players")
@@ -40,7 +47,6 @@ public class PlayerController {
         return "players/index";
     }
 
-    
     @GetMapping("/edit")
     public String showEditPlayerPage(@RequestParam int playerId, Model model) {
         Player player = repo.findById(playerId).orElse(null);
@@ -244,62 +250,77 @@ public class PlayerController {
         return "players/sort";
     }
 
-@GetMapping("/team")
-public String teamPlayersSidebar(@RequestParam(required = false) String name,
-        @RequestParam(required = false) String position,
-        @RequestParam(required = false, defaultValue = "false") boolean starred,
-        @RequestParam(required = false, defaultValue = "name") String sort,
-        Model model) {
+    @GetMapping("/team")
+    public String teamPlayersSidebar(@RequestParam(required = false) String name,
+            @RequestParam(required = false) String position,
+            @RequestParam(required = false, defaultValue = "false") boolean starred,
+            @RequestParam(required = false, defaultValue = "name") String sort,
+            Model model) {
 
-    List<Player> players;
+        List<Player> players;
 
-    players = repo.findAll();
-    for (Player player : players) {
+        players = repo.findAll();
+        for (Player player : players) {
             player.setOverallScore();
         }
 
+        // Filter players based on search criteria
+        if (name != null && !name.isEmpty()) {
+            players = players.stream()
+                    .filter(player -> player.getName().toLowerCase().contains(name.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
 
-    // Filter players based on search criteria
-    if (name != null && !name.isEmpty()) {
-        players = players.stream()
-                .filter(player -> player.getName().toLowerCase().contains(name.toLowerCase()))
-                .collect(Collectors.toList());
+        if (position != null && !position.isEmpty()) {
+            players = players.stream()
+                    .filter(player -> player.getPosition().toUpperCase().contains(position.toUpperCase()))
+                    .collect(Collectors.toList());
+        }
+
+        if (starred == true) {
+            players = players.stream()
+                    .filter(player -> player.getStarred() == 1)
+                    .collect(Collectors.toList());
+        }
+
+        // Sort players based on the selected criteria
+        switch (sort) {
+            case "name":
+                players.sort(Comparator.comparing(Player::getName));
+                break;
+            case "overallScore":
+                players.sort(Comparator.comparing(Player::getOverallScore).reversed());
+                break;
+            case "isStarred":
+                players.sort(Comparator.comparing(Player::getStarred).reversed());
+                break;
+            // Add more cases for sorting by other criteria if needed
+            default:
+                // Default sorting by name
+                players.sort(Comparator.comparing(Player::getName));
+                break;
+        }
+
+        model.addAttribute("players", players);
+        return "players/team";
+    }
+    @Autowired
+    private PlayerService playerService;
+
+    @PostMapping("/api/update-position")
+    public ResponseEntity<String> updatePlayerPosition(@RequestBody PlayerDropRequest playerDropRequest) {
+        try {
+            playerService.updatePlayerPosition(playerDropRequest.getPlayerId(), playerDropRequest.getDropZoneId());
+            return ResponseEntity.ok("Player position updated successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update player position: " + e.getMessage());
+        }
     }
 
-    if (position != null && !position.isEmpty()) {
-    players = players.stream()
-            .filter(player -> player.getPosition().toUpperCase().contains(position.toUpperCase()))
-            .collect(Collectors.toList());
-}
-
-    if (starred == true) {
-        players = players.stream()
-            .filter(player -> player.getStarred() == 1)
-            .collect(Collectors.toList());
+    @ResponseBody
+    @GetMapping("/api/saved-positions")
+    public List<PlayerDropRequest> getSavedPositions() {
+        return playerService.getAllPlayerDropRequestPositions();
     }
-
-   
-
-    // Sort players based on the selected criteria
-    switch (sort) {
-        case "name":
-            players.sort(Comparator.comparing(Player::getName));
-            break;
-        case "overallScore":
-            players.sort(Comparator.comparing(Player::getOverallScore).reversed());
-            break;
-        case "isStarred":
-            players.sort(Comparator.comparing(Player::getStarred).reversed());
-            break;
-        // Add more cases for sorting by other criteria if needed
-        default:
-            // Default sorting by name
-            players.sort(Comparator.comparing(Player::getName));
-            break;
-    }
-
-    model.addAttribute("players", players);
-    return "players/team";
-}
 
 }

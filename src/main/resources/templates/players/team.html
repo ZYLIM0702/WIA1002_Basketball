@@ -3,6 +3,9 @@
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+        <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Team Page</title>
         <style>
@@ -151,54 +154,53 @@
 
                         </div>
                         <div class="drop-container">
-                            <div id="dropZone1" class="drop-zone" ondrop="drop(event, 'dropZone1')" ondragover="allowDrop(event)">
-                                <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
-
-                            </div>
-                            <div id="dropZone2" class="drop-zone" ondrop="drop(event, 'dropZone2')" ondragover="allowDrop(event)">
+                            <div id="droppedZone1" class="drop-zone" ondrop="drop(event, 'droppedZone1')" ondragover="allowDrop(event)">
                                 <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
                             </div>
-                            <div id="dropZone3" class="drop-zone" ondrop="drop(event, 'dropZone3')" ondragover="allowDrop(event)">
+                            <div id="droppedZone2" class="drop-zone" ondrop="drop(event, 'droppedZone2')" ondragover="allowDrop(event)">
                                 <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
                             </div>
-                            <div id="dropZone4" class="drop-zone" ondrop="drop(event, 'dropZone4')" ondragover="allowDrop(event)">
+                            <div id="droppedZone3" class="drop-zone" ondrop="drop(event, 'droppedZone3')" ondragover="allowDrop(event)">
                                 <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
                             </div>
-                            <div id="dropZone5" class="drop-zone" ondrop="drop(event, 'dropZone5')" ondragover="allowDrop(event)">
+                            <div id="droppedZone4" class="drop-zone" ondrop="drop(event, 'droppedZone4')" ondragover="allowDrop(event)">
                                 <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
                             </div>
-                            <div id="dropZone6" class="drop-zone" ondrop="drop(event, 'dropZone6')" ondragover="allowDrop(event)">
+                            <div id="droppedZone5" class="drop-zone" ondrop="drop(event, 'droppedZone5')" ondragover="allowDrop(event)">
                                 <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
                             </div>
-                            <div id="dropZone7" class="drop-zone" ondrop="drop(event, 'dropZone7')" ondragover="allowDrop(event)">
+                            <div id="droppedZone6" class="drop-zone" ondrop="drop(event, 'droppedZone6')" ondragover="allowDrop(event)">
                                 <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
                             </div>
-                            <div id="dropZone8" class="drop-zone" ondrop="drop(event, 'dropZone8')" ondragover="allowDrop(event)">
+                            <div id="droppedZone7" class="drop-zone" ondrop="drop(event, 'droppedZone7')" ondragover="allowDrop(event)">
                                 <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
                             </div>
-                            <div id="dropZone9" class="drop-zone" ondrop="drop(event, 'dropZone9')" ondragover="allowDrop(event)">
+                            <div id="droppedZone8" class="drop-zone" ondrop="drop(event, 'droppedZone8')" ondragover="allowDrop(event)">
                                 <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
                             </div>
-                            <div id="dropZone10" class="drop-zone" ondrop="drop(event, 'dropZone10')" ondragover="allowDrop(event)">
+                            <div id="droppedZone9" class="drop-zone" ondrop="drop(event, 'droppedZone9')" ondragover="allowDrop(event)">
                                 <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
                             </div>
-                            <div id="dropZone11" class="drop-zone" ondrop="drop(event, 'dropZone11')" ondragover="allowDrop(event)">
+                            <div id="droppedZone10" class="drop-zone" ondrop="drop(event, 'droppedZone10')" ondragover="allowDrop(event)">
                                 <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
                             </div>
-                            <div id="dropZone12" class="drop-zone" ondrop="drop(event, 'dropZone12')" ondragover="allowDrop(event)">
+                            <div id="droppedZone11" class="drop-zone" ondrop="drop(event, 'droppedZone11')" ondragover="allowDrop(event)">
                                 <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
                             </div>
-                            <div id="dropZone13" class="drop-zone" ondrop="drop(event, 'dropZone13')" ondragover="allowDrop(event)">
+                            <div id="droppedZone12" class="drop-zone" ondrop="drop(event, 'droppedZone12')" ondragover="allowDrop(event)">
                                 <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
                             </div>
-                            <div id="dropZone14" class="drop-zone" ondrop="drop(event, 'dropZone14')" ondragover="allowDrop(event)">
+                            <div id="droppedZone13" class="drop-zone" ondrop="drop(event, 'droppedZone13')" ondragover="allowDrop(event)">
                                 <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
                             </div>
-                            <div id="dropZone15" class="drop-zone" ondrop="drop(event, 'dropZone15')" ondragover="allowDrop(event)">
+                            <div id="droppedZone14" class="drop-zone" ondrop="drop(event, 'droppedZone14')" ondragover="allowDrop(event)">
+                                <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
+                            </div>
+                            <div id="droppedZone15" class="drop-zone" ondrop="drop(event, 'droppedZone15')" ondragover="allowDrop(event)">
                                 <button class="remove-button" onclick="removePlayer(this)" style="display:none;">Remove</button>
                             </div>
                         </div>
-
+                        <button id="saveButton" onclick="saveAll()">Save</button>
 
                         <div class="image-container">
 
@@ -207,161 +209,196 @@
 
                         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                         <script>
-                                    // Array to store dropped player IDs
-                                    var droppedPlayers = [];
-                                    // Function to load search results
-                                    function loadSearchResults(formData) {
-                                        $.ajax({
-                                            type: 'GET',
-                                            url: '/players/team',
-                                            data: formData,
-                                            success: function (response) {
-                                                $('#searchResults').empty();
-                                                var table = $('<div>').addClass('card-container');
-                                                $('#searchResults').append(table);
-                                                $(response).find('.card').each(function () {
-                                                    // Check if the card's ID is not in the dropped players array
-                                                    if (!droppedPlayers.includes($(this).attr('id'))) {
-                                                        table.append($(this));
-                                                    }
-                                                });
-                                            },
-                                            error: function (xhr, status, error) {
-                                                console.error(xhr.responseText);
+                            // Array to store dropped player IDs
+                            var droppedPlayers = [];
+                            // Function to load search results
+                            function loadSearchResults(formData) {
+                                $.ajax({
+                                    type: 'GET',
+                                    url: '/players/team',
+                                    data: formData,
+                                    success: function (response) {
+                                        $('#searchResults').empty();
+                                        var table = $('<div>').addClass('card-container');
+                                        $('#searchResults').append(table);
+                                        $(response).find('.card').each(function () {
+                                            // Check if the card's ID is not in the dropped players array
+                                            if (!droppedPlayers.includes($(this).attr('id'))) {
+                                                table.append($(this));
                                             }
                                         });
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error(xhr.responseText);
                                     }
+                                });
+                            }
 
-                                    $(document).ready(function () {
+                            $(document).ready(function () {
 
-
-
-                                        // Trigger form submission on page load
-                                        loadSearchResults('');
-
-                                        // Intercept form submission and load search results via AJAX
-                                        $('#searchForm').on('submit', function (event) {
-                                            event.preventDefault(); // Prevent default form submission behavior
-                                            var formData = $(this).serialize();
-                                            loadSearchResults(formData);
-                                        });
-
-                                    });
-
-                                    function drag(ev) {
-                                        // Set the dragged card's id as data
-                                        ev.dataTransfer.setData("cardId", ev.target.id);
-                                    }
-
-                                    function allowDrop(ev) {
-                                        ev.preventDefault();
-                                    }
-
-                                       function drop(ev, dropZoneId) {
-    ev.preventDefault();
-
-    var cardId = ev.dataTransfer.getData("cardId");
-    var card = document.getElementById(cardId);
-    var playerPosition = card.querySelector("#playerPosition").getAttribute("data-position");
-    var validPositions = {
-        "dropZone1": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
-        "dropZone2": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
-        "dropZone3": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
-        "dropZone4": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
-        "dropZone5": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
-        "dropZone6": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
-        "dropZone7": ["CENTER", "FORWARD-CENTER","CENTER-FORWARD"],
-        "dropZone8": ["CENTER", "FORWARD-CENTER","CENTER-FORWARD"],
-        "dropZone9": ["CENTER", "FORWARD-CENTER","CENTER-FORWARD"],
-        "dropZone10": ["FORWARD", "FORWARD-GUARD","GUARD-FORWARD","FORWARD-CENTER","CENTER-FORWARD"],
-        "dropZone11": ["FORWARD", "FORWARD-GUARD","GUARD-FORWARD","FORWARD-CENTER","CENTER-FORWARD"],
-        "dropZone12": ["FORWARD", "FORWARD-GUARD","GUARD-FORWARD","FORWARD-CENTER","CENTER-FORWARD"],
-        "dropZone13": ["FORWARD", "FORWARD-GUARD","GUARD-FORWARD","FORWARD-CENTER","CENTER-FORWARD"],
-        "dropZone14": ["FORWARD", "FORWARD-GUARD","GUARD-FORWARD","FORWARD-CENTER","CENTER-FORWARD"],
-        "dropZone15": ["FORWARD", "FORWARD-GUARD","GUARD-FORWARD","FORWARD-CENTER","CENTER-FORWARD"]
-    };
-
-    // Check if the dropped position is valid for the drop zone
-    if (validPositions[dropZoneId].includes(playerPosition)) {
-        var dropZone = document.getElementById(dropZoneId);
-
-        // Check if drop zone already contains a card
-        if (dropZone.childElementCount === 1) {
-            // Append the dragged card to the drop zone
-            dropZone.appendChild(card);
-            var removeButton = dropZone.querySelector('.remove-button');
-
-            // Make sure removeButton is not null before attempting to access its style
-            if (removeButton) {
-                removeButton.style.display = 'block';
-            }
-
-            // Add dropped player ID to the array
-            droppedPlayers.push(cardId);
-            loadSearchResults($('#searchForm').serialize());
-        } else {
-            // Show pop-up toast indicating that the box is already filled
-            alert("This position already contains a player. Remove him before adding a new one.");
-        }
-    } else {
-        // Show pop-up indicating that the position is not valid for this drop zone
-        alert("Invalid position for the player.");
-    }
-}
-
-function handleValidDrop(card, dropZoneId) {
-    var dropZone = document.getElementById(dropZoneId);
-
-    // Check if drop zone already contains a card
-    if (dropZone.childElementCount === 1) {
-        // Append the dragged card to the drop zone
-        dropZone.appendChild(card);
-        var removeButton = dropZone.querySelector('.remove-button');
-
-        // Make sure removeButton is not null before attempting to access its style
-        if (removeButton) {
-            removeButton.style.display = 'block';
-        }
-
-        // Add dropped player ID to the array
-        droppedPlayers.push(cardId);
-        loadSearchResults($('#searchForm').serialize());
-    } else {
-        // Show pop-up toast indicating that the box is already filled
-            alert("This position already contains a player. Remove him before adding a new one.");
-    }
-}
+                                // Trigger form submission on page load
+                                loadSearchResults('');
+                                loadSavedPositions();
 
 
-                                    function removePlayer(button) {
-                                        var dropZone = button.parentNode;
-                                        var card = dropZone.querySelector('.card');
+                                // Intercept form submission and load search results via AJAX
+                                $('#searchForm').on('submit', function (event) {
+                                    event.preventDefault(); // Prevent default form submission behavior
+                                    var formData = $(this).serialize();
+                                    loadSearchResults(formData);
+                                });
 
-                                        if (card) {
-                                            card.remove();
+                            });
 
-                                            // Remove dropped player ID from the array
-                                            var index = droppedPlayers.indexOf(card.id);
-                                            if (index !== -1) {
-                                                droppedPlayers.splice(index, 1);
-                                            }
+                            function drag(ev) {
+                                // Set the dragged card's id as data
+                                ev.dataTransfer.setData("cardId", ev.target.id);
+                            }
+
+                            function allowDrop(ev) {
+                                ev.preventDefault();
+                            }
+
+                            function drop(ev, dropZoneId) {
+                                ev.preventDefault();
+
+                                var cardId = ev.dataTransfer.getData("cardId");
+                                var card = document.getElementById(cardId);
+                                var playerPosition = card.querySelector("#playerPosition").getAttribute("data-position");
+                                var validPositions = {
+                                    "droppedZone1": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
+                                    "droppedZone2": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
+                                    "droppedZone3": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
+                                    "droppedZone4": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
+                                    "droppedZone5": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
+                                    "droppedZone6": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
+                                    "droppedZone7": ["CENTER", "FORWARD-CENTER", "CENTER-FORWARD"],
+                                    "droppedZone8": ["CENTER", "FORWARD-CENTER", "CENTER-FORWARD"],
+                                    "droppedZone9": ["CENTER", "FORWARD-CENTER", "CENTER-FORWARD"],
+                                    "droppedZone10": ["FORWARD", "FORWARD-GUARD", "GUARD-FORWARD", "FORWARD-CENTER", "CENTER-FORWARD"],
+                                    "droppedZone11": ["FORWARD", "FORWARD-GUARD", "GUARD-FORWARD", "FORWARD-CENTER", "CENTER-FORWARD"],
+                                    "droppedZone12": ["FORWARD", "FORWARD-GUARD", "GUARD-FORWARD", "FORWARD-CENTER", "CENTER-FORWARD"],
+                                    "droppedZone13": ["FORWARD", "FORWARD-GUARD", "GUARD-FORWARD", "FORWARD-CENTER", "CENTER-FORWARD"],
+                                    "droppedZone14": ["FORWARD", "FORWARD-GUARD", "GUARD-FORWARD", "FORWARD-CENTER", "CENTER-FORWARD"],
+                                    "droppedZone15": ["FORWARD", "FORWARD-GUARD", "GUARD-FORWARD", "FORWARD-CENTER", "CENTER-FORWARD"]
+                                };
+
+                                // Check if the dropped position is valid for the drop zone
+                                if (validPositions[dropZoneId].includes(playerPosition)) {
+                                    var dropZone = document.getElementById(dropZoneId);
+                                    if (dropZone.childElementCount === 1) {
+                                        // Append the dragged card to the drop zone
+                                        dropZone.appendChild(card);
+                                        var removeButton = dropZone.querySelector('.remove-button');
+
+                                        // Make sure removeButton is not null before attempting to access its style
+                                        if (removeButton) {
+                                            removeButton.style.display = 'block';
                                         }
+
+                                        droppedPlayers.push(cardId);
+                                        console.log(droppedPlayers.toString());
+                                        updateServerWithPosition(cardId, dropZoneId);
                                         loadSearchResults($('#searchForm').serialize());
 
-                                        button.style.display = 'none';
-                                    }
-                                    $('#sortCriteria').on('change', function () {
-                                        var sortCriteria = $(this).val();
-                                        if (sortCriteria) {
-                                            var formData = $('#searchForm').serialize() + '&sort=' + sortCriteria;
-                                            loadSearchResults(formData);
-                                        }
-                                    });
 
-                                    $('#searchForm').on('input', function () {
-                                        var formData = $(this).serialize();
-                                        loadSearchResults(formData);
-                                    });
+                                    } else {
+                                        // Show pop-up toast indicating that the box is already filled
+                                        alert("This position already contains a player. Remove him before adding a new one.");
+
+                                    }
+                                } else {
+                                    // Show pop-up indicating that the position is not valid for this drop zone
+                                    alert("Invalid position for the player.");
+                                }
+                            }
+
+
+
+                            function updateServerWithPosition(playerId, dropZoneId) {
+                                var token = $('#_csrf').attr('content');
+                                var header = $('#_csrf_header').attr('content');
+                                var droppedId = dropZoneId.split("Zone")[1];
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/players/api/update-position',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify({playerId: playerId, dropZoneId: droppedId}),
+                                    beforeSend: function (xhr) {
+                                        xhr.setRequestHeader(header, token);
+                                    },
+                                    success: function (response) {
+                                        console.log('Player position updated successfully.');
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error('Error updating player position:', xhr.responseText);
+                                    }
+                                });
+                            }
+
+
+                            function removePlayer(button) {
+                                var dropZone = button.parentNode;
+                                var card = dropZone.querySelector('.card');
+                                if (card) {
+                                    card.remove();
+
+                                    // Remove dropped player ID from the array
+                                    var index = droppedPlayers.indexOf(card.id);
+                                    if (index !== -1) {
+                                        droppedPlayers.splice(index, 1);
+                                    }
+                                    updateServerWithPosition(card.id, '0');
+
+                                }
+                                loadSearchResults($('#searchForm').serialize());
+
+                                button.style.display = 'none';
+
+                            }
+                            $('#sortCriteria').on('change', function () {
+                                var sortCriteria = $(this).val();
+                                if (sortCriteria) {
+                                    var formData = $('#searchForm').serialize() + '&sort=' + sortCriteria;
+                                    loadSearchResults(formData);
+                                }
+                            });
+
+                            $('#searchForm').on('input', function () {
+                                var formData = $(this).serialize();
+                                loadSearchResults(formData);
+                            });
+
+                            function loadSavedPositions() {
+                                $.ajax({
+                                    type: 'GET',
+                                    url: '/players/api/saved-positions', // Endpoint to retrieve saved positions
+                                    success: function (response) {
+                                        // Iterate through the saved positions and place players in corresponding drop zones
+                                        response.forEach(function (position) {
+                                            var cardId = position.playerId.toString();
+                                            var dropZoneId = 'droppedZone' + position.dropZoneId;
+                                            var card = document.getElementById(cardId);
+                                            var dropZone = document.getElementById(dropZoneId);
+
+                                            if (card && dropZone) {
+                                                dropZone.appendChild(card);
+                                                var removeButton = dropZone.querySelector('.remove-button');
+                                                if (removeButton) {
+                                                    removeButton.style.display = 'block';
+                                                }
+                                                droppedPlayers.push(cardId);
+                                                var formData = $(this).serialize();
+                                                loadSearchResults(formData);
+                                            }
+
+                                        });
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error('Error loading saved positions:', xhr.responseText);
+                                    }
+                                });
+                            }
 
 
                         </script>

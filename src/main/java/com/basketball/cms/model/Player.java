@@ -81,7 +81,10 @@ public class Player{
 
     @Column(name = "starred", table = "PLAYER")
     private int starred;
-     
+    
+    @Column(name = "droppedZone", table = "PLAYER")
+    private int droppedZone;
+    
     @Transient
     private double overallScore;
     
@@ -294,6 +297,15 @@ public class Player{
     public void setStarred(int starred) {
         this.starred = starred;
     }
+
+    public int getDroppedZone() {
+        return droppedZone;
+    }
+
+    public void setDroppedZone(int droppedZone) {
+        this.droppedZone = droppedZone;
+    }
+    
  
     
 }
