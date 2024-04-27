@@ -292,7 +292,10 @@ public class PlayerController {
                 players.sort(Comparator.comparing(Player::getOverallScore).reversed());
                 break;
             case "isStarred":
-                players.sort(Comparator.comparing(Player::getStarred).reversed());
+                players.sort(Comparator.comparing(Player::getIsStarPlayer).reversed());
+                break;
+            case "salary":
+                players.sort(Comparator.comparing(Player::getSalary).reversed());
                 break;
             // Add more cases for sorting by other criteria if needed
             default:
@@ -313,7 +316,7 @@ public class PlayerController {
             playerService.updatePlayerPosition(playerDropRequest.getPlayerId(), playerDropRequest.getDropZoneId());
             return ResponseEntity.ok("Player position updated successfully.");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update player position: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update player position: " + e.getMessage());
         }
     }
 
@@ -321,6 +324,75 @@ public class PlayerController {
     @GetMapping("/api/saved-positions")
     public List<PlayerDropRequest> getSavedPositions() {
         return playerService.getAllPlayerDropRequestPositions();
+    }
+
+    @ResponseBody
+    @PostMapping("/team/save")
+    public ResponseEntity<String> savePlayers(@RequestBody List<String> playerIds) {
+        // Convert player IDs from String to Integer
+        List<Integer> playerIntIds = playerIds.stream()
+                .map(Integer::valueOf)
+                .collect(Collectors.toList());
+
+        // Fetch player objects based on player IDs
+        List<Player> players = repo.findAllById(playerIntIds);
+
+        // Apply conditions
+        // Team Size Regulations
+        if (players.size() < 10 || players.size() > 15) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Team must consist of 10 to 15 players.");
+        }
+
+        // Positional Requirements
+        int guardCount = 0;
+        int forwardCount = 0;
+        int centerCount = 0;
+
+        for (int i = 0; i < 6; i++) {
+            if (playerIntIds.get(i) != 0) {
+                guardCount++;
+            }
+        }
+        for (int i = 6; i < 9; i++) {
+            if (playerIntIds.get(i) != 0) {
+                centerCount++;
+            }
+        }
+        for (int i = 9; i < 15; i++) {
+            if (playerIntIds.get(i) != 0) {
+                forwardCount++;
+            }
+        }
+
+        if (guardCount < 2 || centerCount < 2 || forwardCount < 2) {
+            System.out.println(guardCount + " " + centerCount + " " + forwardCount);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Positional requirements not met. Each position must have at least 2 players.");
+        }
+
+        // Salary Cap Limitations
+        double totalSalary = players.stream().mapToDouble(Player::getSalary).sum();
+        if (totalSalary > 20000) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Team salary cap exceeded. \nWith total salary : " + totalSalary);
+        }
+
+        List<Player> allPlayers = repo.findAll();
+        for (Player player : allPlayers) {
+            player.setIs_added(0);
+        }
+        repo.saveAll(allPlayers);
+
+        // Update is_added field for each player
+        for (Player player : players) {
+            player.setIs_added(1);
+        }
+
+        // Save updated players
+        repo.saveAll(players);
+        if (players.size() == 10 && totalSalary > 19000) {
+            return ResponseEntity.ok("Players saved successfully. Additional players' salaries must not exceed $1,000.");
+        }
+        return ResponseEntity.ok("Players saved successfully.");
+
     }
 
 }
