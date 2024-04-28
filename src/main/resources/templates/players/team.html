@@ -162,7 +162,7 @@
 
                         <div style="display:none;" class="card-container">
                             <div th:each="player : ${players}" class="card" draggable="true" ondragstart="drag(event)" th:id="${player.playerId}">
-                                <img th:src="${player.Image}" alt="Player Image" >
+                                <img th:src="${player.Image}" draggable="false" alt="Player Image" >
 
                                     <div class="card-content">
                                         <h2 th:text="${player.name}"></h2>
