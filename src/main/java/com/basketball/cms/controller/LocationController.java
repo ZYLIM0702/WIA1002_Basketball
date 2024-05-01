@@ -48,7 +48,7 @@ public class LocationController {
         return "locations/index";
     }
     
-    @GetMapping("/path")
+    @GetMapping("/greedy/path")
     public String showGreedyPath(Model model) {
         LocationNode sourceLocationNode = repoNode.findById(1).orElse(null);
         if(!graphBuilt)
@@ -127,7 +127,7 @@ public class LocationController {
         return optimumDist;
     }
     
-    @GetMapping("/path/{destinationId}")
+    @GetMapping("/dijkstra/path/{destinationId}")
     public String showDijkstra(@PathVariable int destinationId, Model model) {
         if(!graphBuilt)
             buildGraph();
