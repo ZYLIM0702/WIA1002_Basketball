@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+            <title>NBA Contract Status Table</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                }
+                .contract-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 20px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+                .contract-table th {
+                    background-color: #007BFF;
+                    color: white;
+                    padding: 10px;
+                    text-align: left;
+                }
+                .contract-table td {
+                    padding: 10px;
+                    text-align: left;
+                    border-bottom: 1px solid #ddd;
+                }
+                .contract-table tr:nth-child(even) {
+                    background-color: #f2f2f2;
+                }
+                .contract-status-dropdown {
+                    padding: 5px;
+                    width: 100%;
+                    box-sizing: border-box;
+                }
+                .calendar-dropdown {
+                    display: none;
+                }
+                .button-container {
+                    margin-top: 20px;
+                    text-align: center;
+                }
+                .button-container button {
+                    margin: 0 10px;
+                    padding: 8px 20px;
+                    font-size: 16px;
+                    cursor: pointer;
+                }
+            </style>
+    </head>
+    <body>
+
+        <table class="contract-table">
+            <tr>
+                <th>Player ID</th>
+                <th>Player Name</th>
+                <th>Star Player</th>
+                <th>Date of Contract Created</th>
+                <th>Date of Contract Expiration</th>
+                <th>Contract Status</th>
+                <th>Set New Contract Expiration Date</th>
+            </tr>
+            <!-- Players will be rendered here -->
+            <tbody>
+                <tr th:each="player : ${players}">
+                    <td th:text="${player.playerId}"></td>
+                    <td th:text="${player.name}"></td>
+                    <td th:text="${player.getIsStarPlayer}"></td>
+                    <td th:text="${player.getDateCreated}" id="creation-date"></td>
+                    <td id="expiration-date"></td>
+                    <td th:text="${player.getContractStatus}"></td>
+                    <td>
+                        <select class="contract-status-dropdown">
+                            <option value="renew">Renew</option>
+                            <option value="remove">Remove</option>
+                            <option value="extend">Extend</option>
+                        </select>
+                    </td>
+                    <td class="calendar-dropdown">
+                        <input type="date">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="button-container">
+            <form th:action="@{/save}" method="post">
+                <button id="save-button" type="submit">Save</button>
+            </form>
+            <button id="exit-button">Exit</button>
+        </div>
+
+        <script>
+            // Add event listeners for dropdown changes and button clicks
+            document.addEventListener('DOMContentLoaded', function () {
+                const dropdowns = document.querySelectorAll('.contract-status-dropdown');
+                dropdowns.forEach(dropdown => {
+                    dropdown.addEventListener('change', function () {
+                        const parentRow = this.parentNode.parentNode;
+                        const calendarDropdown = parentRow.querySelector('.calendar-dropdown');
+                        if (this.value === 'extend') {
+                            calendarDropdown.style.display = 'table-cell';
+                            // Set expiration date to today's date
+                            const expirationDateInput = parentRow.querySelector('.calendar-dropdown input[type="date"]');
+                            const today = new Date();
+                            const formattedExpirationDate = today.toISOString().split('T')[0];
+                            expirationDateInput.value = formattedExpirationDate;
+                        } else {
+                            calendarDropdown.style.display = 'none';
+                        }
+                    });
+                });
+
+                document.getElementById('exit-button').addEventListener('click', function () {
+                    // Add exit functionality here
+                    alert('Exit functionality is not implemented yet.');
+                });
+            });
+
+            function calculateExpirationDate() {
+                var creationDates = document.querySelectorAll('#creation-date');
+                var expirationDates = document.querySelectorAll('#expiration-date');
+
+                creationDates.forEach(function (creationDate, index) {
+                    var date = new Date(creationDate.innerText);
+                    date.setFullYear(date.getFullYear() + 3);
+                    var expirationDateString = date.toISOString().split('T')[0];
+                    expirationDates[index].innerText = expirationDateString;
+                });
+            }
+
+            window.onload = function () {
+                calculateExpirationDate();
+            };
+
+        </script>
+
+    </body>
+</html>

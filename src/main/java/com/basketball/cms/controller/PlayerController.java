@@ -12,9 +12,12 @@ import com.basketball.cms.model.Player;
 import com.basketball.cms.service.PlayerRepository;
 import com.basketball.cms.service.PlayerService;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -394,5 +397,37 @@ public class PlayerController {
         return ResponseEntity.ok("Players saved successfully.");
 
     }
+@GetMapping("/contract")
+    public String sortStarredPlayersByPriority(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
+    List<Player> players = repo.findAll();
+    List<Player> addedPlayers = players.stream()
+            .filter(player -> player.getIs_added() > 0)
+            .collect(Collectors.toList());
+
+    // Create a priority queue that sorts players based on isStarPlayer and dateCreated
+    Queue<Player> priorityQueue = new PriorityQueue<>(Comparator.comparing(Player::getIsStarPlayer, Comparator.reverseOrder()).thenComparing(Player::getDateCreated));
+    // Add players to the priority queue
+    for (Player player : addedPlayers) {
+        priorityQueue.add(player);
+    }
+
+    // Convert the priority queue back to a list
+    List<Player> priorityPlayers = new ArrayList<>();
+    while (!priorityQueue.isEmpty()) {
+        priorityPlayers.add(priorityQueue.poll());
+    }
+
+    if ("asc".equals(order)) {
+        Collections.sort(priorityPlayers, Comparator.comparing(Player::getIsStarPlayer).thenComparing(Player::getDateCreated));
+    } else if ("desc".equals(order)) {
+        Collections.sort(priorityPlayers, Comparator.comparing(Player::getIsStarPlayer, Comparator.reverseOrder()).thenComparing(Player::getDateCreated));
+    }
+
+    model.addAttribute("players", priorityPlayers);
+    model.addAttribute("order", order); // Add order to pass the sort order to the view
+    return "players/contract";
+}
+
+
 
 }
