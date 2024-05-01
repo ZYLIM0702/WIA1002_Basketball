@@ -43,14 +43,14 @@ public class LocationController {
     private Map<LocationNode, LocationNodeList> nodeMap = new HashMap<>();
     
     private LocationNode sourceLocationNode;
-    private List<LocationNodeList> shortestPath = new ArrayList<>();
+    public static List<LocationNodeList> shortestPath = new ArrayList<>();
     private double minDistance = Double.MAX_VALUE;
-    private boolean graphBuilt = false;
     
     @PostConstruct
     private void init() {
         sourceLocationNode = repoNode.findById(1).orElse(null);
         System.out.println(sourceLocationNode);
+        buildGraph();
     }
 
     @GetMapping({"","/"})
@@ -81,15 +81,16 @@ public class LocationController {
         
         // Populate nodeLists from nodeMap
         nodeLists.addAll(nodeMap.values());
-        graphBuilt = true;
         System.out.println("Node list : " + nodeLists);
     }
     
     @GetMapping("/dfs/path")
     public String showDfsPath(Model model) {
-        if (!graphBuilt) {
-            buildGraph();
-        }
+        shortestPath.clear();
+        minDistance = Double.MAX_VALUE; //reset the min distance to infinity
+        nodeLists.clear();
+        nodeMap.clear();
+        init();
 
         if (sourceLocationNode == null || nodeMap.get(sourceLocationNode) == null) {
             System.out.println("null node fetched.");
@@ -98,8 +99,6 @@ public class LocationController {
         }
 
         
-        shortestPath.clear();
-        minDistance = Double.MAX_VALUE; //reset the min distance to infinity
         dfsPathDist(nodeMap.get(sourceLocationNode), new ArrayList<>(), new HashSet<>(), 0.0);
         
         // Print the path and total distance traveled
@@ -146,8 +145,10 @@ public class LocationController {
     @GetMapping("/greedy/path")
     public String showGreedyPath(Model model) {
         
-        if(!graphBuilt)
-            buildGraph();
+        shortestPath.clear();
+        nodeLists.clear();
+        nodeMap.clear();
+        init();
         
         if (sourceLocationNode == null || nodeMap.get(sourceLocationNode) == null) {
             System.out.println("null node fetched.");
@@ -155,8 +156,6 @@ public class LocationController {
             return "redirect:/locations";
         }
         
-
-        shortestPath.clear();
         greedyPathDist(nodeMap.get(sourceLocationNode));
 
 
@@ -199,9 +198,9 @@ public class LocationController {
     
     @GetMapping("/dijkstra/path/{destinationId}")
     public String showDijkstra(@PathVariable int destinationId, Model model) {
-        if (!graphBuilt) {
-            buildGraph();
-        }
+        nodeLists.clear();
+        nodeMap.clear();
+        init();
         
         System.out.println("Destination ID : " + destinationId);
         LocationNode destLocationNode = repoNode.findById(destinationId).orElse(null);

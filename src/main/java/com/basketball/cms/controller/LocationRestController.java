@@ -55,48 +55,48 @@ public class LocationRestController {
         return graphData;
     }
     
-//    @GetMapping("/path-data")
-//    public ResponseEntity<String> getShortestPathData() {
-//        System.out.println("path-data");
-//        List<LocationNodeList> shortestPath = LocationController.shortestPath;
-//        System.out.println("shortest path : " + shortestPath);
-//        if (shortestPath == null || shortestPath.isEmpty()) {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//        // Prepare nodes and links for D3.js
-//        List<Map<String, String>> links = new ArrayList<>();
-//        List<String> nodes = new ArrayList<>();
-//
-//        LocationNodeList previousNode = null;
-//        for (LocationNodeList currentNode : shortestPath) {
-//            if (previousNode != null) {
-//                Map<String, String> link = new HashMap<>();
-//                link.put("source", previousNode.getCity().getCityName());
-//                link.put("target", currentNode.getCity().getCityName());
-//                links.add(link);
-//            }
-//            nodes.add(currentNode.getCity().getCityName());
-//            previousNode = currentNode;
-//        }
-//
-//        Map<String, Object> graphData = new HashMap<>();
-//        graphData.put("nodes", nodes.stream().distinct().collect(Collectors.toList()));
-//        graphData.put("links", links);
-//
-//        // Serialize the graphData to JSON
-//        ObjectMapper mapper = new ObjectMapper();
-//        String jsonData;
-//        try {
-//            jsonData = mapper.writeValueAsString(graphData);
-//            System.out.println(jsonData); // Output the JSON data
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//            System.out.println("Error output json");
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing JSON data");
-//        }
-//
-//        return ResponseEntity.ok(jsonData);
-//    }
+    @GetMapping("/path-data")
+    public ResponseEntity<String> getShortestPathData() {
+        System.out.println("path-data");
+        List<LocationNodeList> shortestPath = LocationController.shortestPath;
+        System.out.println("shortest path : " + shortestPath);
+        if (shortestPath == null || shortestPath.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Prepare nodes and links for D3.js
+        List<Map<String, String>> links = new ArrayList<>();
+        List<String> nodes = new ArrayList<>();
+
+        LocationNodeList previousNode = null;
+        for (LocationNodeList currentNode : shortestPath) {
+            if (previousNode != null) {
+                Map<String, String> link = new HashMap<>();
+                link.put("source", previousNode.getCity().getCityName());
+                link.put("target", currentNode.getCity().getCityName());
+                links.add(link);
+            }
+            nodes.add(currentNode.getCity().getCityName());
+            previousNode = currentNode;
+        }
+
+        Map<String, Object> graphData = new HashMap<>();
+        graphData.put("nodes", nodes.stream().distinct().collect(Collectors.toList()));
+        graphData.put("links", links);
+
+        // Serialize the graphData to JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonData;
+        try {
+            jsonData = mapper.writeValueAsString(graphData);
+            System.out.println(jsonData); // Output the JSON data
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            System.out.println("Error output json");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing JSON data");
+        }
+
+        return ResponseEntity.ok(jsonData);
+    }
 
 }
