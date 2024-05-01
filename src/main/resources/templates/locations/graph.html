@@ -1,92 +1,122 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Locations Graph</title>
-    <script src="https://d3js.org/d3.v6.min.js"></script>
-</head>
-<body>
-    <h1>Graph</h1>
-<div id="graph"></div>
-<script>
-document.addEventListener("DOMContentLoaded", function(event) {
-    fetch('/locations/graph-data')
-        .then(response => response.json())
-        .then(data => {
-            createGraph(data);
-        });
+    <head>
+        <title>Locations Graph</title>
+        <script src="https://d3js.org/d3.v6.min.js"></script>
+        <style>
+        .path-line {
+            width: 100%;
+            height: 20px;
+            background-color: #f0f0f0;
+            position: relative;
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
 
-function createGraph(data) {
-    const links = data;
-    const nodesArray = Array.from(new Set(data.flatMap(link => [link.source, link.target])));
-    const nodes = nodesArray.map(id => ({id}));
+        .city-marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #007bff;
+            border-radius: 50%;
+            transform: translateX(-50%);
+        }
+        </style>
+    </head>
+    <body>
+        <h1>Shortest Path</h1>
 
-    const width = 1200, height = 800;
-    const svg = d3.select("#graph").append("svg")
-        .attr("width", width)
-        .attr("height", height);
+        <div id="path-container">
+            <!-- Display the optimal distance traveled -->
+            <p>Optimal Distance: <span th:text="${optimalDist}"></span> km</p>
 
-    const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(150))
-        .force("charge", d3.forceManyBody().strength(-500))
-        .force("center", d3.forceCenter(width / 2, height / 2));
+            <!-- Display the optimal travel path -->
+            <div class="path-line">
+                <div th:each="location, index : ${path}" class="city-marker" th:style="'left:' + (${index.index + 1} * (100 / ${path.size() + 1)}) + '%'"></div>
+            </div>
+        </div>
+        <div id="graph"></div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function (event) {
+                fetch('/locations/api/graph-data')
+                        .then(response => response.json())
+                        .then(data => {
+                            createGraph(data);
+                        });
 
-    const link = svg.selectAll(".link")
-        .data(links)
-        .enter().append("line")
-        .attr("class", "link")
-        .style("stroke", "black")
-        .style("stroke-width", 2);
+                function createGraph(data) {
+                    const links = data;
+                    const nodesArray = Array.from(new Set(data.flatMap(link => [link.source, link.target])));
+                    const nodes = nodesArray.map(id => ({id}));
 
-    const node = svg.selectAll(".node")
-        .data(nodes)
-        .enter().append("circle")
-        .attr("class", "node")
-        .attr("r", 10)
-        .style("fill", "red");
+                    const width = 1200, height = 800;
+                    const svg = d3.select("#graph").append("svg")
+                            .attr("width", width)
+                            .attr("height", height);
 
-    const text = svg.selectAll(".text")
-        .data(nodes)
-        .enter().append("text")
-        .attr("class", "text")
-        .text(d => d.id) // Display node id (city name)
-        .style("text-anchor", "middle")
-        .style("font-size", "12px")
-        .style("font-weight", "bold") // Make the font bold
-        .style("fill", "black")
-        .attr("dx", 12)
-        .attr("dy", "-0.7em"); // Move text a few em above the node
+                    const simulation = d3.forceSimulation(nodes)
+                            .force("link", d3.forceLink(links).id(d => d.id).distance(150))
+                            .force("charge", d3.forceManyBody().strength(-500))
+                            .force("center", d3.forceCenter(width / 2, height / 2));
 
-    const edgeText = svg.selectAll(".edgeText")
-        .data(links)
-        .enter().append("text")
-        .attr("class", "edgeText")
-        .text(d => d.distance) // Display distance on edge
-        .style("text-anchor", "middle")
-        .style("font-size", "12px")
-        .style("font-weight", "bold") // Make the font bold
-        .style("fill", "blue")
-        .attr("dx", d => (d.source.x + d.target.x) / 2)
-        .attr("dy", d => (d.source.y + d.target.y) / 2);
+                    const link = svg.selectAll(".link")
+                            .data(links)
+                            .enter().append("line")
+                            .attr("class", "link")
+                            .style("stroke", "black")
+                            .style("stroke-width", 2);
 
-    simulation.on("tick", () => {
-        link.attr("x1", d => d.source.x)
-            .attr("y1", d => d.source.y)
-            .attr("x2", d => d.target.x)
-            .attr("y2", d => d.target.y);
+                    const node = svg.selectAll(".node")
+                            .data(nodes)
+                            .enter().append("circle")
+                            .attr("class", "node")
+                            .attr("r", 10)
+                            .style("fill", "red");
 
-        node.attr("cx", d => d.x)
-            .attr("cy", d => d.y);
+                    const text = svg.selectAll(".text")
+                            .data(nodes)
+                            .enter().append("text")
+                            .attr("class", "text")
+                            .text(d => d.id) // Display node id (city name)
+                            .style("text-anchor", "middle")
+                            .style("font-size", "12px")
+                            .style("font-weight", "bold") // Make the font bold
+                            .style("fill", "black")
+                            .attr("dx", 12)
+                            .attr("dy", "-0.7em"); // Move text a few em above the node
 
-        text.attr("x", d => d.x)
-            .attr("y", d => d.y);
+                    const edgeText = svg.selectAll(".edgeText")
+                            .data(links)
+                            .enter().append("text")
+                            .attr("class", "edgeText")
+                            .text(d => d.distance) // Display distance on edge
+                            .style("text-anchor", "middle")
+                            .style("font-size", "12px")
+                            .style("font-weight", "bold") // Make the font bold
+                            .style("fill", "blue")
+                            .attr("dx", d => (d.source.x + d.target.x) / 2)
+                            .attr("dy", d => (d.source.y + d.target.y) / 2);
 
-        edgeText.attr("dx", d => (d.source.x + d.target.x) / 2)
-            .attr("dy", d => (d.source.y + d.target.y) / 2);
-    });
-}
+                    simulation.on("tick", () => {
+                        link.attr("x1", d => d.source.x)
+                                .attr("y1", d => d.source.y)
+                                .attr("x2", d => d.target.x)
+                                .attr("y2", d => d.target.y);
+
+                        node.attr("cx", d => d.x)
+                                .attr("cy", d => d.y);
+
+                        text.attr("x", d => d.x)
+                                .attr("y", d => d.y);
+
+                        edgeText.attr("dx", d => (d.source.x + d.target.x) / 2)
+                                .attr("dy", d => (d.source.y + d.target.y) / 2);
+                    });
+                }
 
 
-});
-</script>
-</body>
+            });
+        </script>
+    </body>
 </html>
