@@ -50,6 +50,7 @@ public class LocationController {
     @PostConstruct
     private void init() {
         sourceLocationNode = repoNode.findById(1).orElse(null);
+        System.out.println(sourceLocationNode);
     }
 
     @GetMapping({"","/"})
@@ -90,13 +91,12 @@ public class LocationController {
             buildGraph();
         }
 
-//        if (sourceLocationNode == null || nodeMap.get(sourceLocationNode) == null) {
-//            System.out.println("null node fetched.");
-//            // Handle error if source location not found
-//            return "locations/index";
-//        }
+        if (sourceLocationNode == null || nodeMap.get(sourceLocationNode) == null) {
+            System.out.println("null node fetched.");
+            // Handle error if source location not found
+            return "redirect:/locations";
+        }
 
-        sourceLocationNode = repoNode.findById(1).orElse(null);
         
         shortestPath.clear();
         minDistance = Double.MAX_VALUE; //reset the min distance to infinity
@@ -149,13 +149,12 @@ public class LocationController {
         if(!graphBuilt)
             buildGraph();
         
-//        if (sourceLocationNode == null || nodeMap.get(sourceLocationNode) == null) {
-//            System.out.println("null node fetched.");
-//            // Handle error if source location not found
-//            return "locations/index";
-//        }
+        if (sourceLocationNode == null || nodeMap.get(sourceLocationNode) == null) {
+            System.out.println("null node fetched.");
+            // Handle error if source location not found
+            return "redirect:/locations";
+        }
         
-        sourceLocationNode = repoNode.findById(1).orElse(null);
 
         shortestPath.clear();
         greedyPathDist(nodeMap.get(sourceLocationNode));
@@ -204,16 +203,14 @@ public class LocationController {
             buildGraph();
         }
         
-        sourceLocationNode = repoNode.findById(1).orElse(null);
-        
         System.out.println("Destination ID : " + destinationId);
         LocationNode destLocationNode = repoNode.findById(destinationId).orElse(null);
 
-//        if (sourceLocationNode == null || destLocationNode == null || nodeMap.get(sourceLocationNode) == null 
-//                || nodeMap.get(destLocationNode) == null ||destinationId == 1) {
-//            // Handle error if source location not found
-//            return "locations/index";
-//        }
+        if (sourceLocationNode == null || destLocationNode == null || nodeMap.get(sourceLocationNode) == null 
+                || nodeMap.get(destLocationNode) == null ||destinationId == 1) {
+            // Handle error if source location not found
+            return "redirect:/locations";
+        }
         
         // Print statements for troubleshooting
         System.out.println("Source Location Node: " + sourceLocationNode.getCityName());

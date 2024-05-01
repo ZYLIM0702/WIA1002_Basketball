@@ -3,38 +3,21 @@
     <head>
         <title>Locations Graph</title>
         <script src="https://d3js.org/d3.v6.min.js"></script>
-        <style>
-        .path-line {
-            width: 100%;
-            height: 20px;
-            background-color: #f0f0f0;
-            position: relative;
-            margin: 20px 0;
-            border-radius: 10px;
-            overflow: hidden;
-        }
 
-        .city-marker {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: #007bff;
-            border-radius: 50%;
-            transform: translateX(-50%);
-        }
-        </style>
     </head>
     <body>
         <h1>Shortest Path</h1>
 
-        <div id="path-container">
+        <div>
             <!-- Display the optimal distance traveled -->
-            <p>Optimal Distance: <span th:text="${optimalDist}"></span> km</p>
+            <p>Optimal Distance: <span th:text="${optimumDist}"></span></p>
 
             <!-- Display the optimal travel path -->
-            <div class="path-line">
-                <div th:each="location, index : ${path}" class="city-marker" th:style="'left:' + (${index.index + 1} * (100 / ${path.size() + 1)}) + '%'"></div>
-            </div>
+            <ul>
+                <li th:each="nodeList : ${path}">
+                    <span th:text="${nodeList.city.cityName}"></span>
+                </li>
+            </ul>
         </div>
         <div id="graph"></div>
         <script>
