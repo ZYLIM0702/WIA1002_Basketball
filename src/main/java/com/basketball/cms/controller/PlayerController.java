@@ -147,6 +147,12 @@ public class PlayerController {
                     .filter(player -> player.getPosition().contains(position))
                     .collect(Collectors.toList());
         }
+        
+        if (country != null && !country.isEmpty()) {
+            players = players.stream()
+                    .filter(player -> player.getCountry().contains(country))
+                    .collect(Collectors.toList());
+        }
 
 //        if (injury != null && !injury.isEmpty()) {
 //    List<Integer> injuryIds = Arrays.stream(injury.split(","))
@@ -228,8 +234,6 @@ public class PlayerController {
     for(int i=0; i<cc.length; i++){
         countries.add(cc[i]);
     }
-    //countries.add("US");
-    
     return countries;
     }
     

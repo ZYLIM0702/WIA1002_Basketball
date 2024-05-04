@@ -155,13 +155,14 @@
                                 <input type="number" id="maxAge" name="maxAge" th:value="${param.maxAge}"> -->
                                    
                                      
+<!-- Age Range -->
 <label for="ageRange" style="margin-bottom: 20px;">Age Range:</label>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css">
-    <div id="ageSlider"></div>
-        <option th:value="${number}" th:text="${position}" th:selected="${position == param.position}"></option>
+<div id="ageSlider"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
+
 <script>
- //   document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function () {
      var param = {};
   const ageSlider = document.getElementById('ageSlider');
   const minAgeInput = document.getElementById('minAge');
@@ -184,9 +185,9 @@
       }
     }*/
   });
-// Update hidden input fields with slider values
+ //Update hidden input fields with slider values
     ageSlider.noUiSlider.on('update', function (values, handle) {
-        const leftValue = parseInt(values[0]);
+        const leftValue = parseInt(values[0]); //age only accepts int
         const rightValue = parseInt(values[1]);
 
         minAgeInput.value = leftValue;
@@ -194,36 +195,37 @@
         maxAgeInput.value = rightValue;
         param.maxAge = maxAgeInput.value;
     });
+    });
 
     // Submit form data to controller on form submission
-    $('#searchForm').submit(function (event) {
-        // Prevent default form submission
-        event.preventDefault();
-        
-        // Serialize form data
-        const formData = $(this).serialize();
-        
-        // Submit form data to controller via AJAX
-        $.ajax({
-            type: 'GET',
-            url: '/players/search',
-            data: formData,
-            success: function (response) {
-                $('#searchResults').html(response); // Assuming the response contains HTML for search results
-            },
-            error: function (xhr, status, error) {
-                // Handle error response if needed
-            }
-        });
-    });
-    
-ageSlider.noUiSlider.on('update', function (values, handle) {
-    const leftValue = parseInt(values[0]);
-    const rightValue = parseInt(values[1]);
-
-    document.getElementById('minAge').value = leftValue;
-    document.getElementById('maxAge').value = rightValue;
-});
+//    $('#searchForm').submit(function (event) {
+//        // Prevent default form submission
+//        event.preventDefault();
+//        
+//        // Serialize form data
+//        const formData = $(this).serialize();
+//        
+//        // Submit form data to controller via AJAX
+//        $.ajax({
+//            type: 'GET',
+//            url: '/players/search',
+//            data: formData,
+//            success: function (response) {
+//                $('#searchResults').html(response); // Assuming the response contains HTML for search results
+//            },
+//            error: function (xhr, status, error) {
+//                // Handle error response if needed
+//            }
+//        });
+//    });
+//    
+//ageSlider.noUiSlider.on('update', function (values, handle) {
+//    const leftValue = parseInteger(values[0]);
+//    const rightValue = parseInteger(values[1]);
+//
+//    document.getElementById('minAge').value = leftValue;
+//    document.getElementById('maxAge').value = rightValue;
+//});
   // Listen for changes on the slider
   ageSlider.noUiSlider.on('update', function(values, handle) {
     console.log('Slider values:', values);
@@ -240,6 +242,7 @@ ageSlider.noUiSlider.on('update', function (values, handle) {
 <!-- Include necessary CSS and JavaScript files for the range slider -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
+<l<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css">
 <label for="heightRange" style="margin-bottom: 20px;">Height Range:</label>
 <!-- Create a container for the range slider -->
 <div id="heightSlider"></div>
@@ -396,7 +399,7 @@ ageSlider.noUiSlider.on('update', function (values, handle) {
                                                             data: formData,
                                                             success: function (response) {
                                                                 $('#searchResults').empty();
-                                                                var table = $('<table>').addClass('search-results-table');
+                                                                var table = $('<table>').addClass('content');//search-results-table
                                                                 $('#searchResults').append(table);
                                                                 $(response).find('.player-row').each(function () {
                                                                     table.append($(this));
