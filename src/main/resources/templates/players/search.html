@@ -1,100 +1,370 @@
 <!DOCTYPE html>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+
     <head>
         <meta charset="UTF-8"/>
         <title>Player Search</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f0f0f0;
+            }
+
+            .container {
+                display: flex;
+            }
+
+            .sidebar {
+                flex-basis: 30%;
+                padding: 20px;
+            }
+
+            .content {
+                flex-basis: 70%;
+                padding: 20px;
+            }
+
+            .sidebar h1 {
+                text-align: center;
+                color: #333;
+            }
+
+            .sidebar form {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .sidebar form label {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            .sidebar form input[type="text"],
+            .sidebar form input[type="number"],
+            .sidebar form select {
+                width: calc(100% - 20px);
+                padding: 10px;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            .sidebar form button[type="submit"] {
+                width: calc(100% - 20px);
+                padding: 10px;
+                background-color: #337ab7;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            .sidebar form button[type="submit"]:hover {
+                background-color: #23527c;
+            }
+
+            .sidebar form button[type="submit"]:active {
+                background-color: #1e466c;
+            }
+
+            .content h2 {
+                text-align: center;
+                color: #333;
+            }
+
+            .content table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+
+            .content th,
+            .content td {
+                padding: 10px;
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+            .content th {
+                background-color: #f2f2f2;
+            }
+
+            .content img {
+                max-width: 100%;
+                height: auto;
+            }
+            /*---------------------------------------*/
+            .container {
+    display: flex;
+    height: 100vh; /* Ensure the container fills the viewport height */
+}
+
+.sidebar {
+    flex-basis: 30%;
+    padding: 20px;
+    position: sticky; /* Make the sidebar sticky */
+    top: 0; /* Stick to the top of the container */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.content {
+    flex-basis: 70%;
+    padding: 20px;
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.heightSlider{
+    margin-bottom : 50px;
+}
+ /*-------------------------------------------------*/
+            
+            
+        </style>
     </head>
     <body>
-        <div>
-            <h1>Player Search</h1>
-            <a th:href="@{/players/sort}">Sort Players by Overall Score</a> <!-- Add this line here -->
-            <button id="autoUpdateToggle">Live Search</button>
-
-
-            <form id="searchForm">
-
-
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" th:value="${param.name}">
-
-
-                    <label for="country">Country Code:</label>
-                    <input type="text" id="country" name="country" th:value="${param.maxAge}">
-
-                        <label>Position:</label>
-                        <select id="position" name="position">
-                            <option value="">Select Position</option>
-                            <div th:each="position : ${allPositions}">
-                                <option th:value="${position}" th:text="${position}" 
-                                        th:selected="${position == param.position}"></option>
-                            </div>
-
+        <div class="container">
+            <div class="sidebar">
+                <h1>Player Search</h1>
+                <a th:href="@{/players/sort}">Sort Players by Overall Score</a>
+                <form id="searchForm">
+                    
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" th:value="${param.name}">
+                        <label for="country">Country Code:</label>
+                        <select id="country" name="country">
+                                <option value="">Select Country Code</option>
+                                <div th:each="country : ${allCountries}">
+                                    <option th:value="${country}" th:text="${country}" th:selected="${country == param.country}"></option>
+                                </div>
                         </select>
+                            <label>Position:</label>
+                            <select id="position" name="position">
+                                <option value="">Select Position</option>
+                                <div th:each="position : ${allPositions}">
+                                    <option th:value="${position}" th:text="${position}" th:selected="${position == param.position}"></option>
+                                </div>
+                            </select>
+                           <!-- <label for="minAge">Minimum Age:</label>
+                            <input type="number" id="minAge" name="minAge" th:value="${param.minAge}">
+                                <label for="maxAge">Maximum Age:</label>
+                                <input type="number" id="maxAge" name="maxAge" th:value="${param.maxAge}"> -->
+                                   
+                                     
+<label for="ageRange" style="margin-bottom: 20px;">Age Range:</label>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css">
+    <div id="ageSlider"></div>
+        <option th:value="${number}" th:text="${position}" th:selected="${position == param.position}"></option>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
+<script>
+ //   document.addEventListener('DOMContentLoaded', function () {
+     var param = {};
+  const ageSlider = document.getElementById('ageSlider');
+  const minAgeInput = document.getElementById('minAge');
+  const maxAgeInput = document.getElementById('maxAge');
+  noUiSlider.create(ageSlider, {
+    start: [22, 40], // Initial values
+    connect: true, // Draw a colored bar between the handles
+    tooltips: [true, true], // Display tooltips for both handles
+    range: {
+      'min': 20,
+      'max': 45
+    }/*,
+    pips: { // Show labels at both edges regarding the possible range
+      mode: 'values',
+      values: [20, 45],
+      density: 100,
+      format: {
+        to: value => value,
+        from: value => value
+      }
+    }*/
+  });
+// Update hidden input fields with slider values
+    ageSlider.noUiSlider.on('update', function (values, handle) {
+        const leftValue = parseInt(values[0]);
+        const rightValue = parseInt(values[1]);
 
-                        <label for="minAge">Minimum Age:</label>
-                        <input type="number" id="minAge" name="minAge" th:value="${param.minAge}">
+        minAgeInput.value = leftValue;
+        param.minAge = minAgeInput.value;
+        maxAgeInput.value = rightValue;
+        param.maxAge = maxAgeInput.value;
+    });
 
-                            <label for="maxAge">Maximum Age:</label>
-                            <input type="number" id="maxAge" name="maxAge" th:value="${param.maxAge}">
+    // Submit form data to controller on form submission
+    $('#searchForm').submit(function (event) {
+        // Prevent default form submission
+        event.preventDefault();
+        
+        // Serialize form data
+        const formData = $(this).serialize();
+        
+        // Submit form data to controller via AJAX
+        $.ajax({
+            type: 'GET',
+            url: '/players/search',
+            data: formData,
+            success: function (response) {
+                $('#searchResults').html(response); // Assuming the response contains HTML for search results
+            },
+            error: function (xhr, status, error) {
+                // Handle error response if needed
+            }
+        });
+    });
+    
+ageSlider.noUiSlider.on('update', function (values, handle) {
+    const leftValue = parseInt(values[0]);
+    const rightValue = parseInt(values[1]);
 
-                                <label for="minHeight">Minimum Height:</label>
-                                <input type="number" step="any" id="minHeight" name="minHeight" th:value="${param.minHeight}">
+    document.getElementById('minAge').value = leftValue;
+    document.getElementById('maxAge').value = rightValue;
+});
+  // Listen for changes on the slider
+  ageSlider.noUiSlider.on('update', function(values, handle) {
+    console.log('Slider values:', values);
+  });
+</script>
 
-                                    <label for="maxHeight">Maximum Height:</label>
-                                    <input type="number" step="any" id="maxHeight" name="maxHeight" th:value="${param.maxHeight}">
 
-                                        <label for="rank">Rank:</label>
-                                        <input type="checkbox" id="rank" name="rank" value="true">
 
-                                            <label for="rankBy">Rank By:</label>
-                                            <select id="rankBy" name="rankBy">
-                                                <option value="">Select Subject</option>
-                                                <option value="rebounds">Rebounds</option>
-                                                <option value="blocks">Blocks</option>
-                                                <option value="steals">Steals</option>
-                                                <option value="points">Points</option>
-                                                <option value="assists">Assists</option>
-                                            </select>
 
-                                            <button type="submit">Search</button>
-                                            </form>
-                                            </div>
-                                            <div style="display:none;">
-                                                <h2>Search Results</h2>
-                                                <table border="1" class="player-row">
-                                                    <tr>
-                                                        <th>Name</th>
-                                                        <th>Image</th>
-                                                        <th>Overall Score</th>
-                                                        <th>Age</th>
-                                                        <th>Height</th>
-                                                        <th>Position</th>
-                                                        <th>Country Code</th>
-                                                        <!--- <th>testing blocks</th> >this is the place for testing<--->
-                                                        <th>View Profile</th>
-                                                    </tr>
-                                                    <tr th:each="player : ${players}">
-                                                        <td th:text="${player.name}"></td>
-                                                        <td><img th:src="${player.Image}" width="320"/></td>
-                                                        <td th:text="${#numbers.formatDecimal(player.overallScore, 2, 'POINT', 2, 'POINT')}"></td>
-                                                        <td th:text="${player.age}"></td>
-                                                        <td th:text="${player.height}"></td>
-                                                        <td th:text="${player.position}"></td>
-                                                        <td th:text="${player.country}"></td>
-                                                        <!--<td th:text="${player.blocks}"></td> this is the place for testing--->
-                                                        <td>
-                                                            <form th:action="@{/players/profile/{playerId}(playerId=${player.playerId})}" method="get">
-                                                                <button type="submit">View Profile</button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
 
-                                            <div id="searchResults"></div>
-                                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                                            <script>
-                                                $(document).ready(function () {
+
+
+
+<!-- Include necessary CSS and JavaScript files for the range slider -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
+<label for="heightRange" style="margin-bottom: 20px;">Height Range:</label>
+<!-- Create a container for the range slider -->
+<div id="heightSlider"></div>
+
+<!-- JavaScript to initialize the range slider -->
+<script>
+    // Wait for the DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function () {
+        var param = {};
+
+        // Select the height slider container element
+        const heightSlider = document.getElementById('heightSlider');
+        const minHeightInput = document.getElementById('minHeight');
+        const maxHeightInput = document.getElementById('maxHeight');
+
+        // Get the initial values for the slider from the server-side parameters
+        //const initialMinHeight = ${param.minHeight || 5.0);
+        //const initialMaxHeight = ${param.maxHeight || 8.0};
+        const initialMinHeight = 5.0;
+        const initialMaxHeight = 8.0;
+
+        // Create the range slider with initial values
+        noUiSlider.create(heightSlider, {
+            start: [initialMinHeight, initialMaxHeight], // Initial values
+            connect: true, // Draw a colored bar between the handles
+            tooltips: [true, true], // Display tooltips for both handles
+            range: {
+                'min': 5.0,
+                'max': 8.0
+            }
+        });
+
+        // Update hidden input fields with slider values
+        heightSlider.noUiSlider.on('update', function (values, handle) {
+            const leftValue = parseFloat(values[0]);
+            const rightValue = parseFloat(values[1]);
+
+            minHeightInput.value = leftValue;
+            param.minHeight = minHeightInput.value;
+            maxHeightInput.value = rightValue;
+            param.maxHeight = maxHeightInput.value;
+        });
+    });
+        // Listen for changes on the slider
+        heightSlider.noUiSlider.on('update', function (values, handle) {
+            console.log('Slider values:', values);
+        });
+
+</script>
+
+
+
+                                 <!--   <label for="minHeight">Minimum Height:</label> 
+                                    <input type="number" step="any" id="minHeight" name="minHeight" th:value="${param.minHeight}">
+                                        <label for="maxHeight">Maximum Height:</label>
+                                        <input type="number" step="any" id="maxHeight" name="maxHeight" th:value="${param.maxHeight}"> -->
+                                 <label for="injury">Select Recent Injury Experience</label>
+                                 <select id="injury" name="injury">
+                                     <option value="injury">Injury Options</option>
+                                     <!-- Iterate over allInjuries list to generate options -->
+                                     <div th:each="injury : ${allInjuries}">
+                                         <option th:value="${injury}" th:text="${injury}" th:selected="${injury == param.injury}"></option>
+                                     </div>
+                                 </select>
+
+                                 <label for="star">Starred Player: </label> <!--Starred Player Check Box-->
+                                            <input type="checkbox" id="star" name="star" value="true">
+                                            <label for="rank">Rank:</label> <!--Rank Player Check Box-->
+                                            <input type="checkbox" id="rank" name="rank" value="true">
+                                                <label for="rankBy">Rank By:</label>
+                                                <select id="rankBy" name="rankBy">
+                                                    <option value="">Select Subject</option>
+                                                    <option value="rebounds">Rebounds</option>
+                                                    <option value="blocks">Blocks</option>
+                                                    <option value="steals">Steals</option>
+                                                    <option value="points">Points</option>
+                                                    <option value="assists">Assists</option>
+                                                </select>
+                                                <input type="hidden" id="minHeight" name="minHeight">
+    <input type="hidden" id="maxHeight" name="maxHeight">
+    <input type="hidden" id="minAge" name="minAge">
+    <input type="hidden" id="maxAge" name="maxAge">
+                                                <button type="submit">Search</button>
+                                                </form>
+                                                </div>
+            <!------------------------------2nd class----------------------------------->
+                                                <div class="content">
+                                                    <h2>Search Results</h2>
+                                                    <div id="searchResults">
+                                                        <table border="1" class="player-row">
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <th>Image</th>
+                                                                <th>Overall Score</th>
+                                                                <th>Age</th>
+                                                                <th>Height</th>
+                                                                <th>Position</th>
+                                                                <th>Country Code</th>
+                                                                <th>View Profile</th>
+                                                            </tr>
+                                                            <tr th:each="player : ${players}">
+                                                                <td th:text="${player.name}"></td>
+                                                                <td><img th:src="${player.Image}" width="320"/></td>
+                                                                <td th:text="${#numbers.formatDecimal(player.overallScore, 2, 'POINT', 2, 'POINT')}"></td>
+                                                                <td th:text="${player.age}"></td>
+                                                                <td th:text="${player.height}"></td>
+                                                                <td th:text="${player.position}"></td>
+                                                                <td th:text="${player.country}"></td>
+                                                                <td>
+                                                                    <form th:action="@{/players/profile/{playerId}(playerId=${player.playerId})}" method="get">
+                                                                        <button type="submit">View Profile</button>
+                                                                    </form>
+                                                                    <form action="/players/edit" method="get">
+                                                                        <input type="hidden" name="playerId" th:value="${player.playerId}"/>
+                                                                        <button type="submit">Update</button>
+                                                                    </form>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                                <script>
+                                                     $(document).ready(function () {
                                                     var timeoutId;
                                                     var autoUpdateEnabled = false;
 
@@ -138,128 +408,6 @@
                                                         });
                                                     });
                                                 });
-                                            </script>
-                                            <style>
-
-                                                body {
-                                                    font-family: Arial, sans-serif;
-                                                    margin: 0;
-                                                    padding: 0;
-                                                    background-color: #f0f0f0;
-                                                }
-
-                                                .container {
-                                                    max-width: 800px;
-                                                    margin: 0 auto;
-                                                    padding: 20px;
-                                                }
-
-                                                h1 {
-                                                    text-align: center;
-                                                    color: #333;
-                                                }
-
-                                                form {
-                                                    background-color: #fff;
-                                                    padding: 20px;
-                                                    border-radius: 8px;
-                                                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                                                    display: flex;
-                                                    flex-wrap: wrap;
-                                                    justify-content: space-between;
-                                                }
-
-                                                #rank {
-                                                    width: 20px;
-                                                    height: 20px;
-                                                    display: block;
-                                                    margin-right:800px;
-                                                    /*margin-left : -300px;*/
-                                                }
-
-                                                form label {
-                                                    flex-basis: 30%;
-                                                    margin-bottom: 20px;
-                                                    padding-left: 10px
-                                                }
-
-                                                form input[type="text"],
-                                                form input[type="number"],
-                                                form select {
-                                                    flex-basis: 65%;
-                                                    padding: 10px;
-                                                    margin-bottom: 10px;
-                                                    border: 1px solid #ccc;
-                                                    border-radius: 5px;
-                                                }
-
-                                                form button[type="submit"] {
-                                                    flex-basis: 20%;
-                                                    margin: 0  auto;
-                                                }
-
-
-                                                .search-results {
-                                                    margin-top: 20px;
-                                                }
-
-                                                .search-results table {
-                                                    width: 80%;
-                                                    border-collapse: collapse;
-                                                }
-
-                                                .search-results th,
-                                                .search-results td {
-                                                    padding: 10px;
-                                                    border: 1px solid #ddd;
-                                                    text-align: left;
-                                                }
-
-                                                .search-results th {
-                                                    background-color: #f2f2f2;
-                                                }
-
-                                                #autoUpdateToggle {
-                                                    display: block;
-                                                    margin: 20px auto;
-                                                    padding: 10px 20px;
-                                                    background-color: #337ab7;
-                                                    color: #fff;
-                                                    border: none;
-                                                    border-radius: 5px;
-                                                    cursor: pointer;
-                                                }
-
-                                                #autoUpdateToggle:hover {
-                                                    background-color: #23527c;
-                                                }
-
-                                                #autoUpdateToggle:active {
-                                                    background-color: #1e466c;
-                                                }
-                                                table {
-                                                    width: 100%; /*increase size from 80%*/
-                                                    align-items:  center;
-                                                    border-collapse: collapse;
-                                                    background-color: #fff;
-                                                    border: 1px solid #ddd;
-                                                }
-                                                th, td {
-                                                    padding: 10px;
-                                                    text-align: left;
-                                                    border-bottom: 1px solid #ddd;
-                                                }
-                                                th {
-                                                    background-color: #f2f2f2;
-                                                }
-                                                img {
-                                                    max-width: 100%;
-                                                    height: auto;
-                                                }
-
-
-
-                                            </style>
-
-                                            </body>
-                                            </html>
+                                                </script>
+                                                </body>
+                                                </html>

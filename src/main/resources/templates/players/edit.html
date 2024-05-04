@@ -97,8 +97,10 @@
 
             <label for="dateCreated">Date Created:</label>
             <input type="date" id="dateCreated" name="dateCreated" th:value="${#dates.format(player.dateCreated, 'yyyy-MM-dd')}" />
+            
             <label for="starred">Starred:</label>
             <input type="text" id="starred" name="starred" th:value="${player.starred}" />
+            
             <button type="submit">Save</button>
 
 

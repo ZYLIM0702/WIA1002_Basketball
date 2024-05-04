@@ -73,14 +73,14 @@ public class Player{
     @JoinColumn(name = "status_id", insertable = false, updatable = false)
     private Status status;
 
-    @Column(name = "status_id", table = "PLAYER")
+    @Column(name = "status_id", table = "PLAYER") //injury
     private int statusId;
 
     @Column(name = "country", table = "PLAYER")
     private String country;
 
     @Column(name = "starred", table = "PLAYER")
-    private int starred;
+    private int starred; //-------------------------------------
     
     @Column(name = "droppedZone", table = "PLAYER")
     private int droppedZone;
@@ -90,6 +90,10 @@ public class Player{
     
     @Transient
     private boolean isStarPlayer;
+    
+    //@Column(name = "", table = "")
+    private int injuryId;
+    
 
     public double getOverallScore() {
         return overallScore;
@@ -291,11 +295,17 @@ public class Player{
     }
 
     public int getStarred() {
-        return starred;
+        return starred; //-------------------------------------
     }
 
     public void setStarred(int starred) {
         this.starred = starred;
+//        if(starred == 1)
+//            this.starred = true;
+//        else if(starred == 0)
+//            this.starred = false;
+//        else
+//            this.starred = false; //-------------------------------------
     }
 
     public int getDroppedZone() {
@@ -306,6 +316,12 @@ public class Player{
         this.droppedZone = droppedZone;
     }
     
- 
+//    public int getInjuryId(){
+//        return injuryId;
+//    }
+//    
+//    public void setInjuryId(int id){
+//        this.injuryId = id;
+//    }
     
 }

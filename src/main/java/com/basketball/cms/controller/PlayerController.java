@@ -12,6 +12,7 @@ import com.basketball.cms.model.Player;
 import com.basketball.cms.service.PlayerRepository;
 import com.basketball.cms.service.PlayerService;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -102,6 +103,9 @@ public class PlayerController {
             @RequestParam(required = false, defaultValue = "false") boolean rank,
             @RequestParam(required = false) Double overallScore,
             @RequestParam(required = false) String rankBy,
+            @RequestParam(required = false, defaultValue = "false") boolean starred ,
+            @RequestParam(required = false) Integer injury,
+            //@RequestParam(required = false) boolean starred,
             Model model) {
 
         List<Player> players;
@@ -140,20 +144,33 @@ public class PlayerController {
 
         if (position != null && !position.isEmpty()) {
             players = players.stream()
-                    .filter(player -> player.getPosition().equalsIgnoreCase(position))
+                    .filter(player -> player.getPosition().contains(position))
                     .collect(Collectors.toList());
         }
 
-        if (country != null && !country.isEmpty()) {
-            players = players.stream()
-                    .filter(player -> player.getCountry().equalsIgnoreCase(country))
-                    .collect(Collectors.toList());
-        }
+//        if (injury != null && !injury.isEmpty()) {
+//    List<Integer> injuryIds = Arrays.stream(injury.split(","))
+//                                   .map(Integer::parseInt)
+//                                   .collect(Collectors.toList());
+//    players = players.stream()
+//                    .filter(player -> injuryIds.contains(player.getStatusId()))
+//                    .collect(Collectors.toList());
+//}
+
+
+        
+//       if (starred == 1) {
+//    players = players.stream()
+//            .filter(Player::getStarred)
+//            .collect(Collectors.toList());
+//}
+
 
         for (Player player : players) { //calculate overallScore
             player.setOverallScore();
         }
-
+        
+        //Rank By Selection & Rank checkbox 
         if (rankBy != null && !rankBy.isEmpty() && rank) {
             players = (List<Player>) players.stream()
                     .sorted((p1, p2) -> {
@@ -177,6 +194,13 @@ public class PlayerController {
                     .sorted(Comparator.comparingDouble(Player::getOverallScore).reversed())
                     .collect(Collectors.toList());
         }
+        
+//        if (starred) { //not done yet cannot 
+//    players = players.stream()
+//                    .filter(Player::getStarred)
+//                    .collect(Collectors.toList());
+//}
+//
 
         model.addAttribute("players", players);
         return "players/search";
@@ -184,19 +208,42 @@ public class PlayerController {
 
     @ModelAttribute("allPositions")
     public List<String> populatePositions() {
-        List<String> positions = new ArrayList<>();
+        List<String> positions = new ArrayList<>(); //later need to edit the positions 
         positions.add("GUARD");
         positions.add("FORWARD");
         positions.add("CENTER");
-        positions.add("GUARD-FORWARD");
-        positions.add("CENTER-FORWARD");
-        positions.add("FORWARD-CENTER");
-        positions.add("FORWARD-GUARD");
-        positions.add("GUARD-FORWARD");
+        //positions.add("GUARD-FORWARD");
+        //positions.add("CENTER-FORWARD");
+//        positions.add("FORWARD-CENTER");
+//        positions.add("FORWARD-GUARD");
+//        positions.add("GUARD-FORWARD");
         return positions;
     }
 
-    @ModelAttribute()
+    @ModelAttribute("allCountries")
+    public List<String> allCountries(){
+    String[]cc = {"AT", "AU", "BS", "CA", "CD", "CH", "CM", "DE", "DO", "FI", "FR", "GB","GR", "HR", "IT", "JP", "LC", "LT", "LV", "ME", "NG", "RS", "SI", "SS", "TR", "UA", "US"};
+    //List<String>countries = new ArrayList<>(Arrays.asList(cc));
+    List<String>countries = new ArrayList<>();
+    for(int i=0; i<cc.length; i++){
+        countries.add(cc[i]);
+    }
+    //countries.add("US");
+    
+    return countries;
+    }
+    
+    @ModelAttribute("allInjuries")
+    public List<Integer> allInjuries(){
+    //String[]injury = {"0 - No Injuries", "1 - Ankle Sprains", "2 - Facial Cuts", "3 - Knee Injuries", "4 - Jammed Fingers", "5 - Calf Strains / Achilles Tears", "6 - Thigh Bruises"};
+    int[]injury = {0,1,2,3,4,5,6};
+    //List<String>countries = new ArrayList<>(Arrays.asList(cc));
+    List<Integer>injuries = new ArrayList<>();
+    for(int i=0; i<injury.length; i++){
+        injuries.add(injury[i]);
+    }
+    return injuries;
+    }
 
     @GetMapping("/sort")
 //    public String sortPlayersByOverallScore(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
@@ -221,7 +268,9 @@ public class PlayerController {
 //        model.addAttribute("order", order); // Add order pass the sort order to the view
 //        return "players/sort"; 
 //    }
-    public String sortStarredPlayersByOverallScore(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
+    public String sortStarredPlayersByOverallScore(@RequestParam(required = false, defaultValue = "name") String sortBy,
+                                 @RequestParam(required = false, defaultValue = "asc") String order,
+                                 Model model) {
         List<Player> players = repo.findAll();
 
         //    // Filter and calculate overall score for only starred players
@@ -238,20 +287,52 @@ public class PlayerController {
         for (Player player : addedPlayers) {
             player.setOverallScore();
         }
-        if ("asc".equals(order)) {
-            addedPlayers = addedPlayers.stream()
-                    .sorted(Comparator.comparingDouble(Player::getOverallScore))
-                    .collect(Collectors.toList());
-        } else if ("desc".equals(order)) {
-            addedPlayers = addedPlayers.stream()
-                    .sorted(Comparator.comparingDouble(Player::getOverallScore).reversed())
-                    .collect(Collectors.toList());
+        Comparator<Player> comparator;
+        switch (sortBy) {
+            case "overallScore":
+                comparator = Comparator.comparingDouble(Player::getOverallScore);
+                break;
+            case "height":
+                comparator = Comparator.comparingDouble(Player::getHeight);
+                break;
+            case "age":
+                comparator = Comparator.comparingInt(Player::getAge);
+                break;
+            case "salary":
+                comparator = Comparator.comparingDouble(Player::getSalary);
+                break;
+            case "name":
+            default:
+                comparator = Comparator.comparing(Player::getName);
+                break;
         }
 
+        if ("desc".equals(order)) {
+            comparator = comparator.reversed();
+        }
+
+        addedPlayers.sort(comparator);
+
         model.addAttribute("players", addedPlayers);
-        model.addAttribute("order", order); // Add order to pass the sort order to the view
+        model.addAttribute("order", order);
+        model.addAttribute("sortBy", sortBy);
+
         return "players/sort";
     }
+//        if ("asc".equals(order)) {
+//            addedPlayers = addedPlayers.stream()
+//                    .sorted(Comparator.comparingDouble(Player::getOverallScore))
+//                    .collect(Collectors.toList());
+//        } else if ("desc".equals(order)) {
+//            addedPlayers = addedPlayers.stream()
+//                    .sorted(Comparator.comparingDouble(Player::getOverallScore).reversed())
+//                    .collect(Collectors.toList());
+//        }
+//
+//        model.addAttribute("players", addedPlayers);
+//        model.addAttribute("order", order); // Add order to pass the sort order to the view
+//        return "players/sort";
+//    }
 
     @GetMapping("/team")
     public String teamPlayersSidebar(@RequestParam(required = false) String name,
@@ -282,7 +363,7 @@ public class PlayerController {
 
         if (starred == true) {
             players = players.stream()
-                    .filter(player -> player.getStarred() == 1)
+                    .filter(player -> player.getStarred() == true)
                     .collect(Collectors.toList());
         }
 
@@ -427,7 +508,4 @@ public class PlayerController {
     model.addAttribute("order", order); // Add order to pass the sort order to the view
     return "players/contract";
 }
-
-
-
 }
