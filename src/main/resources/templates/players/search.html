@@ -149,12 +149,14 @@
                                     <option th:value="${position}" th:text="${position}" th:selected="${position == param.position}"></option>
                                 </div>
                             </select>
-                           <!-- <label for="minAge">Minimum Age:</label>
-                            <input type="number" id="minAge" name="minAge" th:value="${param.minAge}">
-                                <label for="maxAge">Maximum Age:</label>
-                                <input type="number" id="maxAge" name="maxAge" th:value="${param.maxAge}"> -->
-                                   
-                                     
+                                <label>Injury ID:</label>
+                            <select id="injury" name="injury">
+                                <option value="">Select recent injury status</option>
+                                <div th:each="injury : ${allInjuries}">
+                                    <option th:value="${injury}" th:text="${injury}" th:selected="${injury == param.injury}"></option>
+                                </div>
+                            </select>
+                                                           
 <!-- Age Range -->
 <label for="ageRange" style="margin-bottom: 20px;">Age Range:</label>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css">
@@ -308,8 +310,8 @@
                                      </div>
                                  </select> -->
 
-                                 <label for="star">Starred Player: </label> <!--Starred Player Check Box-->
-                                            <input type="checkbox" id="star" name="star" value="true">
+                                 <label for="starred">Starred Player: </label> <!--Starred Player Check Box-->
+                                            <input type="checkbox" id="starred" name="starred" value="true">
                                             <label for="rank">Rank:</label> <!--Rank Player Check Box-->
                                             <input type="checkbox" id="rank" name="rank" value="true">
                                                 <label for="rankBy">Rank By:</label>
@@ -322,9 +324,9 @@
                                                     <option value="assists">Assists</option>
                                                 </select>
                                                 <input type="hidden" id="minHeight" name="minHeight">
-    <input type="hidden" id="maxHeight" name="maxHeight">
-    <input type="hidden" id="minAge" name="minAge">
-    <input type="hidden" id="maxAge" name="maxAge">
+                                                    <input type="hidden" id="maxHeight" name="maxHeight">
+                                                        <input type="hidden" id="minAge" name="minAge">
+                                                            <input type="hidden" id="maxAge" name="maxAge">
                                                 <button type="submit">Search</button>
                                                 </form>
                                                 </div>

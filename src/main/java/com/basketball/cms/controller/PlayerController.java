@@ -104,7 +104,7 @@ public class PlayerController {
             @RequestParam(required = false) Double overallScore,
             @RequestParam(required = false) String rankBy,
             @RequestParam(required = false, defaultValue = "false") boolean starred ,
-            //@RequestParam(required = false) Integer injury,
+            @RequestParam(required = false) Integer injury,
             //@RequestParam(required = false) boolean starred,
             Model model) {
 
@@ -154,22 +154,17 @@ public class PlayerController {
                     .collect(Collectors.toList());
         }
 
-//        if (injury != null && !injury.isEmpty()) {
-//    List<Integer> injuryIds = Arrays.stream(injury.split(","))
-//                                   .map(Integer::parseInt)
-//                                   .collect(Collectors.toList());
-//    players = players.stream()
-//                    .filter(player -> injuryIds.contains(player.getStatusId()))
-//                    .collect(Collectors.toList());
-//}
-
-
+        if (injury != null ) {
+            players = players.stream()
+                    .filter(player -> injury == player.getStatusId())
+                    .collect(Collectors.toList());
+}
         
-//       if (starred == 1) {
-//    players = players.stream()
-//            .filter(Player::getStarred)
-//            .collect(Collectors.toList());
-//}
+       if (starred == true) {
+    players = players.stream()
+            .filter(player -> player.getStarred()==1)
+            .collect(Collectors.toList());
+}
 
 
         for (Player player : players) { //calculate overallScore
@@ -237,17 +232,17 @@ public class PlayerController {
     return countries;
     }
     
-//    @ModelAttribute("allInjuries")
-//    public List<Integer> allInjuries(){
-//    //String[]injury = {"0 - No Injuries", "1 - Ankle Sprains", "2 - Facial Cuts", "3 - Knee Injuries", "4 - Jammed Fingers", "5 - Calf Strains / Achilles Tears", "6 - Thigh Bruises"};
-//    int[]injury = {0,1,2,3,4,5,6};
-//    //List<String>countries = new ArrayList<>(Arrays.asList(cc));
-//    List<Integer>injuries = new ArrayList<>();
-//    for(int i=0; i<injury.length; i++){
-//        injuries.add(injury[i]);
-//    }
-//    return injuries;
-//    }
+    @ModelAttribute("allInjuries")
+    public List<Integer> allInjuries(){
+    //String[]injury = {"0 - No Injuries", "1 - Ankle Sprains", "2 - Facial Cuts", "3 - Knee Injuries", "4 - Jammed Fingers", "5 - Calf Strains / Achilles Tears", "6 - Thigh Bruises"};
+    Integer[]injury = {0,1,2,3,4,5,6};
+    //List<String>countries = new ArrayList<>(Arrays.asList(cc));
+    List<Integer>injuries = new ArrayList<>();
+    for(int i=0; i<injury.length; i++){
+        injuries.add(injury[i]);
+    }
+    return injuries;
+    }
 
     @GetMapping("/sort")
 //    public String sortPlayersByOverallScore(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
