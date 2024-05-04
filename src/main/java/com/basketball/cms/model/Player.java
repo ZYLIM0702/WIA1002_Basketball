@@ -92,7 +92,7 @@ public class Player{
     private boolean isStarPlayer;
     
     //@Column(name = "", table = "")
-    private int injuryId;
+    //private int injuryId;
     
 
     public double getOverallScore() {

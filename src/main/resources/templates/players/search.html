@@ -296,14 +296,14 @@ ageSlider.noUiSlider.on('update', function (values, handle) {
                                     <input type="number" step="any" id="minHeight" name="minHeight" th:value="${param.minHeight}">
                                         <label for="maxHeight">Maximum Height:</label>
                                         <input type="number" step="any" id="maxHeight" name="maxHeight" th:value="${param.maxHeight}"> -->
-                                 <label for="injury">Select Recent Injury Experience</label>
+                                 <!--<label for="injury">Select Recent Injury Experience</label>
                                  <select id="injury" name="injury">
                                      <option value="injury">Injury Options</option>
-                                     <!-- Iterate over allInjuries list to generate options -->
+                                     <!-- Iterate over allInjuries list to generate options 
                                      <div th:each="injury : ${allInjuries}">
                                          <option th:value="${injury}" th:text="${injury}" th:selected="${injury == param.injury}"></option>
                                      </div>
-                                 </select>
+                                 </select> -->
 
                                  <label for="star">Starred Player: </label> <!--Starred Player Check Box-->
                                             <input type="checkbox" id="star" name="star" value="true">
