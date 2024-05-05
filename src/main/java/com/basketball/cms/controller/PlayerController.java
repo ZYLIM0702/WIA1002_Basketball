@@ -362,7 +362,7 @@ public class PlayerController {
 
         if (starred == true) {
             players = players.stream()
-                    .filter(player -> player.getStarred() == true)
+                    .filter(player -> player.getStarred() == 1)
                     .collect(Collectors.toList());
         }
 
