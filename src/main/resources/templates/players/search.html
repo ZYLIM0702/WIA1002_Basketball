@@ -152,9 +152,17 @@
                                 <label>Injury ID:</label>
                             <select id="injury" name="injury">
                                 <option value="">Select recent injury status</option>
-                                <div th:each="injury : ${allInjuries}">
+                                <option value="0">No Injuries</option>
+                                <option value="1">Ankle Sprains</option>
+                                <option value="2">Facial Cuts</option>
+                                <option value="3">Knee Injuries</option>
+                                <option value="4">Jammed Fingers</option>
+                                <option value="5">Calf Strains/Achilles Tears</option>
+                                <option value="6">Thigh bruises</option>
+                                
+                                <!--<div th:each="injury : ${allInjuries}">
                                     <option th:value="${injury}" th:text="${injury}" th:selected="${injury == param.injury}"></option>
-                                </div>
+                                </div>-->
                             </select>
                                                            
 <!-- Age Range -->
