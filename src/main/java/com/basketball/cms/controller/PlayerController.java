@@ -12,6 +12,7 @@ import com.basketball.cms.model.Player;
 import com.basketball.cms.service.PlayerRepository;
 import com.basketball.cms.service.PlayerService;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -111,7 +112,7 @@ public class PlayerController {
             @RequestParam(required = false, defaultValue = "false") boolean rank,
             @RequestParam(required = false) Double overallScore,
             @RequestParam(required = false) String rankBy,
-            @RequestParam(required = false, defaultValue = "false") boolean starred ,
+            @RequestParam(required = false, defaultValue = "false") boolean starred,
             @RequestParam(required = false) Integer injury,
             //@RequestParam(required = false) boolean starred,
             Model model) {
@@ -155,30 +156,29 @@ public class PlayerController {
                     .filter(player -> player.getPosition().contains(position))
                     .collect(Collectors.toList());
         }
-        
+
         if (country != null && !country.isEmpty()) {
             players = players.stream()
                     .filter(player -> player.getCountry().contains(country))
                     .collect(Collectors.toList());
         }
 
-        if (injury != null ) {
+        if (injury != null) {
             players = players.stream()
                     .filter(player -> injury == player.getStatusId())
                     .collect(Collectors.toList());
-}
-        
-       if (starred == true) {
-    players = players.stream()
-            .filter(player -> player.getStarred()==1)
-            .collect(Collectors.toList());
-}
+        }
 
+        if (starred == true) {
+            players = players.stream()
+                    .filter(player -> player.getStarred() == 1)
+                    .collect(Collectors.toList());
+        }
 
         for (Player player : players) { //calculate overallScore
             player.setOverallScore();
         }
-        
+
         //Rank By Selection & Rank checkbox 
         if (rankBy != null && !rankBy.isEmpty() && rank) {
             players = (List<Player>) players.stream()
@@ -203,14 +203,13 @@ public class PlayerController {
                     .sorted(Comparator.comparingDouble(Player::getOverallScore).reversed())
                     .collect(Collectors.toList());
         }
-        
+
 //        if (starred) { //not done yet cannot 
 //    players = players.stream()
 //                    .filter(Player::getStarred)
 //                    .collect(Collectors.toList());
 //}
 //
-
         model.addAttribute("players", players);
         return "players/search";
     }
@@ -230,26 +229,26 @@ public class PlayerController {
     }
 
     @ModelAttribute("allCountries")
-    public List<String> allCountries(){
-    String[]cc = {"AT", "AU", "BS", "CA", "CD", "CH", "CM", "DE", "DO", "FI", "FR", "GB","GR", "HR", "IT", "JP", "LC", "LT", "LV", "ME", "NG", "RS", "SI", "SS", "TR", "UA", "US"};
-    //List<String>countries = new ArrayList<>(Arrays.asList(cc));
-    List<String>countries = new ArrayList<>();
-    for(int i=0; i<cc.length; i++){
-        countries.add(cc[i]);
+    public List<String> allCountries() {
+        String[] cc = {"AT", "AU", "BS", "CA", "CD", "CH", "CM", "DE", "DO", "FI", "FR", "GB", "GR", "HR", "IT", "JP", "LC", "LT", "LV", "ME", "NG", "RS", "SI", "SS", "TR", "UA", "US"};
+        //List<String>countries = new ArrayList<>(Arrays.asList(cc));
+        List<String> countries = new ArrayList<>();
+        for (int i = 0; i < cc.length; i++) {
+            countries.add(cc[i]);
+        }
+        return countries;
     }
-    return countries;
-    }
-    
+
     @ModelAttribute("allInjuries")
-    public List<Integer> allInjuries(){
-    //String[]injury = {"0 - No Injuries", "1 - Ankle Sprains", "2 - Facial Cuts", "3 - Knee Injuries", "4 - Jammed Fingers", "5 - Calf Strains / Achilles Tears", "6 - Thigh Bruises"};
-    Integer[]injury = {0,1,2,3,4,5,6};
-    //List<String>countries = new ArrayList<>(Arrays.asList(cc));
-    List<Integer>injuries = new ArrayList<>();
-    for(int i=0; i<injury.length; i++){
-        injuries.add(injury[i]);
-    }
-    return injuries;
+    public List<Integer> allInjuries() {
+        //String[]injury = {"0 - No Injuries", "1 - Ankle Sprains", "2 - Facial Cuts", "3 - Knee Injuries", "4 - Jammed Fingers", "5 - Calf Strains / Achilles Tears", "6 - Thigh Bruises"};
+        Integer[] injury = {0, 1, 2, 3, 4, 5, 6};
+        //List<String>countries = new ArrayList<>(Arrays.asList(cc));
+        List<Integer> injuries = new ArrayList<>();
+        for (int i = 0; i < injury.length; i++) {
+            injuries.add(injury[i]);
+        }
+        return injuries;
     }
 
     @GetMapping("/sort")
@@ -276,8 +275,8 @@ public class PlayerController {
 //        return "players/sort"; 
 //    }
     public String sortStarredPlayersByOverallScore(@RequestParam(required = false, defaultValue = "name") String sortBy,
-                                 @RequestParam(required = false, defaultValue = "asc") String order,
-                                 Model model) {
+            @RequestParam(required = false, defaultValue = "asc") String order,
+            Model model) {
         List<Player> players = repo.findAll();
 
         //    // Filter and calculate overall score for only starred players
@@ -485,102 +484,93 @@ public class PlayerController {
         return ResponseEntity.ok("Players saved successfully.");
 
     }
-    
-@GetMapping("/contract")
-public String sortStarredPlayersByPriority(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
-    List<Player> players = repo.findAll();
-    List<Player> addedPlayers = players.stream()
-            .filter(player -> player.getIs_added() > 0)
-            .collect(Collectors.toList());
 
-    // Create a priority queue that sorts players based on isStarPlayer and dateCreated
-    Queue<Player> priorityQueue = new PriorityQueue<>(Comparator.comparing(Player::getIsStarPlayer, Comparator.reverseOrder()).thenComparing(Player::getDateCreated));
-    // Add players to the priority queue
+    @GetMapping("/contract")
+    public String sortStarredPlayersByPriority(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
+        List<Player> players = repo.findAll();
+        List<Player> addedPlayers = players.stream()
+                .filter(player -> player.getIs_added() > 0)
+                .collect(Collectors.toList());
+        
+            // Calculate contract status for each player
     for (Player player : addedPlayers) {
-        priorityQueue.add(player);
+        LocalDate currentDate = LocalDate.now();
+        LocalDate expirationDate = player.getDateCreated().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusYears(3);
+        Date dateCreated = player.getDateCreated();
+
+        String contractStatus;
+        if(isMinDate(dateCreated)){
+            contractStatus = "No Contract";
+        }
+        else if (expirationDate.isBefore(currentDate)) {
+            contractStatus = "Expired";
+        } else if (currentDate.plusMonths(3).isAfter(expirationDate)) {
+            contractStatus = "Almost Expired";
+        } else {
+            contractStatus = "Active";
+        }
+
+        player.setContractStatus(contractStatus);
     }
 
-    // Convert the priority queue back to a list
-    List<Player> priorityPlayers = new ArrayList<>();
-    while (!priorityQueue.isEmpty()) {
-        priorityPlayers.add(priorityQueue.poll());
+
+        // Create a priority queue that sorts players based on isStarPlayer and dateCreated
+        Queue<Player> priorityQueue = new PriorityQueue<>(Comparator.comparing(Player::getIsStarPlayer, Comparator.reverseOrder()).thenComparing(Player::getDateCreated));
+        // Add players to the priority queue
+        for (Player player : addedPlayers) {
+            priorityQueue.add(player);
+        }
+
+        // Convert the priority queue back to a list
+        List<Player> priorityPlayers = new ArrayList<>();
+        while (!priorityQueue.isEmpty()) {
+            priorityPlayers.add(priorityQueue.poll());
+        }
+
+        if ("asc".equals(order)) {
+            Collections.sort(priorityPlayers, Comparator.comparing(Player::getIsStarPlayer, Comparator.reverseOrder()).thenComparing(Player::getDateCreated));
+        } else if ("desc".equals(order)) {
+            Collections.sort(priorityPlayers, Comparator.comparing(Player::getIsStarPlayer).thenComparing(Player::getDateCreated));
+
+        }
+
+        model.addAttribute("players", priorityPlayers);
+        model.addAttribute("order", order); // Add order to pass the sort order to the view
+        return "players/contract";
     }
-
-    if ("asc".equals(order)) {
-        Collections.sort(priorityPlayers, Comparator.comparing(Player::getIsStarPlayer, Comparator.reverseOrder()).thenComparing(Player::getDateCreated));
-    } else if ("desc".equals(order)) {
-        Collections.sort(priorityPlayers, Comparator.comparing(Player::getIsStarPlayer).thenComparing(Player::getDateCreated));
-
-    }
-
-    model.addAttribute("players", priorityPlayers);
-    model.addAttribute("order", order); // Add order to pass the sort order to the view
-    return "players/contract";
-}
 
     @PostMapping("/contract/save")
-    public String saveContract(@RequestParam("playerId") Long playerId,
-                               @RequestParam("contractStatus") String contractStatus,
-                               @RequestParam(value = "expirationDate", required = false) String expirationDateStr,
-                               Model model) {
+    public String saveContract(@RequestParam("playerId") Integer playerId,
+            @RequestParam("contractStatus") String contractStatus,
+            @RequestParam(value = "dateCreated") String dateCreated,
+            Model model) {
+            Date parsedDate;
+            try {
+                parsedDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateCreated);
+            } catch (ParseException e) {
+                // Handle parsing exception
+                e.printStackTrace();
+                // You might want to return an error response here if parsing fails
+                return "error";
+            }
+
 
         // Retrieve player from the database
         Optional<Player> playerOptional = repo.findById(playerId);
         if (playerOptional.isPresent()) {
             Player player = playerOptional.get();
-
-            // Convert the expiration date string to a java.util.Date object
-            Date expirationDate = null;
-            if (expirationDateStr != null && !expirationDateStr.isEmpty()) {
-                try {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    expirationDate = sdf.parse(expirationDateStr);
-                } catch (ParseException e) {
-                    // Handle parsing exception
-                    e.printStackTrace();
-                }
-            }
-
-            // Update the player object based on contract status
-            switch (contractStatus) {
-                case "renew":
-                    player.setDateCreated(new Date());
-                    // Example of adding 3 years to current date
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(player.getDateCreated());
-                    cal.add(Calendar.YEAR, 3);
-                    player.setDateExpired(cal.getTime());
-                    break;
-                case "remove":
-                    // Set to minimum value (January 1, 1970)
-                    player.setDateCreated(new Date(0));
-                    player.setDateExpired(null); // Set expiration date to null
-                    break;
-                case "extend":
-                    player.setDateCreated(new Date());
-                    player.setDateExpired(expirationDate);
-                    break;
-                default:
-                    // Handle invalid contract status
-                    break;
-            }
-
-            // Update contract status
-            player.setContractStatus(contractStatus);
-
-            // Save the updated player object to the database
+            player.setDateCreated(parsedDate);
             repo.save(player);
-            
-        } 
+
+        }
 
         // Redirect back to the contract page
         return "redirect:/players/contract";
     }
+    private boolean isMinDate(Date date) {
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(date);
+    return cal.get(Calendar.YEAR) == 1 && cal.get(Calendar.MONTH) == Calendar.JANUARY && cal.get(Calendar.DAY_OF_MONTH) == 1;
 }
 
-
-
-
-
-
-
+}
