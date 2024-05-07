@@ -11,12 +11,20 @@ package com.basketball.cms.controller;
 import com.basketball.cms.model.Player;
 import com.basketball.cms.service.PlayerRepository;
 import com.basketball.cms.service.PlayerService;
+import java.text.ParseException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.stream.Collectors;
@@ -477,8 +485,9 @@ public class PlayerController {
         return ResponseEntity.ok("Players saved successfully.");
 
     }
+    
 @GetMapping("/contract")
-    public String sortStarredPlayersByPriority(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
+public String sortStarredPlayersByPriority(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
     List<Player> players = repo.findAll();
     List<Player> addedPlayers = players.stream()
             .filter(player -> player.getIs_added() > 0)
@@ -498,13 +507,80 @@ public class PlayerController {
     }
 
     if ("asc".equals(order)) {
-        Collections.sort(priorityPlayers, Comparator.comparing(Player::getIsStarPlayer).thenComparing(Player::getDateCreated));
-    } else if ("desc".equals(order)) {
         Collections.sort(priorityPlayers, Comparator.comparing(Player::getIsStarPlayer, Comparator.reverseOrder()).thenComparing(Player::getDateCreated));
+    } else if ("desc".equals(order)) {
+        Collections.sort(priorityPlayers, Comparator.comparing(Player::getIsStarPlayer).thenComparing(Player::getDateCreated));
+
     }
 
     model.addAttribute("players", priorityPlayers);
     model.addAttribute("order", order); // Add order to pass the sort order to the view
     return "players/contract";
 }
+
+    @PostMapping("/contract/save")
+    public String saveContract(@RequestParam("playerId") Long playerId,
+                               @RequestParam("contractStatus") String contractStatus,
+                               @RequestParam(value = "expirationDate", required = false) String expirationDateStr,
+                               Model model) {
+
+        // Retrieve player from the database
+        Optional<Player> playerOptional = repo.findById(playerId);
+        if (playerOptional.isPresent()) {
+            Player player = playerOptional.get();
+
+            // Convert the expiration date string to a java.util.Date object
+            Date expirationDate = null;
+            if (expirationDateStr != null && !expirationDateStr.isEmpty()) {
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    expirationDate = sdf.parse(expirationDateStr);
+                } catch (ParseException e) {
+                    // Handle parsing exception
+                    e.printStackTrace();
+                }
+            }
+
+            // Update the player object based on contract status
+            switch (contractStatus) {
+                case "renew":
+                    player.setDateCreated(new Date());
+                    // Example of adding 3 years to current date
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(player.getDateCreated());
+                    cal.add(Calendar.YEAR, 3);
+                    player.setDateExpired(cal.getTime());
+                    break;
+                case "remove":
+                    // Set to minimum value (January 1, 1970)
+                    player.setDateCreated(new Date(0));
+                    player.setDateExpired(null); // Set expiration date to null
+                    break;
+                case "extend":
+                    player.setDateCreated(new Date());
+                    player.setDateExpired(expirationDate);
+                    break;
+                default:
+                    // Handle invalid contract status
+                    break;
+            }
+
+            // Update contract status
+            player.setContractStatus(contractStatus);
+
+            // Save the updated player object to the database
+            repo.save(player);
+            
+        } 
+
+        // Redirect back to the contract page
+        return "redirect:/players/contract";
+    }
 }
+
+
+
+
+
+
+
