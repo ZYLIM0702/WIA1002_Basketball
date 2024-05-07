@@ -7,43 +7,33 @@
                 body {
                     font-family: Arial, sans-serif;
                 }
-                .contract-table {
+               .contract-table {
                     width: 100%;
                     border-collapse: collapse;
                     margin-top: 20px;
                     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                 }
-                .contract-table th {
+               .contract-table th {
                     background-color: #007BFF;
                     color: white;
                     padding: 10px;
                     text-align: left;
                 }
-                .contract-table td {
+               .contract-table td {
                     padding: 10px;
                     text-align: left;
                     border-bottom: 1px solid #ddd;
                 }
-                .contract-table tr:nth-child(even) {
+               .contract-table tr:nth-child(even) {
                     background-color: #f2f2f2;
                 }
-                .contract-status-dropdown {
+               .contract-status-dropdown {
                     padding: 5px;
                     width: 100%;
                     box-sizing: border-box;
                 }
-                .calendar-dropdown {
+               .calendar-dropdown {
                     display: none;
-                }
-                .button-container {
-                    margin-top: 20px;
-                    text-align: center;
-                }
-                .button-container button {
-                    margin: 0 10px;
-                    padding: 8px 20px;
-                    font-size: 16px;
-                    cursor: pointer;
                 }
             </style>
     </head>
@@ -66,30 +56,47 @@
                     <td th:text="${player.name}"></td>
                     <td th:text="${player.getIsStarPlayer}"></td>
                     <td th:text="${player.getDateCreated}" id="creation-date"></td>
-                    <td id="expiration-date"></td>
+                    <td id="expiration-date" th:text="${player.getDateExpired()}"></td> <!-- Display expiration date -->
                     <td th:text="${player.getContractStatus}"></td>
                     <td>
-                        <select class="contract-status-dropdown">
+                        <select class="contract-status-dropdown" onchange="handleDropdownChange(this)">
                             <option value="renew">Renew</option>
                             <option value="remove">Remove</option>
                             <option value="extend">Extend</option>
                         </select>
                     </td>
                     <td class="calendar-dropdown">
-                        <input type="date">
+                        <input type="date" id="expiration-date-picker">
+                    </td>
+                    <td>
+                        <form id="save-form" method="post" action="/contract/save">
+                            <input type="hidden" name="playerId" th:value="${player.playerId}" />
+                            <input type="hidden" name="contractStatus" id="contract-status" />
+                            <input type="hidden" name="expirationDate" id="expiration-date-input" />
+                            <button type="submit">Save</button>
+                        </form>
                     </td>
                 </tr>
-            </tbody>
-        </table>
-
-        <div class="button-container">
-            <form th:action="@{/save}" method="post">
-                <button id="save-button" type="submit">Save</button>
-            </form>
-            <button id="exit-button">Exit</button>
-        </div>
+                </tbody>
+            </table>
 
         <script>
+            // JavaScript function to handle dropdown change
+            function handleDropdownChange(dropdown) {
+                const parentRow = dropdown.parentNode.parentNode;
+                const calendarDropdown = parentRow.querySelector('.calendar-dropdown');
+                const expirationDateInput = parentRow.querySelector('#expiration-date-picker');
+
+                if (dropdown.value === 'extend') {
+                    calendarDropdown.style.display = 'table-cell';
+                } else {
+                    calendarDropdown.style.display = 'none';
+                    expirationDateInput.value = ""; // Reset expiration date input
+                }
+
+                document.getElementById('contract-status').value = dropdown.value;
+            }
+
             // Add event listeners for dropdown changes and button clicks
             document.addEventListener('DOMContentLoaded', function () {
                 const dropdowns = document.querySelectorAll('.contract-status-dropdown');
