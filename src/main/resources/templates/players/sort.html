@@ -50,25 +50,20 @@
     <div class="side">
         <h1>Dashboard</h1>
         
-        <!-- Toggle button for sorting -->
         <form th:action="@{/players/sort}" method="get">
-            <!--<label>Sort</label>
-            <button type="submit" name="order" value="asc">Sort by Lowest Overall Score</button>
-            <button type="submit" name="order" value="desc">Sort by Highest Overall Score</button>
-            <form th:action="@{/players/sort}" method="get">--->
     <label>Sort by</label>
     <select name="sortBy">
-        <option value="name">Name</option>
-        <option value="overallScore">Overall Score</option>
-        <option value="height">Height</option>
-        <option value="age">Age</option>
-        <option value="salary">Salary</option>
+        <option value="name" th:selected="${sortBy == 'name'}">Name</option>
+        <option value="overallScore" th:selected="${sortBy == 'overallScore'}">Overall Score</option>
+        <option value="height" th:selected="${sortBy == 'height'}">Height</option>
+        <option value="age" th:selected="${sortBy == 'age'}">Age</option>
+        <option value="salary" th:selected="${sortBy == 'salary'}">Salary</option>
     </select>
     <label>Order</label>
-    <button type="submit" name="order" value="asc">Ascending</button>
-    <button type="submit" name="order" value="desc">Descending</button>
+    <button type="submit" name="order" value="asc" th:class="${order == 'asc' ? 'selected' : ''}">Ascending</button>
+    <button type="submit" name="order" value="desc" th:class="${order == 'desc' ? 'selected' : ''}">Descending</button>
 </form>
-        </form>
+
         
  <!----------------------------------Content------------------------------------------->
         <div class="content">
