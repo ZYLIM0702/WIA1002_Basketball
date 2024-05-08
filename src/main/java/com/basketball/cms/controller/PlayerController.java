@@ -493,7 +493,7 @@ public class PlayerController {
                 .collect(Collectors.toList());
 
         List<Player> unaddedPlayers = players.stream()
-                .filter(player -> player.getIs_added() == 0 && !isMinDate(player.getDateCreated()))
+                .filter(player -> player.getIs_added() == 0)
                 .collect(Collectors.toList());
 
         // Calculate contract status for each player
@@ -577,5 +577,23 @@ public class PlayerController {
         // Redirect back to the contract page
         return "redirect:/players/contract";
     }
+    
+    @PostMapping("/contract/remove")
+    public String removeContract(@RequestParam("playerId") Integer playerId, Model model) {
+        // Retrieve player from the database
+        Optional<Player> playerOptional = repo.findById(playerId);
+        if (playerOptional.isPresent()) {
+            Player player = playerOptional.get();
+            player.setDateCreated(new Date(-1900, Calendar.JANUARY, 1));; // Setting dateCreated to "0001-01-01"
+            String contractStatus;
+            contractStatus = "Removed";
+            player.setContractStatus(contractStatus);
+            repo.save(player);
+        }
+
+        // Redirect back to the contract page
+        return "redirect:/players/contract";
+    }
+
 
 }
