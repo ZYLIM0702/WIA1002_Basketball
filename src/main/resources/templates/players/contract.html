@@ -96,8 +96,8 @@
             <th>Remove Contract</th>
         </tr>
         <!-- Players will be rendered here -->
-        <tbody>
-            <tr th:each="player : ${unaddedPlayers}">
+        <tbody>        
+            <tr th:each="player : ${unaddedPlayers}" th:unless="${#dates.format(player.dateCreated, 'yyyy-MM-dd') == '0001-01-01'}">
                 <td th:text="${player.playerId}"></td>
                 <td th:text="${player.name}"></td>
                 <td th:text="${player.getIsStarPlayer}"></td>
@@ -179,6 +179,7 @@
                     expirationDates[index].innerText = expirationDateString;
                } else {
                     expirationDates[index].innerText = '-';
+                    creationDates[index].innerText = '-';
                 }
             });
         }
