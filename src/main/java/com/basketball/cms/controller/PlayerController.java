@@ -491,28 +491,31 @@ public class PlayerController {
         List<Player> addedPlayers = players.stream()
                 .filter(player -> player.getIs_added() > 0)
                 .collect(Collectors.toList());
-        
-            // Calculate contract status for each player
-    for (Player player : addedPlayers) {
-        LocalDate currentDate = LocalDate.now();
-        LocalDate expirationDate = player.getDateCreated().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusYears(3);
-        Date dateCreated = player.getDateCreated();
 
-        String contractStatus;
-        if(isMinDate(dateCreated)){
-            contractStatus = "No Contract";
+        List<Player> unaddedPlayers = players.stream()
+                .filter(player -> player.getIs_added() == 0 && !isMinDate(player.getDateCreated()))
+                .collect(Collectors.toList());
+
+        // Calculate contract status for each player
+        for (Player player : addedPlayers) {
+            LocalDate currentDate = LocalDate.now();
+            LocalDate expirationDate = player.getDateCreated().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusYears(3);
+            Date dateCreated = player.getDateCreated();
+
+            String contractStatus;
+            if(isMinDate(dateCreated)){
+                contractStatus = "No Contract";
+            }
+            else if (expirationDate.isBefore(currentDate)) {
+                contractStatus = "Expired";
+            } else if (currentDate.plusMonths(3).isAfter(expirationDate)) {
+                contractStatus = "Almost Expired";
+            } else {
+                contractStatus = "Active";
+            }
+
+            player.setContractStatus(contractStatus);
         }
-        else if (expirationDate.isBefore(currentDate)) {
-            contractStatus = "Expired";
-        } else if (currentDate.plusMonths(3).isAfter(expirationDate)) {
-            contractStatus = "Almost Expired";
-        } else {
-            contractStatus = "Active";
-        }
-
-        player.setContractStatus(contractStatus);
-    }
-
 
         // Create a priority queue that sorts players based on isStarPlayer and dateCreated
         Queue<Player> priorityQueue = new PriorityQueue<>(Comparator.comparing(Player::getIsStarPlayer, Comparator.reverseOrder()).thenComparing(Player::getDateCreated));
@@ -535,8 +538,15 @@ public class PlayerController {
         }
 
         model.addAttribute("players", priorityPlayers);
+        model.addAttribute("unaddedPlayers", unaddedPlayers);
         model.addAttribute("order", order); // Add order to pass the sort order to the view
         return "players/contract";
+    }
+
+    private boolean isMinDate(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.YEAR) == 1 && cal.get(Calendar.MONTH) == Calendar.JANUARY && cal.get(Calendar.DAY_OF_MONTH) == 1;
     }
 
     @PostMapping("/contract/save")
@@ -567,10 +577,5 @@ public class PlayerController {
         // Redirect back to the contract page
         return "redirect:/players/contract";
     }
-    private boolean isMinDate(Date date) {
-    Calendar cal = Calendar.getInstance();
-    cal.setTime(date);
-    return cal.get(Calendar.YEAR) == 1 && cal.get(Calendar.MONTH) == Calendar.JANUARY && cal.get(Calendar.DAY_OF_MONTH) == 1;
-}
 
 }
