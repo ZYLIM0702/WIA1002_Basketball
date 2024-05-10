@@ -121,6 +121,7 @@
 .heightSlider{
     margin-bottom : 50px;
 }
+
  /*-------------------------------------------------*/
             
             
@@ -361,6 +362,7 @@
                                                                 <td th:text="${player.height}"></td>
                                                                 <td th:text="${player.position}"></td>
                                                                 <td th:text="${player.country}"></td>
+                                                                
                                                                 <td>
                                                                     <form th:action="@{/players/profile/{playerId}(playerId=${player.playerId})}" method="get">
                                                                         <button type="submit">View Profile</button>
@@ -391,7 +393,6 @@
                                                             clearTimeout(timeoutId);
                                                         }
                                                     });
-
                                                     function updateSearchAutomatically() {
                                                         timeoutId = setTimeout(function () {
                                                             $('#searchForm').trigger('submit');

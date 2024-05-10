@@ -250,6 +250,7 @@ public class PlayerController {
         }
         return injuries;
     }
+    
 
     @GetMapping("/sort")
 //    public String sortPlayersByOverallScore(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
@@ -340,6 +341,7 @@ public class PlayerController {
 //        return "players/sort";
 //    }
 
+    
     @GetMapping("/team")
     public String teamPlayersSidebar(@RequestParam(required = false) String name,
             @RequestParam(required = false) String position,
