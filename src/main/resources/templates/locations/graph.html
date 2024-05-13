@@ -35,6 +35,8 @@
     <body>
         <h1>Shortest Path</h1>
 
+        <div id="graph"></div>
+        
         <div>
             <!-- Display the optimal distance traveled -->
             <p>Optimal Distance: <span th:text="${optimumDist}"></span> km</p>
@@ -45,7 +47,6 @@
             </div>
         </div>
 
-        <div id="graph"></div>
         <script>
             document.addEventListener("DOMContentLoaded", function (event) {
                 fetch('/locations/api/graph-data')
