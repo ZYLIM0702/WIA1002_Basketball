@@ -63,7 +63,7 @@ public class PlayerController {
     @GetMapping("/gameplay")
     public String playerManagementInGame(Model model) {
         System.out.println("test");
-        List<Player> players = repo.findAddedPlayers();
+        List<Player> players = repo.findIsAddedPlayers();
         model.addAttribute("players", players);
         return "players/gameplay";
     }
@@ -526,7 +526,7 @@ public class PlayerController {
         }
 
         // Create a priority queue that sorts players based on isStarPlayer and dateCreated
-        Queue<Player> priorityQueue = new PriorityQueue<>(Comparator.comparing(Player::getIsStarPlayer, Comparator.reverseOrder()).thenComparing(Player::getDateCreated));
+        Queue<Player> priorityQueue = new PriorityQueue<>(Comparator.comparing(Player::getDateCreated, Comparator.reverseOrder()).thenComparing(Player::getIsStarPlayer));
         // Add players to the priority queue
         for (Player player : addedPlayers) {
             priorityQueue.add(player);
@@ -539,9 +539,9 @@ public class PlayerController {
         }
 
         if ("asc".equals(order)) {
-            Collections.sort(priorityPlayers, Comparator.comparing(Player::getIsStarPlayer, Comparator.reverseOrder()).thenComparing(Player::getDateCreated));
+            Collections.sort(priorityPlayers, Comparator.comparing(Player::getDateCreated, Comparator.reverseOrder()).thenComparing(Player::getIsStarPlayer));
         } else if ("desc".equals(order)) {
-            Collections.sort(priorityPlayers, Comparator.comparing(Player::getIsStarPlayer).thenComparing(Player::getDateCreated));
+            Collections.sort(priorityPlayers, Comparator.comparing(Player::getDateCreated).thenComparing(Player::getIsStarPlayer));
 
         }
 

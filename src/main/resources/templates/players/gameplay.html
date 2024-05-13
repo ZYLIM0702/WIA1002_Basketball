@@ -1,87 +1,120 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <meta charset="UTF-8"/>
-        <title>Game Play</title>
+        <title>All Players</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
-                background-color: #BED7DC;
+                background-color: #f4f4f4;
+                margin: 0;
                 padding: 20px;
             }
-            .container {
-                max-width: 600px;
-                margin: 0 auto;
+            table {
+                width: 100%;
+                border-collapse: collapse;
                 background-color: #fff;
-                padding: 20px;
-                border-radius: 20px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                border: 1px solid #ddd;
             }
-            h2 {
-                color: #333;
+            th, td {
+                padding: 10px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
             }
-            .player-details {
-                margin-top: 20px;
+            th {
+                background-color: #f2f2f2;
             }
-            .player-details p {
-                margin: 10px 0;
-            }
-            .player-details img {
-                background-color: #333;
+            img {
                 max-width: 100%;
-                border-radius: 20px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                height: auto;
             }
-            .player-details strong {
-                font-weight: bold;
-            }
-            .back-button {
-                margin-top: 20px;
-                text-align: right;
-            }
-            .back-button button {
-                padding: 10px 20px;
-                background-color: #007bff;
-                color: #fff;
+            button {
+                padding: 5px 10px;
+                background-color: #4CAF50;
+                color: white;
                 border: none;
-                border-radius: 20px;
                 cursor: pointer;
+                border-radius: 3px;
             }
-            .back-button button:hover {
-                background-color: #0056b3;
+            button:hover {
+                background-color: #45a049;
             }
         </style>
     </head>
     <body>
-        <div class="container">
-            <h2>Player Profile</h2>
-            <div class="back-button">
-                <button onclick="window.history.back()">Back</button>
-            </div>
-            <div class="player-details">
-                <p><img th:src="${player.Image}" width="320" /></p>
-                <p><strong>Player ID:</strong> <span th:text="${player.playerId}"></span></p>
-                <p><strong>Name:</strong> <span th:text="${player.name}"></span></p>
-                <p><strong>Age:</strong> <span th:text="${player.age}"></span></p>
-                <p><strong>Height:</strong> <span th:text="${player.height}"></span></p>
-                <p><strong>Weight:</strong> <span th:text="${player.weight}"></span></p>
-                <p><strong>Jersey Number:</strong> <span th:text="${player.jerseyNum}"></span></p>
-                <p><strong>Country:</strong> <span th:text="${player.country}"></span></p>
-                <p><strong>Position:</strong> <span th:text="${player.position}"></span></p>
-                <p><strong>Salary:</strong> <span th:text="${player.salary}"></span></p>
-                <p><strong>Points:</strong> <span th:text="${player.points}"></span></p>
-                <p><strong>Blocks:</strong> <span th:text="${player.blocks}"></span></p>
-                <p><strong>Steals:</strong> <span th:text="${player.steals}"></span></p>
-                <p><strong>Assists:</strong> <span th:text="${player.assists}"></span></p>
-                <p><strong>Rebounds:</strong> <span th:text="${player.rebounds}"></span></p>
-                <p><strong>Contract Status:</strong> <span th:text="${player.contractStatus}"></span></p>
-                <p><strong>Status:</strong> <span th:text="${player.statusId}"></span></p>
-                <p><strong>Injury Details:</strong> <span th:text="${player.status.injuryDetails}"></span></p>
-                <p><strong>Date Created:</strong> <span th:text="${#dates.format(player.dateCreated, 'yyyy-MM-dd')}"></span></p>
-                <p><strong>Is Added:</strong> <span th:text="${player.is_added}"></span></p>
-                <p><strong>Starred:</strong> <span th:text="${player.starred}"></span></p>
-            </div>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Player ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Height</th>
+                    <th>Weight</th>
+                    <th>Image</th>
+                    <th>Jersey Number</th>
+                    <th>Country</th>
+                    <th>Position</th>
+                    <th>Salary</th>
+                    <th>Starred</th>
+                    <th>Is_Added</th>
+                    <th>Star Player</th>
+                    <th>Points</th>
+                    <th>Blocks</th>
+                    <th>Steals</th>
+                    <th>Assists</th>
+                    <th>Rebounds</th>
+                    <th>Contract Status</th>
+                    <th>Contract Date Created</th>
+                    <th>Status</th>
+                    <th>Injury Details</th>
+                    <th>Show Profile</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="player : ${players}">
+                    <td th:text="${player.playerId}"></td>
+                    <td th:text="${player.name}"></td>
+                    <td th:text="${player.age}"></td>
+                    <td th:text="${player.height}"></td>
+                    <td th:text="${player.weight}"></td>
+                    <td><img th:src="${player.Image}" width="320"/></td>
+                    <td th:text="${player.jerseyNum}"></td>
+                    <td th:text="${player.country}"></td>
+                    <td th:text="${player.position}"></td>
+                    <td th:text="${player.salary}"></td>
+                    <td>
+                        <img th:if="${player.starred == 0}" th:src="@{https://png.pngtree.com/png-vector/20190725/ourmid/pngtree-vector-star-icon-png-image_1577370.jpg}" />
+                        <img th:if="${player.starred == 1}" th:src="@{https://png.pngtree.com/png-vector/20190419/ourmid/pngtree-vector-star-icon-png-image_956428.jpg}" />
+                    </td>
+                    <td th:text="${player.is_added}"></td>
+                    <td th:text="${player.isStarPlayer}"></td>
+                    <td th:text="${player.points}"></td>
+                    <td th:text="${player.blocks}"></td>
+                    <td th:text="${player.steals}"></td>
+                    <td th:text="${player.assists}"></td>
+                    <td th:text="${player.rebounds}"></td>
+                    <td th:text="${player.contractStatus}"></td>
+                    <td th:text="${#dates.format(player.dateCreated, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${player.statusId}"></td>
+                    <td th:text="${player.status.injuryDetails}"></td>
 
-        </div>
+                    <td>
+                        <form th:action="@{/players/profile/{playerId}(playerId=${player.playerId})}" method="get">
+                            <button type="submit">View Profile</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/players/edit" method="get">
+                            <input type="hidden" name="playerId" th:value="${player.playerId}" />
+                            <button type="submit">Edit</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </body>
 </html>

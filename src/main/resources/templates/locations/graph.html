@@ -52,7 +52,7 @@
                         .then(response => response.json())
                         .then(data => {
                             createGraph(data);
-                        });
+s                        });
                 function createGraph(data) {
                     const links = data;
                     const nodesArray = Array.from(new Set(data.flatMap(link => [link.source, link.target])));
