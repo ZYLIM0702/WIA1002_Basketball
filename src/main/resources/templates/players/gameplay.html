@@ -1,87 +1,121 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8"/>
-        <title>Game Play</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #BED7DC;
-                padding: 20px;
-            }
-            .container {
-                max-width: 600px;
-                margin: 0 auto;
-                background-color: #fff;
-                padding: 20px;
-                border-radius: 20px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-            h2 {
-                color: #333;
-            }
-            .player-details {
-                margin-top: 20px;
-            }
-            .player-details p {
-                margin: 10px 0;
-            }
-            .player-details img {
-                background-color: #333;
-                max-width: 100%;
-                border-radius: 20px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-            .player-details strong {
-                font-weight: bold;
-            }
-            .back-button {
-                margin-top: 20px;
-                text-align: right;
-            }
-            .back-button button {
-                padding: 10px 20px;
-                background-color: #007bff;
-                color: #fff;
-                border: none;
-                border-radius: 20px;
-                cursor: pointer;
-            }
-            .back-button button:hover {
-                background-color: #0056b3;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h2>Player Profile</h2>
-            <div class="back-button">
-                <button onclick="window.history.back()">Back</button>
+<head>
+    <title>All Players</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+        .card-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .card {
+            width: 200px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            cursor: grab;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .card img {
+            width: 100%;
+            height: auto;
+        }
+        .card-content {
+            padding: 10px;
+        }
+        .injuryStack-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .pop-button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card-container bench-container" ondragover="allowDrop(event)" ondrop="drop(event, 'bench')">
+            <h2>Bench</h2>
+            <div th:each="player : ${players}" class="card" draggable="true" ondragstart="drag(event)" th:id="'playerCard_' + ${player.playerId}">
+                <img th:src="${player.Image}" alt="Player Image">
+                    <div class="card-content">
+                        <h2 th:text="${player.name}"></h2>
+                        <p th:text="'Jersey Number: ' + ${player.jerseyNum}"></p>
+                        <p th:text="'Position: ' + ${player.position}"></p>
+                    </div>
             </div>
-            <div class="player-details">
-                <p><img th:src="${player.Image}" width="320" /></p>
-                <p><strong>Player ID:</strong> <span th:text="${player.playerId}"></span></p>
-                <p><strong>Name:</strong> <span th:text="${player.name}"></span></p>
-                <p><strong>Age:</strong> <span th:text="${player.age}"></span></p>
-                <p><strong>Height:</strong> <span th:text="${player.height}"></span></p>
-                <p><strong>Weight:</strong> <span th:text="${player.weight}"></span></p>
-                <p><strong>Jersey Number:</strong> <span th:text="${player.jerseyNum}"></span></p>
-                <p><strong>Country:</strong> <span th:text="${player.country}"></span></p>
-                <p><strong>Position:</strong> <span th:text="${player.position}"></span></p>
-                <p><strong>Salary:</strong> <span th:text="${player.salary}"></span></p>
-                <p><strong>Points:</strong> <span th:text="${player.points}"></span></p>
-                <p><strong>Blocks:</strong> <span th:text="${player.blocks}"></span></p>
-                <p><strong>Steals:</strong> <span th:text="${player.steals}"></span></p>
-                <p><strong>Assists:</strong> <span th:text="${player.assists}"></span></p>
-                <p><strong>Rebounds:</strong> <span th:text="${player.rebounds}"></span></p>
-                <p><strong>Contract Status:</strong> <span th:text="${player.contractStatus}"></span></p>
-                <p><strong>Status:</strong> <span th:text="${player.statusId}"></span></p>
-                <p><strong>Injury Details:</strong> <span th:text="${player.status.injuryDetails}"></span></p>
-                <p><strong>Date Created:</strong> <span th:text="${#dates.format(player.dateCreated, 'yyyy-MM-dd')}"></span></p>
-                <p><strong>Is Added:</strong> <span th:text="${player.is_added}"></span></p>
-                <p><strong>Starred:</strong> <span th:text="${player.starred}"></span></p>
-            </div>
-
         </div>
-    </body>
+
+        <div class="card-container inGame-container" ondragover="allowDrop(event)" ondrop="drop(event, 'inGame')">
+            <h2>In Game</h2>
+        </div>
+
+        <div class="card-container injuryStack-container" ondragover="allowDrop(event)" ondrop="drop(event, 'injuryStack')">
+            <h2>Injury Stack</h2>
+            <button class="pop-button" onclick="popToBench()">Pop to Bench</button>
+        </div>
+    </div>
+
+    <script>
+        // Global variable to keep track of injured player count
+        var injuredPlayerCount = 0;
+        var inGamePlayerCount = 0; // Track the number of players in-game
+
+        function drag(ev) {
+            ev.dataTransfer.setData("cardId", ev.target.id);
+        }
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drop(ev, container) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("cardId");
+            var element = document.getElementById(data);
+            if (container === 'bench') {
+                document.querySelector('.bench-container').appendChild(element);
+            } else if (container === 'inGame') {
+                if (inGamePlayerCount < 5) {
+                    document.querySelector('.inGame-container').appendChild(element);
+                    inGamePlayerCount++;
+                }
+            } else if (container === 'injuryStack') {
+                document.querySelector('.injuryStack-container').appendChild(element);
+                injuredPlayerCount++; // Increment injured player count when dragged into the injury stack
+            }
+        }
+
+        function popToBench() {
+            if (injuredPlayerCount > 0) {
+                var injuryStack = document.querySelector('.injuryStack-container');
+                var lastPlayer = injuryStack.lastElementChild;
+                if (lastPlayer) {
+                    // Decrement injured player count when popped back to bench
+                    injuredPlayerCount--;
+                    document.querySelector('.bench-container').appendChild(lastPlayer);
+                }
+            }
+        }
+
+        // Update inGamePlayerCount when a player card is dragged out from the "In Game" container
+        document.querySelector('.inGame-container').addEventListener('dragstart', function () {
+            inGamePlayerCount--;
+        });
+    </script>
+</body>
 </html>

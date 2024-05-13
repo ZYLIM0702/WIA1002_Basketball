@@ -263,347 +263,347 @@
                         </div>
                         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                         <script>
-                                                    var droppedPlayers = [];
-                                                    // Function to load search results
-                                                    function loadSearchResults(formData) {
-                                                        $.ajax({
-                                                            type: 'GET',
-                                                            url: '/players/team',
-                                                            data: formData,
-                                                            success: function (response) {
-                                                                $('#searchResults').empty();
-                                                                var table = $('<div>').addClass('card-container');
-                                                                $('#searchResults').append(table);
-                                                                $(response).find('.card').each(function () {
-                                                                    // Check if the card's ID is not in the dropped players array
-                                                                    if (!droppedPlayers.includes($(this).attr('id'))) {
-                                                                        table.append($(this));
-                                                                    }
-                                                                });
-                                                            },
-                                                            error: function (xhr, status, error) {
-                                                                console.error(xhr.responseText);
-                                                            }
-                                                        });
-                                                    }
+                            var droppedPlayers = [];
+                            // Function to load search results
+                            function loadSearchResults(formData) {
+                                $.ajax({
+                                    type: 'GET',
+                                    url: '/players/team',
+                                    data: formData,
+                                    success: function (response) {
+                                        $('#searchResults').empty();
+                                        var table = $('<div>').addClass('card-container');
+                                        $('#searchResults').append(table);
+                                        $(response).find('.card').each(function () {
+                                            // Check if the card's ID is not in the dropped players array
+                                            if (!droppedPlayers.includes($(this).attr('id'))) {
+                                                table.append($(this));
+                                            }
+                                        });
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error(xhr.responseText);
+                                    }
+                                });
+                            }
 
-                                                    $(document).ready(function () {
+                            $(document).ready(function () {
 
-                                                        // Trigger form submission on page load
-                                                        loadSearchResults('');
-                                                        loadSavedPositions();
-
-
-                                                        // Intercept form submission and load search results via AJAX
-                                                        $('#searchForm').on('submit', function (event) {
-                                                            event.preventDefault(); // Prevent default form submission behavior
-                                                            var formData = $(this).serialize();
-                                                            loadSearchResults(formData);
-                                                        });
-
-                                                    });
-
-                                                    function drag(ev) {
-                                                        // Set the dragged card's id as data
-                                                        ev.dataTransfer.setData("cardId", ev.target.id);
-                                                    }
-
-                                                    function allowDrop(ev) {
-                                                        ev.preventDefault();
-                                                    }
-
-                                                    function drop(ev, dropZoneId) {
-                                                        ev.preventDefault();
-
-                                                        var cardId = ev.dataTransfer.getData("cardId");
-                                                        var card = document.getElementById(cardId);
-                                                        var playerPosition = card.querySelector("#playerPosition").getAttribute("data-position");
-                                                        var validPositions = {
-                                                            "droppedZone1": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
-                                                            "droppedZone2": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
-                                                            "droppedZone3": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
-                                                            "droppedZone4": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
-                                                            "droppedZone5": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
-                                                            "droppedZone6": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
-                                                            "droppedZone7": ["CENTER", "FORWARD-CENTER", "CENTER-FORWARD"],
-                                                            "droppedZone8": ["CENTER", "FORWARD-CENTER", "CENTER-FORWARD"],
-                                                            "droppedZone9": ["CENTER", "FORWARD-CENTER", "CENTER-FORWARD"],
-                                                            "droppedZone10": ["FORWARD", "FORWARD-GUARD", "GUARD-FORWARD", "FORWARD-CENTER", "CENTER-FORWARD"],
-                                                            "droppedZone11": ["FORWARD", "FORWARD-GUARD", "GUARD-FORWARD", "FORWARD-CENTER", "CENTER-FORWARD"],
-                                                            "droppedZone12": ["FORWARD", "FORWARD-GUARD", "GUARD-FORWARD", "FORWARD-CENTER", "CENTER-FORWARD"],
-                                                            "droppedZone13": ["FORWARD", "FORWARD-GUARD", "GUARD-FORWARD", "FORWARD-CENTER", "CENTER-FORWARD"],
-                                                            "droppedZone14": ["FORWARD", "FORWARD-GUARD", "GUARD-FORWARD", "FORWARD-CENTER", "CENTER-FORWARD"],
-                                                            "droppedZone15": ["FORWARD", "FORWARD-GUARD", "GUARD-FORWARD", "FORWARD-CENTER", "CENTER-FORWARD"]
-                                                        };
-
-                                                        // Check if the dropped position is valid for the drop zone
-                                                        if (validPositions[dropZoneId].includes(playerPosition)) {
-                                                            var dropZone = document.getElementById(dropZoneId);
-                                                            if (dropZone.childElementCount === 1) {
-                                                                // Append the dragged card to the drop zone
-                                                                dropZone.appendChild(card);
-                                                                var removeButton = dropZone.querySelector('.remove-button');
-                                                                card.removeAttribute("draggable");
-                                                                // Make sure removeButton is not null before attempting to access its style
-                                                                if (removeButton) {
-                                                                    removeButton.style.display = 'block';
-                                                                }
-
-                                                                droppedPlayers.push(cardId);
-                                                                updateServerWithPosition(cardId, dropZoneId);
-                                                                loadSearchResults($('#searchForm').serialize());
-                                                                sumPlayerSalaries();
-                                                                updatePlayerCounts();
+                                // Trigger form submission on page load
+                                loadSearchResults('');
+                                loadSavedPositions();
 
 
-                                                            } else {
-                                                                // Show pop-up toast indicating that the box is already filled
-                                                                alert("This position already contains a player. Remove him before adding a new one.");
+                                // Intercept form submission and load search results via AJAX
+                                $('#searchForm').on('submit', function (event) {
+                                    event.preventDefault(); // Prevent default form submission behavior
+                                    var formData = $(this).serialize();
+                                    loadSearchResults(formData);
+                                });
 
-                                                            }
-                                                        } else {
-                                                            // Show pop-up indicating that the position is not valid for this drop zone
-                                                            alert("Invalid position for the player.");
-                                                        }
-                                                    }
+                            });
 
+                            function drag(ev) {
+                                // Set the dragged card's id as data
+                                ev.dataTransfer.setData("cardId", ev.target.id);
+                            }
 
+                            function allowDrop(ev) {
+                                ev.preventDefault();
+                            }
 
-                                                    function updateServerWithPosition(playerId, dropZoneId) {
-                                                        var token = $('#_csrf').attr('content');
-                                                        var header = $('#_csrf_header').attr('content');
-                                                        var droppedId = dropZoneId.split("Zone")[1];
-                                                        $.ajax({
-                                                            type: 'POST',
-                                                            url: '/players/api/update-position',
-                                                            contentType: 'application/json',
-                                                            data: JSON.stringify({playerId: playerId, dropZoneId: droppedId}),
-                                                            beforeSend: function (xhr) {
-                                                                xhr.setRequestHeader(header, token);
-                                                            },
-                                                            success: function (response) {
-                                                                console.log('Player position updated successfully.');
-                                                            },
-                                                            error: function (xhr, status, error) {
-                                                                console.error('Error updating player position:', xhr.responseText);
-                                                            }
-                                                        });
-                                                    }
+                            function drop(ev, dropZoneId) {
+                                ev.preventDefault();
 
+                                var cardId = ev.dataTransfer.getData("cardId");
+                                var card = document.getElementById(cardId);
+                                var playerPosition = card.querySelector("#playerPosition").getAttribute("data-position");
+                                var validPositions = {
+                                    "droppedZone1": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
+                                    "droppedZone2": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
+                                    "droppedZone3": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
+                                    "droppedZone4": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
+                                    "droppedZone5": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
+                                    "droppedZone6": ["GUARD", "GUARD-FORWARD", "FORWARD-GUARD"],
+                                    "droppedZone7": ["CENTER", "FORWARD-CENTER", "CENTER-FORWARD"],
+                                    "droppedZone8": ["CENTER", "FORWARD-CENTER", "CENTER-FORWARD"],
+                                    "droppedZone9": ["CENTER", "FORWARD-CENTER", "CENTER-FORWARD"],
+                                    "droppedZone10": ["FORWARD", "FORWARD-GUARD", "GUARD-FORWARD", "FORWARD-CENTER", "CENTER-FORWARD"],
+                                    "droppedZone11": ["FORWARD", "FORWARD-GUARD", "GUARD-FORWARD", "FORWARD-CENTER", "CENTER-FORWARD"],
+                                    "droppedZone12": ["FORWARD", "FORWARD-GUARD", "GUARD-FORWARD", "FORWARD-CENTER", "CENTER-FORWARD"],
+                                    "droppedZone13": ["FORWARD", "FORWARD-GUARD", "GUARD-FORWARD", "FORWARD-CENTER", "CENTER-FORWARD"],
+                                    "droppedZone14": ["FORWARD", "FORWARD-GUARD", "GUARD-FORWARD", "FORWARD-CENTER", "CENTER-FORWARD"],
+                                    "droppedZone15": ["FORWARD", "FORWARD-GUARD", "GUARD-FORWARD", "FORWARD-CENTER", "CENTER-FORWARD"]
+                                };
 
-                                                    function removePlayer(button) {
-                                                        var dropZone = button.parentNode;
-                                                        var card = dropZone.querySelector('.card');
-                                                        if (card) {
-                                                            card.remove();
-                                                            card.setAttribute("draggable", "true");
-                                                            // Remove dropped player ID from the array
-                                                            var index = droppedPlayers.indexOf(card.id);
-                                                            if (index !== -1) {
-                                                                droppedPlayers.splice(index, 1);
-                                                            }
-                                                            updateServerWithPosition(card.id, '0');
+                                // Check if the dropped position is valid for the drop zone
+                                if (validPositions[dropZoneId].includes(playerPosition)) {
+                                    var dropZone = document.getElementById(dropZoneId);
+                                    if (dropZone.childElementCount === 1) {
+                                        // Append the dragged card to the drop zone
+                                        dropZone.appendChild(card);
+                                        var removeButton = dropZone.querySelector('.remove-button');
+                                        card.removeAttribute("draggable");
+                                        // Make sure removeButton is not null before attempting to access its style
+                                        if (removeButton) {
+                                            removeButton.style.display = 'block';
+                                        }
 
-                                                        }
-                                                        loadSearchResults($('#searchForm').serialize());
-                                                        sumPlayerSalaries();
-                                                        updatePlayerCounts();
-                                                        button.style.display = 'none';
-
-                                                    }
-                                                    $('#sortCriteria').on('change', function () {
-                                                        var sortCriteria = $(this).val();
-                                                        if (sortCriteria) {
-                                                            var formData = $('#searchForm').serialize() + '&sort=' + sortCriteria;
-                                                            loadSearchResults(formData);
-                                                        }
-                                                    });
-
-                                                    $('#searchForm').on('input', function () {
-                                                        var formData = $(this).serialize();
-                                                        loadSearchResults(formData);
-                                                    });
-
-                                                    function loadSavedPositions() {
-                                                        $.ajax({
-                                                            type: 'GET',
-                                                            url: '/players/api/saved-positions', // Endpoint to retrieve saved positions
-                                                            success: function (response) {
-                                                                // Iterate through the saved positions and place players in corresponding drop zones
-                                                                response.forEach(function (position) {
-                                                                    var cardId = position.playerId.toString();
-                                                                    var dropZoneId = 'droppedZone' + position.dropZoneId;
-                                                                    var card = document.getElementById(cardId);
-                                                                    var dropZone = document.getElementById(dropZoneId);
-
-                                                                    if (card && dropZone) {
-                                                                        dropZone.appendChild(card);
-                                                                        var removeButton = dropZone.querySelector('.remove-button');
-                                                                        card.removeAttribute("draggable");
-                                                                        if (removeButton) {
-                                                                            removeButton.style.display = 'block';
-                                                                        }
-                                                                        droppedPlayers.push(cardId);
-                                                                        var formData = $(this).serialize();
-                                                                        loadSearchResults(formData);
-                                                                        sumPlayerSalaries();
-                                                                        updatePlayerCounts();
-                                                                    }
-
-                                                                });
-                                                            },
-                                                            error: function (xhr, status, error) {
-                                                                console.error('Error loading saved positions:', xhr.responseText);
-                                                            }
-                                                        });
-                                                    }
+                                        droppedPlayers.push(cardId);
+                                        updateServerWithPosition(cardId, dropZoneId);
+                                        loadSearchResults($('#searchForm').serialize());
+                                        sumPlayerSalaries();
+                                        updatePlayerCounts();
 
 
-                                                    $("#saveButton").click(function () {
-                                                        var playersData = generatePlayersData();
-                                                        var token = $('#_csrf').attr('content');
-                                                        var header = $('#_csrf_header').attr('content');
+                                    } else {
+                                        // Show pop-up toast indicating that the box is already filled
+                                        alert("This position already contains a player. Remove him before adding a new one.");
 
-                                                        $.ajax({
-                                                            url: "/players/team/save",
-                                                            type: "POST",
-                                                            contentType: "application/json",
-                                                            data: JSON.stringify(playersData),
-                                                            beforeSend: function (xhr) {
-                                                                xhr.setRequestHeader(header, token);
-                                                            },
-
-                                                            success: function (response) {
-                                                                // Check if response is successful
-                                                                if (response.includes("successfully")) {
-                                                                    $("#responseMessage").text(response);
-                                                                } else {
-                                                                    $("#responseMessage").text(""); // Clear previous error messages
-                                                                }
-                                                            },
-                                                            error: function (xhr, textStatus, errorThrown) {
-                                                                // Display error message if request fails
-                                                                $("#responseMessage").text(xhr.responseText);
-                                                            }
-                                                        });
-                                                    });
-
-
-                                                    function generatePlayersData() {
-                                                        var playersData = [];
-
-                                                        // Iterate through each drop zone
-                                                        for (var i = 1; i <= 15; i++) {
-                                                            var dropZoneId = 'droppedZone' + i;
-                                                            var dropZone = document.getElementById(dropZoneId);
-
-                                                            // Iterate through cards within the drop zone
-                                                            var cards = dropZone.querySelectorAll('.card');
-
-                                                            if (cards.length === 0) {
-                                                                playersData.push(0); // Push 0 if the zone is empty
-                                                            } else {
-                                                                cards.forEach(function (card) {
-                                                                    var playerId = card.id; // Assuming player IDs are unique and can be directly used
-                                                                    playersData.push(playerId);
-                                                                });
-                                                            }
-                                                        }
-
-                                                        return playersData;
-                                                    }
-                                                    function sumPlayerSalaries() {
-                                                        var totalSalary = 0;
-
-                                                        // Iterate through each dropped player
-                                                        droppedPlayers.forEach(function (playerId) {
-                                                            var card = document.getElementById(playerId);
-                                                            if (card) {
-                                                                // Extract salary from the card
-                                                                var salaryString = card.querySelector('.card-content p:nth-child(2)').textContent.trim();
-                                                                var salary = parseFloat(salaryString.replace('Salary: ', '').replace('$', '').replace(',', ''));
-                                                                // Add salary to total
-                                                                totalSalary += salary;
-                                                            }
-                                                        });
-
-                                                        // Display the total salary
-                                                        $('#totalSalary').text('Total Salary: $' + totalSalary.toFixed(2));
-
-                                                        return totalSalary;
-                                                    }
-
-                                                    function countStarPlayers() {
-                                                        var starPlayers = 0;
-
-                                                        // Iterate through each dropped player
-                                                        droppedPlayers.forEach(function (playerId) {
-                                                            var card = document.getElementById(playerId);
-                                                            if (card) {
-                                                                var salaryString = card.querySelector('.card-content p:nth-child(2)').textContent.trim(); // Assuming salary is always the second <p> element
-                                                                var salary = parseFloat(salaryString.replace('Salary: ', '').replace('$', '').replace(',', '')); // Assuming salary is in USD format
-                                                                if (salary >= 3000) { // Assuming players with salary greater than 3000 are starred
-                                                                    starPlayers++;
-                                                                }
-                                                            }
-                                                        });
-
-                                                        return starPlayers;
-                                                    }
-
-
-                                                    function countPlayersByPosition(position) {
-                                                        var playersData = generatePlayersData();
-                                                        var players = 0;
-                                                        var startIndex, endIndex;
-
-                                                        // Determine the start and end indexes based on position
-                                                        if (position === 'GUARD') {
-                                                            // Count players based on their index range
-                                                            for (var i = 0; i < 6; i++) {
-                                                                if (playersData[i] !== 0) {
-                                                                    players++;
-                                                                }
-                                                            }
-                                                        } else if (position === 'CENTER') {
-                                                            // Count players based on their index range
-                                                            for (var i = 6; i < 9; i++) {
-                                                                if (playersData[i] !== 0) {
-                                                                    players++;
-                                                                }
-                                                            }
-                                                        } else if (position === 'FORWARD') {
-                                                            // Count players based on their index range
-                                                            for (var i = 9; i < 15; i++) {
-                                                                if (playersData[i] !== 0) {
-                                                                    players++;
-                                                                }
-                                                            }
-                                                        } else {
-                                                            return 0;
-                                                        }
+                                    }
+                                } else {
+                                    // Show pop-up indicating that the position is not valid for this drop zone
+                                    alert("Invalid position for the player.");
+                                }
+                            }
 
 
 
-                                                        return players;
-                                                    }
+                            function updateServerWithPosition(playerId, dropZoneId) {
+                                var token = $('#_csrf').attr('content');
+                                var header = $('#_csrf_header').attr('content');
+                                var droppedId = dropZoneId.split("Zone")[1];
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/players/api/update-position',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify({playerId: playerId, dropZoneId: droppedId}),
+                                    beforeSend: function (xhr) {
+                                        xhr.setRequestHeader(header, token);
+                                    },
+                                    success: function (response) {
+                                        console.log('Player position updated successfully.');
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error('Error updating player position:', xhr.responseText);
+                                    }
+                                });
+                            }
+
+
+                            function removePlayer(button) {
+                                var dropZone = button.parentNode;
+                                var card = dropZone.querySelector('.card');
+                                if (card) {
+                                    card.remove();
+                                    card.setAttribute("draggable", "true");
+                                    // Remove dropped player ID from the array
+                                    var index = droppedPlayers.indexOf(card.id);
+                                    if (index !== -1) {
+                                        droppedPlayers.splice(index, 1);
+                                    }
+                                    updateServerWithPosition(card.id, '0');
+
+                                }
+                                loadSearchResults($('#searchForm').serialize());
+                                sumPlayerSalaries();
+                                updatePlayerCounts();
+                                button.style.display = 'none';
+
+                            }
+                            $('#sortCriteria').on('change', function () {
+                                var sortCriteria = $(this).val();
+                                if (sortCriteria) {
+                                    var formData = $('#searchForm').serialize() + '&sort=' + sortCriteria;
+                                    loadSearchResults(formData);
+                                }
+                            });
+
+                            $('#searchForm').on('input', function () {
+                                var formData = $(this).serialize();
+                                loadSearchResults(formData);
+                            });
+
+                            function loadSavedPositions() {
+                                $.ajax({
+                                    type: 'GET',
+                                    url: '/players/api/saved-positions', // Endpoint to retrieve saved positions
+                                    success: function (response) {
+                                        // Iterate through the saved positions and place players in corresponding drop zones
+                                        response.forEach(function (position) {
+                                            var cardId = position.playerId.toString();
+                                            var dropZoneId = 'droppedZone' + position.dropZoneId;
+                                            var card = document.getElementById(cardId);
+                                            var dropZone = document.getElementById(dropZoneId);
+
+                                            if (card && dropZone) {
+                                                dropZone.appendChild(card);
+                                                var removeButton = dropZone.querySelector('.remove-button');
+                                                card.removeAttribute("draggable");
+                                                if (removeButton) {
+                                                    removeButton.style.display = 'block';
+                                                }
+                                                droppedPlayers.push(cardId);
+                                                var formData = $(this).serialize();
+                                                loadSearchResults(formData);
+                                                sumPlayerSalaries();
+                                                updatePlayerCounts();
+                                            }
+
+                                        });
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error('Error loading saved positions:', xhr.responseText);
+                                    }
+                                });
+                            }
+
+
+                            $("#saveButton").click(function () {
+                                var playersData = generatePlayersData();
+                                var token = $('#_csrf').attr('content');
+                                var header = $('#_csrf_header').attr('content');
+
+                                $.ajax({
+                                    url: "/players/team/save",
+                                    type: "POST",
+                                    contentType: "application/json",
+                                    data: JSON.stringify(playersData),
+                                    beforeSend: function (xhr) {
+                                        xhr.setRequestHeader(header, token);
+                                    },
+
+                                    success: function (response) {
+                                        // Check if response is successful
+                                        if (response.includes("successfully")) {
+                                            $("#responseMessage").text(response);
+                                        } else {
+                                            $("#responseMessage").text(""); // Clear previous error messages
+                                        }
+                                    },
+                                    error: function (xhr, textStatus, errorThrown) {
+                                        // Display error message if request fails
+                                        $("#responseMessage").text(xhr.responseText);
+                                    }
+                                });
+                            });
+
+
+                            function generatePlayersData() {
+                                var playersData = [];
+
+                                // Iterate through each drop zone
+                                for (var i = 1; i <= 15; i++) {
+                                    var dropZoneId = 'droppedZone' + i;
+                                    var dropZone = document.getElementById(dropZoneId);
+
+                                    // Iterate through cards within the drop zone
+                                    var cards = dropZone.querySelectorAll('.card');
+
+                                    if (cards.length === 0) {
+                                        playersData.push(0); // Push 0 if the zone is empty
+                                    } else {
+                                        cards.forEach(function (card) {
+                                            var playerId = card.id; // Assuming player IDs are unique and can be directly used
+                                            playersData.push(playerId);
+                                        });
+                                    }
+                                }
+
+                                return playersData;
+                            }
+                            function sumPlayerSalaries() {
+                                var totalSalary = 0;
+
+                                // Iterate through each dropped player
+                                droppedPlayers.forEach(function (playerId) {
+                                    var card = document.getElementById(playerId);
+                                    if (card) {
+                                        // Extract salary from the card
+                                        var salaryString = card.querySelector('.card-content p:nth-child(2)').textContent.trim();
+                                        var salary = parseFloat(salaryString.replace('Salary: ', '').replace('$', '').replace(',', ''));
+                                        // Add salary to total
+                                        totalSalary += salary;
+                                    }
+                                });
+
+                                // Display the total salary
+                                $('#totalSalary').text('Total Salary: $' + totalSalary.toFixed(2));
+
+                                return totalSalary;
+                            }
+
+                            function countStarPlayers() {
+                                var starPlayers = 0;
+
+                                // Iterate through each dropped player
+                                droppedPlayers.forEach(function (playerId) {
+                                    var card = document.getElementById(playerId);
+                                    if (card) {
+                                        var salaryString = card.querySelector('.card-content p:nth-child(2)').textContent.trim(); // Assuming salary is always the second <p> element
+                                        var salary = parseFloat(salaryString.replace('Salary: ', '').replace('$', '').replace(',', '')); // Assuming salary is in USD format
+                                        if (salary >= 3000) { // Assuming players with salary greater than 3000 are starred
+                                            starPlayers++;
+                                        }
+                                    }
+                                });
+
+                                return starPlayers;
+                            }
+
+
+                            function countPlayersByPosition(position) {
+                                var playersData = generatePlayersData();
+                                var players = 0;
+                                var startIndex, endIndex;
+
+                                // Determine the start and end indexes based on position
+                                if (position === 'GUARD') {
+                                    // Count players based on their index range
+                                    for (var i = 0; i < 6; i++) {
+                                        if (playersData[i] !== 0) {
+                                            players++;
+                                        }
+                                    }
+                                } else if (position === 'CENTER') {
+                                    // Count players based on their index range
+                                    for (var i = 6; i < 9; i++) {
+                                        if (playersData[i] !== 0) {
+                                            players++;
+                                        }
+                                    }
+                                } else if (position === 'FORWARD') {
+                                    // Count players based on their index range
+                                    for (var i = 9; i < 15; i++) {
+                                        if (playersData[i] !== 0) {
+                                            players++;
+                                        }
+                                    }
+                                } else {
+                                    return 0;
+                                }
 
 
 
-                                                    function updatePlayerCounts() {
+                                return players;
+                            }
 
-                                                        var starPlayersCount = countStarPlayers();
-                                                        var guardCount = countPlayersByPosition('GUARD');
-                                                        var centerCount = countPlayersByPosition('CENTER');
-                                                        var forwardCount = countPlayersByPosition('FORWARD');
-                                                        var totalPlayers = guardCount + centerCount + forwardCount;
-                                                        // Display the counts wherever you want in your HTML
-                                                        $('#starPlayersCount').text('Star Players: ' + starPlayersCount);
-                                                        $('#guardCount').text('Guards: ' + guardCount);
-                                                        $('#centerCount').text('Centers: ' + centerCount);
-                                                        $('#forwardCount').text('Forwards: ' + forwardCount);
-                                                        $('#totalPlayers').text('Total: ' + totalPlayers);
-                                                    }
+
+
+                            function updatePlayerCounts() {
+
+                                var starPlayersCount = countStarPlayers();
+                                var guardCount = countPlayersByPosition('GUARD');
+                                var centerCount = countPlayersByPosition('CENTER');
+                                var forwardCount = countPlayersByPosition('FORWARD');
+                                var totalPlayers = guardCount + centerCount + forwardCount;
+                                // Display the counts wherever you want in your HTML
+                                $('#starPlayersCount').text('Star Players: ' + starPlayersCount);
+                                $('#guardCount').text('Guards: ' + guardCount);
+                                $('#centerCount').text('Centers: ' + centerCount);
+                                $('#forwardCount').text('Forwards: ' + forwardCount);
+                                $('#totalPlayers').text('Total: ' + totalPlayers);
+                            }
 
 
 

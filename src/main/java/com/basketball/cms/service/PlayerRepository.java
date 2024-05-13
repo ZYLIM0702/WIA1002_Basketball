@@ -9,11 +9,12 @@ import com.basketball.cms.model.Player;
 import java.util.List;
 import java.util.Map;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 /**
  *
  * @author limziyang
  */
 public interface PlayerRepository extends JpaRepository<Player, Integer>{
-    @Query("SELECT p FROM Player p WHERE p.Is_Added = 1")
-    List<Player> findAddedPlayers();
+    @Query("SELECT p FROM Player p WHERE p.is_added = 1")
+    List<Player> findIsAddedPlayers();
 }
