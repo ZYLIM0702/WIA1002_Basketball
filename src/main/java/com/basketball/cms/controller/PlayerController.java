@@ -60,6 +60,14 @@ public class PlayerController {
         return "players/index";
     }
 
+    @GetMapping("/gameplay")
+    public String playerManagementInGame(Model model) {
+        System.out.println("test");
+        List<Player> players = repo.findAddedPlayers();
+        model.addAttribute("players", players);
+        return "players/gameplay";
+    }
+
     @GetMapping("/edit")
     public String showEditPlayerPage(@RequestParam int playerId, Model model) {
         Player player = repo.findById(playerId).orElse(null);
@@ -250,7 +258,6 @@ public class PlayerController {
         }
         return injuries;
     }
-    
 
     @GetMapping("/sort")
 //    public String sortPlayersByOverallScore(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
@@ -341,7 +348,6 @@ public class PlayerController {
 //        return "players/sort";
 //    }
 
-    
     @GetMapping("/team")
     public String teamPlayersSidebar(@RequestParam(required = false) String name,
             @RequestParam(required = false) String position,
@@ -505,10 +511,9 @@ public class PlayerController {
             Date dateCreated = player.getDateCreated();
 
             String contractStatus;
-            if(isMinDate(dateCreated)){
+            if (isMinDate(dateCreated)) {
                 contractStatus = "No Contract";
-            }
-            else if (expirationDate.isBefore(currentDate)) {
+            } else if (expirationDate.isBefore(currentDate)) {
                 contractStatus = "Expired";
             } else if (currentDate.plusMonths(3).isAfter(expirationDate)) {
                 contractStatus = "Almost Expired";
@@ -557,16 +562,15 @@ public class PlayerController {
             @RequestParam("contractStatus") String contractStatus,
             @RequestParam(value = "dateCreated") String dateCreated,
             Model model) {
-            Date parsedDate;
-            try {
-                parsedDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateCreated);
-            } catch (ParseException e) {
-                // Handle parsing exception
-                e.printStackTrace();
-                // You might want to return an error response here if parsing fails
-                return "error";
-            }
-
+        Date parsedDate;
+        try {
+            parsedDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateCreated);
+        } catch (ParseException e) {
+            // Handle parsing exception
+            e.printStackTrace();
+            // You might want to return an error response here if parsing fails
+            return "error";
+        }
 
         // Retrieve player from the database
         Optional<Player> playerOptional = repo.findById(playerId);
@@ -580,7 +584,7 @@ public class PlayerController {
         // Redirect back to the contract page
         return "redirect:/players/contract";
     }
-    
+
     @PostMapping("/contract/remove")
     public String removeContract(@RequestParam("playerId") Integer playerId, Model model) {
         // Retrieve player from the database
@@ -597,6 +601,5 @@ public class PlayerController {
         // Redirect back to the contract page
         return "redirect:/players/contract";
     }
-
 
 }

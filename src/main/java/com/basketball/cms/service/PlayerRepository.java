@@ -14,7 +14,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author limziyang
  */
 public interface PlayerRepository extends JpaRepository<Player, Integer>{
-    
-
-
+    @Query("SELECT p FROM Player p WHERE p.Is_Added = 1")
+    List<Player> findAddedPlayers();
 }
