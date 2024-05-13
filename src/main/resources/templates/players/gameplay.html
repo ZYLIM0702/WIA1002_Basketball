@@ -1,121 +1,172 @@
 <!DOCTYPE html>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>All Players</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            display: flex;
-            gap: 20px;
-        }
-        .card-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .card {
-            width: 200px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            overflow: hidden;
-            cursor: grab;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .card img {
-            width: 100%;
-            height: auto;
-        }
-        .card-content {
-            padding: 10px;
-        }
-        .injuryStack-container {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .pop-button {
-            margin-top: 10px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="card-container bench-container" ondragover="allowDrop(event)" ondrop="drop(event, 'bench')">
-            <h2>Bench</h2>
-            <div th:each="player : ${players}" class="card" draggable="true" ondragstart="drag(event)" th:id="'playerCard_' + ${player.playerId}">
-                <img th:src="${player.Image}" alt="Player Image">
-                    <div class="card-content">
-                        <h2 th:text="${player.name}"></h2>
-                        <p th:text="'Jersey Number: ' + ${player.jerseyNum}"></p>
-                        <p th:text="'Position: ' + ${player.position}"></p>
-                    </div>
+    <head>
+        <title>All Players</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 20px;
+            }
+            .container {
+                display: flex;
+                gap: 20px;
+            }
+            .card-container {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .card {
+                position: relative; /* Added to contain the dropdown menu */
+                width: 200px;
+                background-color: #fff;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                overflow: hidden;
+                cursor: grab;
+                box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .card img {
+                width: 100%;
+                height: auto;
+            }
+            .card-content {
+                padding: 10px;
+            }
+            .injury-dropdown {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+            }
+            .injury-dropdown[disabled] {
+                pointer-events: none; /* Disable dropdown menu */
+            }
+            .injuryStack-container .card {
+                cursor: default; /* Make cards non-draggable in the injury stack container */
+            }
+            .injuryStack-container {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .pop-button {
+                margin-top: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="card-container bench-container" ondragover="allowDrop(event)" ondrop="drop(event, 'bench')">
+                <h2>Bench</h2>
+                <div th:each="player : ${players}" class="card" draggable="true" ondragstart="drag(event)" th:id="'playerCard_' + ${player.playerId}">
+                    <img th:src="${player.Image}" alt="Player Image">
+                        <div class="card-content">
+                            <h2 th:text="${player.name}"></h2>
+                            <p th:text="'Jersey Number: ' + ${player.jerseyNum}"></p>
+                            <p th:text="'Position: ' + ${player.position}"></p>
+                        </div>
+                        <!-- Dropdown menu for selecting injury status -->
+                        <select class="injury-dropdown" onchange="selectInjury(this)">
+                            <option value="" selected>No Injury</option>
+                            <option value="knee">Knee Injury</option>
+                            <option value="ankle">Ankle Sprain</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                </div>
+            </div>
+
+            <div class="card-container inGame-container" ondragover="allowDrop(event)" ondrop="drop(event, 'inGame')">
+                <h2>In Game</h2>
+            </div>
+
+            <div class="card-container injuryStack-container" ondragover="allowDrop(event)" ondrop="drop(event, 'injuryStack')">
+                <h2>Injury Stack</h2>
+                <button class="pop-button" onclick="popToBench()">Pop to Bench</button>
             </div>
         </div>
 
-        <div class="card-container inGame-container" ondragover="allowDrop(event)" ondrop="drop(event, 'inGame')">
-            <h2>In Game</h2>
-        </div>
+        <script>
+            // Global variable to keep track of injured player count
+            var injuredPlayerCount = 0;
+            var inGamePlayerCount = 0; // Track the number of players in-game
 
-        <div class="card-container injuryStack-container" ondragover="allowDrop(event)" ondrop="drop(event, 'injuryStack')">
-            <h2>Injury Stack</h2>
-            <button class="pop-button" onclick="popToBench()">Pop to Bench</button>
-        </div>
-    </div>
-
-    <script>
-        // Global variable to keep track of injured player count
-        var injuredPlayerCount = 0;
-        var inGamePlayerCount = 0; // Track the number of players in-game
-
-        function drag(ev) {
-            ev.dataTransfer.setData("cardId", ev.target.id);
-        }
-
-        function allowDrop(ev) {
-            ev.preventDefault();
-        }
-
-        function drop(ev, container) {
-            ev.preventDefault();
-            var data = ev.dataTransfer.getData("cardId");
-            var element = document.getElementById(data);
-            if (container === 'bench') {
-                document.querySelector('.bench-container').appendChild(element);
-            } else if (container === 'inGame') {
-                if (inGamePlayerCount < 5) {
-                    document.querySelector('.inGame-container').appendChild(element);
-                    inGamePlayerCount++;
-                }
-            } else if (container === 'injuryStack') {
-                document.querySelector('.injuryStack-container').appendChild(element);
-                injuredPlayerCount++; // Increment injured player count when dragged into the injury stack
+            function drag(ev) {
+                ev.dataTransfer.setData("cardId", ev.target.id);
             }
-        }
 
-        function popToBench() {
-            if (injuredPlayerCount > 0) {
-                var injuryStack = document.querySelector('.injuryStack-container');
-                var lastPlayer = injuryStack.lastElementChild;
-                if (lastPlayer) {
-                    // Decrement injured player count when popped back to bench
-                    injuredPlayerCount--;
-                    document.querySelector('.bench-container').appendChild(lastPlayer);
+            function allowDrop(ev) {
+                ev.preventDefault();
+            }
+
+            function drop(ev, container) {
+                ev.preventDefault();
+                var data = ev.dataTransfer.getData("cardId");
+                var element = document.getElementById(data);
+                if (container === 'bench') {
+                    document.querySelector('.bench-container').appendChild(element);
+                } else if (container === 'inGame') {
+                    if (inGamePlayerCount < 5) {
+                        document.querySelector('.inGame-container').appendChild(element);
+                        inGamePlayerCount++;
+                    }
+                } else if (container === 'injuryStack') {
+                    var selectedInjury = element.dataset.injury;
+                    if (selectedInjury) {
+                        document.querySelector('.injuryStack-container').appendChild(element);
+                        injuredPlayerCount++;
+                        // Disable the dropdown menu for injury status
+                        var dropdown = element.querySelector('.injury-dropdown');
+                        if (dropdown) {
+                            dropdown.disabled = true;
+                        }
+                    }
                 }
             }
-        }
 
-        // Update inGamePlayerCount when a player card is dragged out from the "In Game" container
-        document.querySelector('.inGame-container').addEventListener('dragstart', function () {
-            inGamePlayerCount--;
-        });
-    </script>
-</body>
+            function popToBench() {
+                if (injuredPlayerCount > 0) {
+                    var injuryStack = document.querySelector('.injuryStack-container');
+                    var lastPlayer = injuryStack.lastElementChild;
+                    if (lastPlayer) {
+                        // Reset injury status to "No Injury"
+                        delete lastPlayer.dataset.injury;
+                        // Decrement injured player count when popped back to bench
+                        injuredPlayerCount--;
+                        // Enable the dropdown menu for injury status
+                        var dropdown = lastPlayer.querySelector('.injury-dropdown');
+                        if (dropdown) {
+                            dropdown.disabled = false;
+                        }
+                        document.querySelector('.bench-container').appendChild(lastPlayer);
+                    }
+                }
+            }
+
+
+            function selectInjury(select) {
+                var card = select.parentElement;
+                var selectedInjury = select.value;
+                if (selectedInjury) {
+                    card.dataset.injury = selectedInjury;
+                    // Trigger the drop event programmatically to move the card to the injury stack container
+                    var dropEvent = new CustomEvent('drop', {detail: {container: 'injuryStack'}});
+                    dropEvent.dataTransfer = {getData: function () {
+                            return card.id;
+                        }};
+                    drop(dropEvent, 'injuryStack');
+                } else {
+                    delete card.dataset.injury;
+                }
+            }
+
+            // Update inGamePlayerCount when a player card is dragged out from the "In Game" container
+            document.querySelector('.inGame-container').addEventListener('dragstart', function () {
+                inGamePlayerCount--;
+            });
+        </script>
+    </body>
 </html>
