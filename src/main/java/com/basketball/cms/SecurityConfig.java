@@ -46,7 +46,11 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeRequests()
                 .requestMatchers("/").permitAll() // Allow access to homepage
-                .requestMatchers("/players").authenticated(); // Require authentication for other requests
+                .requestMatchers("/players").authenticated()// Require authentication for other requests
+                .and()
+                .formLogin()
+                .loginPage("/login") // Specifies the custom login page URL
+                .permitAll(); // Allow access to the custom login page without authentication
         http.formLogin(); // Use form-based authentication
         return http.build();
     }
