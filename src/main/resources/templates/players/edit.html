@@ -39,7 +39,6 @@
     <body>
         <h2 style="text-align: center;">Edit Player</h2>
         <form action="/players/update" method="post" th:action="@{/players/update}" th:object="${player}">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             <input type="hidden" name="playerId" th:value="${player.playerId}" />
 
             <label for="name">Name:</label>

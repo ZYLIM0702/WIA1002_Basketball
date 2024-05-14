@@ -3,8 +3,6 @@
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
-        <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
         <title>Team Page</title>
         <style>
             body {
@@ -370,17 +368,12 @@
 
 
                                                     function updateServerWithPosition(playerId, dropZoneId) {
-                                                        var token = $('#_csrf').attr('content');
-                                                        var header = $('#_csrf_header').attr('content');
                                                         var droppedId = dropZoneId.split("Zone")[1];
                                                         $.ajax({
                                                             type: 'POST',
                                                             url: '/players/api/update-position',
                                                             contentType: 'application/json',
                                                             data: JSON.stringify({playerId: playerId, dropZoneId: droppedId}),
-                                                            beforeSend: function (xhr) {
-                                                                xhr.setRequestHeader(header, token);
-                                                            },
                                                             success: function (response) {
                                                                 console.log('Player position updated successfully.');
                                                             },
@@ -461,18 +454,12 @@
 
                                                     $("#saveButton").click(function () {
                                                         var playersData = generatePlayersData();
-                                                        var token = $('#_csrf').attr('content');
-                                                        var header = $('#_csrf_header').attr('content');
 
                                                         $.ajax({
                                                             url: "/team/save",
                                                             type: "POST",
                                                             contentType: "application/json",
                                                             data: JSON.stringify(playersData),
-                                                            beforeSend: function (xhr) {
-                                                                xhr.setRequestHeader(header, token);
-                                                            },
-
                                                             success: function (response) {
                                                                 // Check if response is successful
                                                                 if (response.includes("successfully")) {
