@@ -427,7 +427,7 @@
                                                     function loadSavedPositions() {
                                                         $.ajax({
                                                             type: 'GET',
-                                                            url: '/players/api/saved-positions', // Endpoint to retrieve saved positions
+                                                            url: 'team/api/saved-positions', // Endpoint to retrieve saved positions
                                                             success: function (response) {
                                                                 // Iterate through the saved positions and place players in corresponding drop zones
                                                                 response.forEach(function (position) {

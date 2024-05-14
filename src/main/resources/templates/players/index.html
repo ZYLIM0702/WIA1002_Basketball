@@ -1,120 +1,165 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
--->
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <meta charset="UTF-8" />
+
         <title>All Players</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f4f4f4;
-                margin: 0;
-                padding: 20px;
-            }
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                background-color: #fff;
-                border: 1px solid #ddd;
-            }
-            th, td {
-                padding: 10px;
-                text-align: left;
-                border-bottom: 1px solid #ddd;
-            }
-            th {
-                background-color: #f2f2f2;
-            }
-            img {
-                max-width: 100%;
-                height: auto;
-            }
-            button {
-                padding: 5px 10px;
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                cursor: pointer;
-                border-radius: 3px;
-            }
-            button:hover {
-                background-color: #45a049;
-            }
-        </style>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css"/>
+
+            <style>
+                * {
+                    box-sizing: border-box;
+                }
+
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f4f4f4;
+                    margin: 0;
+                    padding: 20px;
+                    font-size: 16px;
+                }
+
+                .container {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 20px;
+                    justify-content: center;
+                }
+
+                .card {
+                    width: 270px;
+                    background: rgba(255, 255, 255, 1);
+                    border-radius: 16px;
+                    box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.25);
+                    overflow: hidden;
+                    margin-bottom: 20px;
+                    position: relative;
+                    transition: transform 0.3s ease-in-out;
+                }
+
+                .card:hover {
+                    transform: scale(1.03);
+                }
+
+                .card img {
+                    width: 100%;
+                    height: auto;
+                    margin: 0;
+                    position: relative;
+                    background: rgb(225, 225, 225);
+                    border-radius: 10px 10px 0px 0px;
+                    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out; /* Added background transition */
+                }
+
+                .card:hover img {
+                    background: rgb(100, 100, 100);
+                    transform: scale(1.05);
+                }
+
+
+                .card .content {
+                    padding: 15px;
+                }
+
+                .card .content h2 {
+                    margin: 0 0 10px;
+                    font-size: 18px;
+                    font-family: 'Interstate', sans-serif;
+                }
+
+                .card .content p {
+                    margin: 5px 0;
+                    font-size: 16px;
+                }
+
+                .star {
+                    position: absolute;
+                    top: 15px;
+                    right: 15px;
+                    font-size: 24px;
+                    color: #fff;
+                    text-shadow: 2px 2px 5px rgb(0 0 0 / 14%);
+                    z-index: 1;
+                }
+                .star .starred:hover{
+                    transform: scale(1.03);
+                }
+
+                .star.starred {
+                    color: #ffea00;
+                }
+                .player-info {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: baseline;
+                }
+
+
+
+
+            </style>
     </head>
     <body>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Player ID</th>
-                    <th>Name</th>
-                    <th>Age</th>
-                    <th>Height</th>
-                    <th>Weight</th>
-                    <th>Image</th>
-                    <th>Jersey Number</th>
-                    <th>Country</th>
-                    <th>Position</th>
-                    <th>Salary</th>
-                    <th>Starred</th>
-                    <th>Is_Added</th>
-                    <th>Star Player</th>
-                    <th>Points</th>
-                    <th>Blocks</th>
-                    <th>Steals</th>
-                    <th>Assists</th>
-                    <th>Rebounds</th>
-                    <th>Contract Status</th>
-                    <th>Contract Date Created</th>
-                    <th>Status</th>
-                    <th>Injury Details</th>
-                    <th>Show Profile</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="player : ${players}">
-                    <td th:text="${player.playerId}"></td>
-                    <td th:text="${player.name}"></td>
-                    <td th:text="${player.age}"></td>
-                    <td th:text="${player.height}"></td>
-                    <td th:text="${player.weight}"></td>
-                    <td><img th:src="${player.Image}" width="320"/></td>
-                    <td th:text="${player.jerseyNum}"></td>
-                    <td th:text="${player.country}"></td>
-                    <td th:text="${player.position}"></td>
-                    <td th:text="${player.salary}"></td>
-                    <td>
-                        <img th:if="${player.starred == 0}" th:src="@{https://png.pngtree.com/png-vector/20190725/ourmid/pngtree-vector-star-icon-png-image_1577370.jpg}" />
-                        <img th:if="${player.starred == 1}" th:src="@{https://png.pngtree.com/png-vector/20190419/ourmid/pngtree-vector-star-icon-png-image_956428.jpg}" />
-                    </td>
-                    <td th:text="${player.is_added}"></td>
-                    <td th:text="${player.isStarPlayer}"></td>
-                    <td th:text="${player.points}"></td>
-                    <td th:text="${player.blocks}"></td>
-                    <td th:text="${player.steals}"></td>
-                    <td th:text="${player.assists}"></td>
-                    <td th:text="${player.rebounds}"></td>
-                    <td th:text="${player.contractStatus}"></td>
-                    <td th:text="${#dates.format(player.dateCreated, 'yyyy-MM-dd')}"></td>
-                    <td th:text="${player.statusId}"></td>
-                    <td th:text="${player.status.injuryDetails}"></td>
+        <div class="container">
 
-                    <td>
-                        <form th:action="@{/players/profile/{playerId}(playerId=${player.playerId})}" method="get">
-                            <button type="submit">View Profile</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="/players/edit" method="get">
-                            <input type="hidden" name="playerId" th:value="${player.playerId}" />
-                            <button type="submit">Edit</button>
-                        </form>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+            <div class="card" th:each="player : ${players}">
+                <i class="star fa-regular fa-star" th:classappend="${player.starred == 1 ? 'starred' : ''}" th:onclick="'toggleStar(this, \'' + ${player.playerId} + '\')'"></i>
+                <img th:src="${player.Image}" alt="Player Image"/>
+                <div class="content" th:onclick="'viewProfile(\'' + ${player.playerId} + '\')'">
+                    <div class="player-info">
+                        <h2 th:text="${player.name}"></h2>
+                        <i style="" th:class="'fi fi-' + ${player.country.toLowerCase()}"></i>
+                    </div>
+
+                    <p>Age: <span th:text="${player.age}"></span></p>
+                    <p>Height: <span th:text="${player.height}"></span> ft</p>
+                    <p>Position: <span style="font-weight: bold;" th:text="${player.position}"></span></p>
+                    <p>Overall Score: <span th:text="${#numbers.formatDecimal(player.points, 1, 2)}"></span></p>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function toggleStar(icon, playerId) {
+                playerId = parseInt(playerId); // Convert playerId to integer if it's not already
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'players/toggleStar?playerId=' + playerId, true); // Include playerId in the URL
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            icon.classList.toggle('starred');
+                            // Toggle the color of the star
+                            if (icon.classList.contains('starred')) {
+                                icon.style.color = '#ffea00'; // Yellow
+                            } else {
+                                icon.style.color = '#ffffff'; // White
+                            }
+                            var response = JSON.parse(xhr.responseText);
+                            if (response.success) {
+
+                            } else {
+                                console.error('Failed to toggle star.');
+                            }
+                        } else {
+                            console.error('Failed to toggle star: ' + xhr.status);
+                        }
+                    }
+                };
+
+                var data = JSON.stringify({playerId: playerId});
+                xhr.send(data);
+            }
+            function viewProfile(playerId) {
+                window.location.href = '/players/profile/' + playerId;
+            }
+
+        </script>
     </body>
+
+
+
 </html>

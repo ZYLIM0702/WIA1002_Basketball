@@ -458,5 +458,18 @@ public class PlayerController {
         // Redirect back to the contract page
         return "redirect:/players/contract";
     }
+    
+    @PostMapping("/toggleStar")
+    public ResponseEntity<Object> toggleStar(@RequestParam("playerId") int playerId) {
+        Player player = repo.findById(playerId).orElse(null);
+        if (player == null) {
+            return ResponseEntity.notFound().build();
+        }
+        // Toggle the starred attribute
+        player.setStarred(player.getStarred() == 1 ? 0 : 1);
+        repo.save(player);
+        return ResponseEntity.ok().build();
+    }
+
 
 }

@@ -42,7 +42,9 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http
+                .csrf().disable()
+                .authorizeRequests()
                 .requestMatchers("/").permitAll() // Allow access to homepage
                 .requestMatchers("/players").authenticated(); // Require authentication for other requests
         http.formLogin(); // Use form-based authentication
