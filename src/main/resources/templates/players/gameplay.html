@@ -1,120 +1,132 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
--->
-<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title>All Players</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f4f4f4;
-                margin: 0;
-                padding: 20px;
-            }
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                background-color: #fff;
-                border: 1px solid #ddd;
-            }
-            th, td {
-                padding: 10px;
-                text-align: left;
-                border-bottom: 1px solid #ddd;
-            }
-            th {
-                background-color: #f2f2f2;
-            }
-            img {
-                max-width: 100%;
-                height: auto;
-            }
-            button {
-                padding: 5px 10px;
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                cursor: pointer;
-                border-radius: 3px;
-            }
-            button:hover {
-                background-color: #45a049;
-            }
-        </style>
-    </head>
-    <body>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Player ID</th>
-                    <th>Name</th>
-                    <th>Age</th>
-                    <th>Height</th>
-                    <th>Weight</th>
-                    <th>Image</th>
-                    <th>Jersey Number</th>
-                    <th>Country</th>
-                    <th>Position</th>
-                    <th>Salary</th>
-                    <th>Starred</th>
-                    <th>Is_Added</th>
-                    <th>Star Player</th>
-                    <th>Points</th>
-                    <th>Blocks</th>
-                    <th>Steals</th>
-                    <th>Assists</th>
-                    <th>Rebounds</th>
-                    <th>Contract Status</th>
-                    <th>Contract Date Created</th>
-                    <th>Status</th>
-                    <th>Injury Details</th>
-                    <th>Show Profile</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="player : ${players}">
-                    <td th:text="${player.playerId}"></td>
-                    <td th:text="${player.name}"></td>
-                    <td th:text="${player.age}"></td>
-                    <td th:text="${player.height}"></td>
-                    <td th:text="${player.weight}"></td>
-                    <td><img th:src="${player.Image}" width="320"/></td>
-                    <td th:text="${player.jerseyNum}"></td>
-                    <td th:text="${player.country}"></td>
-                    <td th:text="${player.position}"></td>
-                    <td th:text="${player.salary}"></td>
-                    <td>
-                        <img th:if="${player.starred == 0}" th:src="@{https://png.pngtree.com/png-vector/20190725/ourmid/pngtree-vector-star-icon-png-image_1577370.jpg}" />
-                        <img th:if="${player.starred == 1}" th:src="@{https://png.pngtree.com/png-vector/20190419/ourmid/pngtree-vector-star-icon-png-image_956428.jpg}" />
-                    </td>
-                    <td th:text="${player.is_added}"></td>
-                    <td th:text="${player.isStarPlayer}"></td>
-                    <td th:text="${player.points}"></td>
-                    <td th:text="${player.blocks}"></td>
-                    <td th:text="${player.steals}"></td>
-                    <td th:text="${player.assists}"></td>
-                    <td th:text="${player.rebounds}"></td>
-                    <td th:text="${player.contractStatus}"></td>
-                    <td th:text="${#dates.format(player.dateCreated, 'yyyy-MM-dd')}"></td>
-                    <td th:text="${player.statusId}"></td>
-                    <td th:text="${player.status.injuryDetails}"></td>
+<html lang="en-US">
+<head>
+    <title>All Players</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+        .card-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .card {
+            position: relative;
+            width: 200px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            cursor: grab;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .card img {
+            width: 100%;
+            height: auto;
+        }
+        .card-content {
+            padding: 10px;
+        }
+        .injury-dropdown {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .injury-dropdown[disabled] {
+            pointer-events: none;
+        }
+        .injuryStack-container .card {
+            cursor: default;
+        }
+        .injuryStack-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .pop-button {
+            margin-top: 10px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="card-container bench-container" id="benchContainer">
+            <h2>Bench</h2>
+        </div>
 
-                    <td>
-                        <form th:action="@{/players/profile/{playerId}(playerId=${player.playerId})}" method="get">
-                            <button type="submit">View Profile</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="/players/edit" method="get">
-                            <input type="hidden" name="playerId" th:value="${player.playerId}" />
-                            <button type="submit">Edit</button>
-                        </form>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </body>
+        <div class="card-container inGame-container" id="inGameContainer">
+            <h2>In Game</h2>
+        </div>
+
+        <div class="card-container injuryStack-container" id="injuryStackContainer">
+            <h2>Injury Stack</h2>
+            <button class="pop-button" onclick="popToBench()">Pop to Bench</button>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            loadPlayers('/players/api/bench', '#benchContainer', true);
+            loadPlayers('/players/api/inGame', '#inGameContainer', false);
+            loadPlayers('/players/api/injuryStack', '#injuryStackContainer', false, true);
+        });
+
+        function loadPlayers(url, containerId, enableDropdown, disableDropdown = false) {
+            $.get(url, function(players) {
+                players.forEach(player => {
+                    var cardHtml = `
+                        <div class="card" id="playerCard_${player.playerId}">
+                            <img src="${player.image}" alt="Player Image">
+                            <div class="card-content">
+                                <h2>${player.name}</h2>
+                                <p>Jersey Number: ${player.jerseyNum}</p>
+                                <p>Position: ${player.position}</p>
+                            </div>`;
+                    if (enableDropdown) {
+                        cardHtml += `
+                            <select class="injury-dropdown" onchange="selectInjury(this, ${player.playerId})" ${disableDropdown ? 'disabled' : ''}>
+                                <option value="" ${player.injuryStatus == 'No Injury' ? 'selected' : ''}>No Injury</option>
+                                <option value="knee" ${player.injuryStatus == 'Knee Injury' ? 'selected' : ''}>Knee Injury</option>
+                                <option value="ankle" ${player.injuryStatus == 'Ankle Sprain' ? 'selected' : ''}>Ankle Sprain</option>
+                            </select>`;
+                    }
+                    cardHtml += `</div>`;
+                    $(containerId).append(cardHtml);
+                });
+            });
+        }
+
+        function selectInjury(select, playerId) {
+            var selectedInjury = select.value;
+            $.ajax({
+                url: '/players/api/addInjury',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ playerId: playerId, injuryStatus: selectedInjury }),
+                success: function() {
+                    location.reload();
+                }
+            });
+        }
+
+        function popToBench() {
+            $.post('/players/api/removeInjury', function(data) {
+                if (data) {
+                    location.reload();
+                }
+            });
+        }
+    </script>
+</body>
 </html>
