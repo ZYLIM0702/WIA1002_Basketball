@@ -69,7 +69,7 @@ public class Player{
     @Column(name = "contract_status", table = "CONTRACT")
     private String contractStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "status_id", insertable = false, updatable = false)
     private Status status;
 
