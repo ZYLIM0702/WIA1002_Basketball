@@ -62,11 +62,7 @@
 <body>
     <div class="container">
         <div class="card-container bench-container" id="benchContainer">
-            <h2>Bench</h2>
-        </div>
-
-        <div class="card-container inGame-container" id="inGameContainer">
-            <h2>In Game</h2>
+            <h2>Players</h2>
         </div>
 
         <div class="card-container injuryStack-container" id="injuryStackContainer">
@@ -78,7 +74,6 @@
     <script>
         $(document).ready(function() {
             loadPlayers('/players/api/bench', '#benchContainer', true);
-            loadPlayers('/players/api/inGame', '#inGameContainer', false);
             loadPlayers('/players/api/injuryStack', '#injuryStackContainer', false, true);
         });
 
@@ -95,10 +90,10 @@
                             </div>`;
                     if (enableDropdown) {
                         cardHtml += `
-                            <select class="injury-dropdown" onchange="selectInjury(this, ${player.playerId})" ${disableDropdown ? 'disabled' : ''}>
-                                <option value="" ${player.injuryStatus == 'No Injury' ? 'selected' : ''}>No Injury</option>
-                                <option value="knee" ${player.injuryStatus == 'Knee Injury' ? 'selected' : ''}>Knee Injury</option>
-                                <option value="ankle" ${player.injuryStatus == 'Ankle Sprain' ? 'selected' : ''}>Ankle Sprain</option>
+                            <select class="injury-dropdown" onchange="selectInjury(this, ${player.playerId})">
+                                <option value="">No Injury</option>
+                                <option value="knee">Knee Injury</option>
+                                <option value="ankle">Ankle Sprain</option>
                             </select>`;
                     }
                     cardHtml += `</div>`;

@@ -11,6 +11,21 @@ import java.util.List;
 import java.util.Stack;
 import java.util.logging.Logger;
 
+class InjuryUpdateRequest {
+
+    private int playerId;
+    private String injuryStatus;
+
+    // Getters and setters
+    public int getPlayerId() {
+        return playerId;
+    }
+
+    public String getInjuryStatus() {
+        return injuryStatus;
+    }
+}
+
 @RestController
 @RequestMapping("/players/api")
 public class PlayerRestController {
@@ -19,23 +34,23 @@ public class PlayerRestController {
 
     @Autowired
     private PlayerRepository repo;
-    
+
     private Stack<Player> injuryStack = new Stack<>();
     private List<Player> bench = new ArrayList<>();
-    private List<Player> inGame = new ArrayList<>();
-    
+
     @GetMapping("/bench")
     public List<Player> getBenchPlayers() {
+        bench.clear();
         List<Player> players = repo.findIsAddedPlayers();
-        bench.addAll(players);
+        for (Player player : players) {
+            boolean isInInjuryStack = injuryStack.stream()
+                    .anyMatch(p -> p.getPlayerId() == player.getPlayerId());
+            if (!isInInjuryStack) {
+                bench.add(player);
+            }
+        }
         logger.info("Fetching bench players: " + bench);
         return bench;
-    }
-
-    @GetMapping("/inGame")
-    public List<Player> getInGamePlayers() {
-        logger.info("Fetching in-game players: " + inGame);
-        return inGame;
     }
 
     @GetMapping("/injuryStack")
@@ -45,10 +60,14 @@ public class PlayerRestController {
     }
 
     @PostMapping("/addInjury")
-    public ResponseEntity<Void> addInjury(@RequestBody Player player) {
+    public ResponseEntity<Void> addInjury(@RequestBody InjuryUpdateRequest request) {
+        Player player = repo.findById(request.getPlayerId()).orElse(null);
+        if (player == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         injuryStack.push(player);
-        bench.remove(player);
-        logger.info("Added injury for player: " + player);
+        System.out.println("Added injury for player: " + player);
         return ResponseEntity.ok().build();
     }
 
@@ -56,7 +75,6 @@ public class PlayerRestController {
     public ResponseEntity<Player> removeInjury() {
         if (!injuryStack.isEmpty()) {
             Player player = injuryStack.pop();
-            bench.add(player);
             logger.info("Removed injury for player: " + player);
             return ResponseEntity.ok(player);
         } else {

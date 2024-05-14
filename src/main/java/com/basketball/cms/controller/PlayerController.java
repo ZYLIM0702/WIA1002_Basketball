@@ -62,7 +62,6 @@ public class PlayerController {
 
     @GetMapping("/gameplay")
     public String playerManagementInGame(Model model) {
-        System.out.println("test");
         List<Player> players = repo.findIsAddedPlayers();
         model.addAttribute("players", players);
         return "players/gameplay";
