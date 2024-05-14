@@ -92,6 +92,7 @@ public class PlayerController {
             // Handle player not found error
             return "redirect:/players";
         }
+        player.setOverallScore();
         model.addAttribute("player", player);
         return "players/playerProfile";
     }
