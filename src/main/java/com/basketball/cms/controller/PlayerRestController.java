@@ -52,6 +52,53 @@ public class PlayerRestController {
         logger.info("Fetching bench players: " + bench);
         return bench;
     }
+    
+    
+    public List<Player> mergeSort(List<Player> players) {
+        if (players.size() <= 1) {
+            return players;
+        }
+
+        int middle = players.size() / 2;
+        List<Player> left = mergeSort(players.subList(0, middle));
+        List<Player> right = mergeSort(players.subList(middle, players.size()));
+
+        return merge(left, right);
+    }
+
+    private List<Player> merge(List<Player> left, List<Player> right) {
+        List<Player> result = new ArrayList<>();
+        int i = 0, j = 0;
+
+        while (i < left.size() && j < right.size()) {
+            // Sorting in descending order based on points
+            if (left.get(i).getPoints() >= right.get(j).getPoints()) {
+                result.add(left.get(i));
+                i++;
+            } else {
+                result.add(right.get(j));
+                j++;
+            }
+        }
+
+        // Adding remaining elements from left and right lists
+        result.addAll(left.subList(i, left.size()));
+        result.addAll(right.subList(j, right.size()));
+
+        return result;
+    }
+
+    
+        @GetMapping("/sortedPlayerByRank")
+        public List<Player> getSortedPlayerByRank() {
+            List<Player> players = repo.findIsAddedPlayers();
+
+            // Sorting players by points in descending order
+            List<Player> sortedPlayers = mergeSort(players);
+
+            return sortedPlayers;
+        }
+
 
     @GetMapping("/injuryStack")
     public Stack<Player> getInjuryStack() {
