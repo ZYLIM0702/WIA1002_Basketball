@@ -1,31 +1,268 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>San Antonio Spurs Stats</title>
+    <title>San Antonio Spurs</title>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <style>
         body, html {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             height: 100%;
         }
-        .container {
+        .container1 {
             display: grid;
-            grid-template-rows: auto;
-            height: 100vh;
+            grid-template-rows: 500px; /* Adjust the height of the first container here */
+            grid-template-columns: 1fr 1fr;
+        }
+        .container1 .left-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Move the first row content to the right */
+            align-items: flex-start;
+            padding-left: 100px; /* Adjust the right padding to move it to the right */
+        }
+        .container1 .left-content .row:nth-child(1) {
+            font-size: 80px; /* or any other desired size */
+        }
+        .container1 .left-content .row:nth-child(2) {
+            font-size: 60px; /* or any other desired size */
+        }
+        .container1 .left-content img {
+            width: 300px; /* Adjust the width of the logo */
+            margin-top: 20px; /* Add some space between text and logo */
+            padding-left: 50px;
+        }
+        .container1 .right-content{
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Move the first row content to the right */
+            align-items: flex-start;
+            padding-left: 200px; /* Adjust the right padding to move it to the right */
+        }
+        .container1 .right-content .row:nth-child(1) {
+            display: flex;
+            flex-direction: row;
+            font-size: 50px; /* or any other desired size */
+        }
+        .container1 .right-content .row:nth-child(2) {
+            display: flex;
+            flex-direction: column;
+            font-size: 30px; /* or any other desired size */
+            line-height: 0.1;
+        }
+        .container2 {
+            display: grid;
+            grid-template-rows: 100px; /* Adjust the height of the first container here */
+        }
+        .container2 .row{
+            font-size: 50px;
+            justify-content: center;
+            align-self: flex-start;
+            padding-top: 30px;
+        }
+        .container3 {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: 520px; /* Adjust the height of the first container here */
+        }
+        .container3 .colomn1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+        .container3 .column1 img {
+            width: 200px; /* Adjust the width of the image */
+            height: auto; /* Maintain aspect ratio */
+            padding-top: 20px;
+            padding-left: 50px;
+        }
+        .caption {
+            text-align: center;
+            font-size: 30px;
+            padding-top: 10px;
+        }
+        .container3 .colomn2 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+        .container3 .column2 img {
+            width: 200px; /* Adjust the width of the image */
+            height: auto; /* Maintain aspect ratio */
+            padding-top: 20px;
+            padding-left: 50px;
+        }
+        .container3 .colomn3 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+        .container3 .column3 img {
+            width: 200px; /* Adjust the width of the image */
+            height: auto; /* Maintain aspect ratio */
+            padding-top: 20px;
+            padding-left: 50px;
+        }
+        .container3 .colomn4 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+        .container3 .column4 img {
+            width: 200px; /* Adjust the width of the image */
+            height: auto; /* Maintain aspect ratio */
+            padding-top: 20px;
+            padding-left: 50px;
+        }
+        .container3 .colomn5 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+        .container3 .column5 img {
+            width: 200px; /* Adjust the width of the image */
+            height: auto; /* Maintain aspect ratio */
+            padding-top: 20px;
+            padding-left: 50px;
+        }
+        .container4 {
+            display: grid;
+            grid-template-rows: 100px; /* Adjust the height of the first container here */
+        }
+        .container4 .row{
+            font-size: 50px;
+            justify-content: center;
+            align-self: flex-start;
+            padding-top: 30px;
+        }
+        .container5 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+        .carousel-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        .card {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            width: 200px;
+            margin: 10px;
+            text-align: center;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .card img {
+            width: 100%;
+            height: auto;
+        }
+        .card-content {
+            padding: 15px;
+        }
+        .card-content h2 {
+            font-size: 20px;
+            margin: 0;
+        }
+        .card-content p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+        .nav-button {
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1;
+        }
+        .nav-button.left {
+            left: 0;
+        }
+        .nav-button.right {
+            right: 0;
+        }
+        .container6 {
+            display: grid;
+            grid-template-rows: 100px; /* Adjust the height of the first container here */
+        }
+        .container6 .row{
+            font-size: 50px;
+            justify-content: center;
+            align-self: flex-start;
+            padding-top: 30px;
+        }
+        .container7 {
+            display: grid;
+            grid-template-rows: 600px; /* Adjust the height of the first container here */
+            grid-template-columns: 1fr 1fr;
+        }
+        .container7 .left-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Move the first row content to the right */
+            align-items: flex-start;
+            padding-left: 80px;
+            padding-bottom: 30px;
+        }
+        .ranking-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .ranking-table th, .ranking-table td {
+            border: 1px solid #ccc;
+            padding: 15px; /* Increased padding for more space */
+            text-align: left;
+        }
+        .container7 .right-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-left: 60px;
+        }
+        .container7 .right-content h2 {
+            font-size: 50px; /* Adjust the font size for headings */
+        }
+        .container7 .right-content li {
+            font-size: 25px; /* Adjust the font size for list items */
+        }
+        .container8 {
+            display: grid;
+            grid-template-rows: 300px; /* Adjust the height of the first container here */
+        }
+        .container9 {
+            display: grid;
+            grid-template-rows: 300px; /* Adjust the height of the first container here */
+        }
+        .container10 {
+            display: grid;
+            grid-template-rows: 300px; /* Adjust the height of the first container here */
         }
         .row {
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            padding-left: 20px;
-        }
-        .row-content {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            padding-left: 20px;
+            font-size: 24px;
         }
         .black {
             background-color: black;
@@ -35,57 +272,196 @@
             background-color: white;
             color: black;
         }
-        .row img {
-            max-width: 300px;
-            margin-top: 10px;
-        }
-        .spurs {
-            font-size: 80px;
-            font-weight: bold;
-        }
-        .san-antonio-spurs {
-            font-size: 50px;
-            font-weight: bold;
-            margin-top: 5px;
-            letter-spacing: 2px;
-        }
-        .stats {
-            margin-top: 20px;
-            font-size: 20px;
-        }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch('/api/teamStats')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('teamRanking').innerText = data.teamRanking || 'N/A';
-                    document.getElementById('ppg').innerText = data.ppg || '0';
-                    document.getElementById('rpg').innerText = data.rpg || '0';
-                    document.getElementById('apg').innerText = data.apg || '0';
-                    document.getElementById('oppg').innerText = data.oppg || '0';
-                })
-                .catch(error => console.error('Error fetching team stats:', error));
+     document.addEventListener("DOMContentLoaded", function() {
+         fetch('/api/teamStats')
+             .then(response => response.json())
+             .then(data => {
+                 document.getElementById('teamRanking').innerText = data.teamRanking || 'N/A';
+                 document.getElementById('ppg').innerText = data.ppg || '0';
+                 document.getElementById('rpg').innerText = data.rpg || '0';
+                 document.getElementById('apg').innerText = data.apg || '0';
+                 document.getElementById('oppg').innerText = data.oppg || '0';
+             })
+             .catch(error => console.error('Error fetching team stats:', error));
+     });
+     
+     $(document).ready(function() {
+            loadPlayers('/players/api/bench', '#playerContainer', true);
+            loadAndSortPlayers('/players/api/bench', '#sortContainer', true);
+            loadAndSortTopThreePlayers('/players/api/bench', '#topThreeContainer', true);
         });
-    </script>
+        function loadPlayers(url, containerId) {
+            $.get(url, function(players) {
+                players.forEach(player => {
+                    var cardHtml = `
+                        <div class="card" id="playerCard_${player.playerId}">
+                            <img src="${player.image}" alt="Player Image">
+                            <div class="card-content">
+                                <h2>${player.name}</h2>
+                                <p>Jersey Number: ${player.jerseyNum}</p>
+                                <p>Position: ${player.position}</p>
+                            </div>
+                        </div>`;
+                    $(containerId).append(cardHtml);
+                });
+            });
+        }
+        
+        function loadAndSortPlayers(url, containerId) {
+            $.get(url, function(players) {
+                players.sort((a, b) => b.points - a.points);
+                var tableHtml = '<table class="ranking-table"><tr><th>Name</th><th>Position</th><th>Points</th></tr>';
+                players.forEach(player => {
+                    tableHtml += `
+                        <tr>
+                            <td>${player.name}</td>
+                            <td>${player.position}</td>
+                            <td>${player.points}</td>
+                        </tr>`;
+                });
+                tableHtml += '</table>';
+                $(containerId).html(tableHtml);
+            });
+        }
+        
+        function loadAndSortTopThreePlayers(url, containerId) {
+            $.get(url, function(players) {
+                players.sort((a, b) => b.points - a.points);
+                var tableHtml = '<table class="ranking-table"><tr><th>Image</th><th>Name</th><th>Position</th><th>Points</th></tr>';
+                var topThreePlayers = players.slice(0, 3); // Extracting top three players
+                topThreePlayers.forEach(player => {
+                    tableHtml += `
+                        <tr>
+                            <td><img src="${player.image}" alt="${player.name}" style="width: 50px; height: auto;"></td>
+                            <td>${player.name}</td>
+                            <td>${player.position}</td>
+                            <td>${player.points}</td>
+                        </tr>`;
+                });
+                tableHtml += '</table>';
+                $(containerId).html(tableHtml);
+
+                // Append top three players to right-content in container7
+                var topPlayersHtml = '<div><h2>Top Three Players</h2><ul>';
+                topThreePlayers.forEach(player => {
+                    topPlayersHtml += `
+                        <li>
+                            <img src="${player.image}" alt="${player.name}" style="width: 100px; height: auto;">
+                            ${player.name} - ${player.position} - ${player.points}
+                        </li>`;
+                });
+                topPlayersHtml += '</ul></div>';
+                $('.container7 .right-content').html(topPlayersHtml);
+            });
+        }
+
+
+    let currentIndex = 0;
+    const itemsPerPage = 5;
+
+    function updateCarousel() {
+        const carouselInner = document.querySelector('.carousel-inner');
+        const totalItems = carouselInner.children.length;
+        const maxIndex = Math.max(totalItems - itemsPerPage, 0);
+        currentIndex = Math.min(currentIndex, maxIndex);
+        currentIndex = Math.max(currentIndex, 0);
+        const offset = -currentIndex * (200 + 20); // card width + margin
+        carouselInner.style.transform = `translateX(${offset}px)`;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('.nav-button.left').addEventListener('click', () => {
+            currentIndex -= itemsPerPage;
+            updateCarousel();
+        });
+
+        document.querySelector('.nav-button.right').addEventListener('click', () => {
+            currentIndex += itemsPerPage;
+            updateCarousel();
+        });
+    });
+ </script>
 </head>
 <body>
-    <div class="container">
-        <div class="row white">
-            <div class="row-content">
-                <div class="spurs">SPURS</div>
-                <div class="san-antonio-spurs">SAN ANTONIO SPURS</div>
-                <img src="spurs.png" alt="Spurs Logo"/>
-                <div class="stats">
-                    <p>Team Ranking: <span id="teamRanking">N/A</span></p>
-                    <p>PPG: <span id="ppg">0</span></p>
-                    <p>RPG: <span id="rpg">0</span></p>
-                    <p>APG: <span id="apg">0</span></p>
-                    <p>OPPG: <span id="oppg">0</span></p>
-                </div>
+    <div class="container1 white">
+        <div class="left-content">
+            <div class="row">SPURS</div>
+            <div class="row">SAN ANTONIO SPURS</div>
+            <img src="spurs.png" alt="Spurs Logo">
+        </div>
+        <div class="right-content">
+            <div class="row">Team Ranking: <span id="teamRanking">N/A</span></div>
+            <div class="row">
+            <p>PPG: <span id="ppg">0</span></p>
+            <p>RPG: <span id="rpg">0</span></p>
+            <p>APG: <span id="apg">0</span></p>
+            <p>OPPG: <span id="oppg">0</span></p>
+        </div>
+        </div>
+    </div>
+    <div class="container2 black">
+        <div class="row">AWARDS</div>
+    </div>
+    <div class="container3 black">
+        <div class="column1">
+            <img src="1999.png" alt="Championship 1">
+             <div class="caption">1999 Championship</div>
+        </div>
+        <div class="column2">
+            <img src="2003.png" alt="Championship 2">
+            <div class="caption">2003 Championship</div>
+        </div>
+        <div class="column3">
+            <img src="2005.png" alt="Championship 3">
+            <div class="caption">2005 Championship</div>
+        </div>
+        <div class="column4">
+            <img src="2007.png" alt="Championship 4">
+            <div class="caption">2007 Championship</div>
+        </div>
+        <div class="column5">
+            <img src="2014.png" alt="Championship 5">
+            <div class="caption">2014 Championship</div>
+        </div>
+    </div>
+    <div class="container4 white">
+        <div class="row">PLAYERS</div>
+    </div>
+        <div class="container5 white">
+            <div class="carousel-container">
+            <button class="nav-button left">&#10094;</button>
+            <div id="playerContainer" class="carousel-inner"></div>
+            <button class="nav-button right">&#10095;</button>
             </div>
         </div>
-        <div class="row black"></div>
+        <div class="container6 black">
+            <div class="row">PLAYERS' RANKING</div>
+        </div>
+            <div class="container7 black">
+                <div class="left-content">
+                    <div id="sortContainer"></div>
+                </div>
+                <div class="right-content">
+                    <div id="topThreeContainer"></div>
+                </div>
+            </div>
+        <div class="container8 white">
+            <div class="row">Content 8</div>
+        </div>
+        <div class="container9 black">
+            <div class="row">Content 9</div>
+    </div>
+        <div class="container10 white">
+            <div class="row">Content 10</div>
+    </div>
+        <div class="container11 black">
+            <div class="row">Content 11</div>
+    </div>
+        <div class="container12 white">
+            <div class="row">Content 12</div>
     </div>
 </body>
 </html>
