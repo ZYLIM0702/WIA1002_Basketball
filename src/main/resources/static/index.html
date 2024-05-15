@@ -1,18 +1,91 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
--->
-
 <html>
-    <head>
-        <title>hello world</title>
-        <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>NBA</div>
-    <a href="/players">Players</a>
-
-    </body>
+<head>
+    <title>San Antonio Spurs Stats</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        .container {
+            display: grid;
+            grid-template-rows: auto;
+            height: 100vh;
+        }
+        .row {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding-left: 20px;
+        }
+        .row-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-left: 20px;
+        }
+        .black {
+            background-color: black;
+            color: white;
+        }
+        .white {
+            background-color: white;
+            color: black;
+        }
+        .row img {
+            max-width: 300px;
+            margin-top: 10px;
+        }
+        .spurs {
+            font-size: 80px;
+            font-weight: bold;
+        }
+        .san-antonio-spurs {
+            font-size: 50px;
+            font-weight: bold;
+            margin-top: 5px;
+            letter-spacing: 2px;
+        }
+        .stats {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('/api/teamStats')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('teamRanking').innerText = data.teamRanking || 'N/A';
+                    document.getElementById('ppg').innerText = data.ppg || '0';
+                    document.getElementById('rpg').innerText = data.rpg || '0';
+                    document.getElementById('apg').innerText = data.apg || '0';
+                    document.getElementById('oppg').innerText = data.oppg || '0';
+                })
+                .catch(error => console.error('Error fetching team stats:', error));
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="row white">
+            <div class="row-content">
+                <div class="spurs">SPURS</div>
+                <div class="san-antonio-spurs">SAN ANTONIO SPURS</div>
+                <img src="spurs.png" alt="Spurs Logo"/>
+                <div class="stats">
+                    <p>Team Ranking: <span id="teamRanking">N/A</span></p>
+                    <p>PPG: <span id="ppg">0</span></p>
+                    <p>RPG: <span id="rpg">0</span></p>
+                    <p>APG: <span id="apg">0</span></p>
+                    <p>OPPG: <span id="oppg">0</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="row black"></div>
+    </div>
+</body>
 </html>
