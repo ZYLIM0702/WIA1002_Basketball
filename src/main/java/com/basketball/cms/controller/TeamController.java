@@ -92,65 +92,6 @@ public class TeamController {
         return "team/index";
     }
     
-        @GetMapping("/final")
-    public String teamPlayers(@RequestParam(required = false) String name,
-            @RequestParam(required = false) String position,
-            @RequestParam(required = false, defaultValue = "false") boolean starred,
-            @RequestParam(required = false, defaultValue = "name") String sort,
-            Model model) {
-
-        List<Player> players;
-
-        players = repo.findAll();
-        for (Player player : players) {
-            player.setOverallScore();
-        }
-
-        // Filter players based on search criteria
-        if (name != null && !name.isEmpty()) {
-            players = players.stream()
-                    .filter(player -> player.getName().toLowerCase().contains(name.toLowerCase()))
-                    .collect(Collectors.toList());
-        }
-
-        if (position != null && !position.isEmpty()) {
-            players = players.stream()
-                    .filter(player -> player.getPosition().toUpperCase().contains(position.toUpperCase()))
-                    .collect(Collectors.toList());
-        }
-
-        if (starred == true) {
-            players = players.stream()
-                    .filter(player -> player.getStarred() == 1)
-                    .collect(Collectors.toList());
-        }
-
-        // Sort players based on the selected criteria
-        switch (sort) {
-            case "name":
-                players.sort(Comparator.comparing(Player::getName));
-                break;
-            case "overallScore":
-                players.sort(Comparator.comparing(Player::getOverallScore).reversed());
-                break;
-            case "isStarred":
-                players.sort(Comparator.comparing(Player::getIsStarPlayer).reversed());
-                break;
-            case "salary":
-                players.sort(Comparator.comparing(Player::getSalary).reversed());
-                break;
-            // Add more cases for sorting by other criteria if needed
-            default:
-                // Default sorting by name
-                players.sort(Comparator.comparing(Player::getName));
-                break;
-        }
-
-        model.addAttribute("players", players);
-        return "team/final";
-    }
-
-    
     @Autowired
     private PlayerService playerService;
     
@@ -217,7 +158,7 @@ public class TeamController {
         // Salary Cap Limitations
         double totalSalary = players.stream().mapToDouble(Player::getSalary).sum();
         if (totalSalary > 20000) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Team salary cap exceeded. \nWith total salary : " + totalSalary);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Team salary cap exceeded. \nWith total salary : $" + totalSalary);
         }
 
         List<Player> allPlayers = repo.findAll();
