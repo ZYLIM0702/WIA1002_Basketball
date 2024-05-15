@@ -4,54 +4,114 @@
     <meta charset="UTF-8"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>NBA Contract Status Table</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #F0F0F0;
+            color: #000;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background: url('https://cdn.freebiesupply.com/logos/large/2x/san-antonio-spurs-logo.png') no-repeat center center fixed;
+            background-size: 200px 200px;
         }
-       .contract-table {
-            width: 100%;
+        .table-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2C3E50;
+            margin-top: 30px;
+            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.3);
+        }
+        .contract-table {
+            width: 90%;
+            margin: 20px auto;
             border-collapse: collapse;
-            margin-top: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            background-color: #FFFFFF;
+            border: 2px solid #D3D3D3;
+            border-radius: 10px;
+            overflow: hidden;
         }
-       .contract-table th {
-            background-color: #007BFF;
-            color: white;
+        .contract-table th, .contract-table td {
             padding: 10px;
             text-align: left;
+            font-size: 16px;
         }
-       .contract-table td {
+        .contract-table th {
+            background-color: #000000;
+            color: #FFFFFF;
+            font-size: 18px;
+            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+        }
+        .contract-table tbody tr:nth-child(odd) {
+            background-color: #F7F7F7;
+        }
+        .contract-table tbody tr:nth-child(even) {
+            background-color: #EAEAEA;
+        }
+        .contract-table tbody tr {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out;
+        }
+        .contract-table tbody tr:hover {
+            background-color: #D6D6D6;
+            transform: scale(1.01);
+        }
+        .contract-status-dropdown, .expiration-date-picker {
             padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-       .contract-table tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-       .contract-status-dropdown {
-            padding: 5px;
             width: 100%;
             box-sizing: border-box;
+            font-size: 16px;
+            border: 1px solid #D3D3D3;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
         }
-       .calendar-dropdown {
+        .calendar-dropdown {
             display: none;
+        }
+        .save-form button, .remove-form button {
+            background-color: #C4CED4;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #000;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .save-form button:hover, .remove-form button:hover {
+            background-color: #A0A9AD;
+        }
+        /* Add upper and lower margins to each row except the first one */
+        .contract-table tbody tr + tr {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .contract-table tbody tr + tr > td {
+            padding-top: 10px;
+            padding-bottom: 10px;
         }
     </style>
 </head>
 <body>
 
+    <!-- Contract Table Title -->
+    <div class="table-title">Contract</div>
+
     <!-- Table 1 -->
     <table class="contract-table">
-        <tr>
-            <th>Player ID</th>
-            <th>Player Name</th>
-            <th>Star Player</th>
-            <th>Date of Contract Created</th>
-            <th>Date of Contract Expiration</th>
-            <th>Contract Status</th>
-            <th>Set New Contract Expiration Date</th>
-        </tr>
-        <!-- Players will be rendered here -->
+        <thead>
+            <tr>
+                <th>Player ID</th>
+                <th>Player Name</th>
+                <th>Star Player</th>
+                <th>Date of Contract Created</th>
+                <th>Date of Contract Expiration</th>
+                <th>Contract Status</th>
+                <th>Set New Contract Expiration Date</th>
+            </tr>
+        </thead>
         <tbody>
             <tr th:each="player : ${players}">
                 <td th:text="${player.playerId}"></td>
@@ -82,20 +142,24 @@
         </tbody>
     </table>
 
+    <!-- New Player Table Title -->
+    <div class="table-title">New Player</div>
+
     <!-- Table 2 -->
     <table class="contract-table">
-        <tr>
-            <th>Player ID</th>
-            <th>Player Name</th>
-            <th>Star Player</th>
-            <th>Date of Contract Created</th>
-            <th>Date of Contract Expiration</th>
-            <th>Contract Status</th>
-            <th>Remove Contract</th>
-        </tr>
-        <!-- Players will be rendered here -->
-        <tbody>
-            <tr th:each="player : ${unaddedPlayers}">
+        <thead>
+            <tr>
+                <th>Player ID</th>
+                <th>Player Name</th>
+                <th>Star Player</th>
+                <th>Date of Contract Created</th>
+                <th>Date of Contract Expiration</th>
+                <th>Contract Status</th>
+                <th>Remove Contract</th>
+            </tr>
+        </thead>
+        <tbody>        
+            <tr th:each="player : ${unaddedPlayers}" th:unless="${#dates.format(player.dateCreated, 'yyyy-MM-dd') == '0001-01-01'}">
                 <td th:text="${player.playerId}"></td>
                 <td th:text="${player.name}"></td>
                 <td th:text="${player.getIsStarPlayer}"></td>
@@ -104,7 +168,6 @@
                 <td th:text="${player.getContractStatus}"></td>
                 <td>
                     <form class="remove-form" method="post">
-
                         <input type="hidden" name="playerId" th:value="${player.playerId}" />
                         <button type="submit">Remove</button>
                     </form>
@@ -114,7 +177,7 @@
     </table>
 
     <script>
-        // JavaScript function to handledropdown change
+        // JavaScript function to handle dropdown change
         function handleDropdownChange(dropdown) {
             const parentRow = dropdown.parentNode.parentNode;
             const calendarDropdown = parentRow.querySelector('.calendar-dropdown');
@@ -122,12 +185,10 @@
 
             if (dropdown.value === 'Extend') {
                 calendarDropdown.style.display = 'table-cell';
-
             } else {
                 calendarDropdown.style.display = 'none';
                 if (dropdown.value === 'Remove') {
                     expirationDateInput.value = "0001-01-01";
-
                 }
             }
             parentRow.querySelector('.date-created-input').value = expirationDateInput.value;
@@ -149,7 +210,6 @@
                         const formattedExpirationDate = today.toISOString().split('T')[0];
                         expirationDateInput.value = formattedExpirationDate;
                         parentRow.querySelector('.date-created-input').value = formattedExpirationDate;
-
                     } else {
                         calendarDropdown.style.display = 'none';
                     }
@@ -174,8 +234,9 @@
 
                 if (expirationDateString !== '0004-01-01') {
                     expirationDates[index].innerText = expirationDateString;
-               } else {
+                } else {
                     expirationDates[index].innerText = '-';
+                    creationDates[index].innerText = '-';
                 }
             });
         }
@@ -185,7 +246,6 @@
         };
 
         function saveContract(form) {
-
             // Submit the form via AJAX
             $.ajax({
                 type: "POST",
@@ -202,7 +262,6 @@
         }
 
         function removeContract(form) {
-
             // Submit the form via AJAX
             $.ajax({
                 type: "POST",
@@ -228,13 +287,11 @@
             });
             $(".save-form").submit(function (event) {
                 event.preventDefault();
-
                 // Call saveContract function with form data
                 saveContract(this);
             });
             $(".remove-form").submit(function (event) {
                 event.preventDefault();
-
                 // Call removeContract function with form data
                 removeContract(this);
             });
