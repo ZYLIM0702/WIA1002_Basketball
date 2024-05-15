@@ -89,9 +89,6 @@ public class Player{
     private double overallScore;
     
     @Transient
-    private double contract;
-    
-    @Transient
     private boolean isStarPlayer;
     
     //@Column(name = "", table = "")
@@ -270,7 +267,7 @@ public class Player{
     public void setSteals(double steals) {
         this.steals = steals;
     }
-    
+
     public Date getDateCreated() {
         return dateCreated;
         

@@ -379,7 +379,6 @@ public class PlayerController {
             }
 
             player.setContractStatus(contractStatus);
-            repo.save(player);
         }
 
         // Create a priority queue that sorts players based on isStarPlayer and dateCreated
@@ -450,7 +449,7 @@ public class PlayerController {
             Player player = playerOptional.get();
             player.setDateCreated(new Date(-1900, Calendar.JANUARY, 1));; // Setting dateCreated to "0001-01-01"
             String contractStatus;
-            contractStatus = "No Contract";
+            contractStatus = "Removed";
             player.setContractStatus(contractStatus);
             repo.save(player);
         }
