@@ -12,7 +12,6 @@
                 align-items: center;
                 height: 100vh;
                 margin: 0;
-                overflow: hidden;
                 flex-direction: column;
             }
             .containers {
@@ -105,8 +104,8 @@
                 <img class = "image" src="spurs.png" alt="Spurs Logo">
             </div>
             <div class="form-container">
-                <h2 style="font-size: 60px;text-align: center;margin: 10px;">SPURS</h2>
-                <h2 style="font-size: 54px;text-align: center;margin: 20px; margin-bottom: 50px;">Management System</h2>
+                <h2 style="font-size: 60px;text-align: center;margin: 0px;">SPURS</h2>
+                <h2 style="font-size: 54px;text-align: center;margin: 15px; margin-bottom: 50px;">Management System</h2>
 
                 <form th:action="@{/login}" method="post">
                     <div style="display: flex;flex-direction: column;align-content: flex-start;align-items: flex-start;">
@@ -117,9 +116,10 @@
                         <label for="password">Password:</label>
                         <input type="password" id="password" name="password" required />
                     </div>
+                                    <div id="error-message" class="error-message">Invalid username or password!!!</div>
+
                     <button type="submit">Login</button>
                 </form>
-                <div id="error-message" class="error-message">Invalid username or password!!!</div>
             </div>
         </div>
         <script>
@@ -139,5 +139,6 @@
                 }
             });
         </script>
+
     </body>
 </html>
