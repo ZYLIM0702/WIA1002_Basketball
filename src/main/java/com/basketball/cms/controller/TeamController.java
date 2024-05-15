@@ -153,7 +153,8 @@ public class TeamController {
     
     @Autowired
     private PlayerService playerService;
-
+    
+    @ResponseBody
     @PostMapping("/api/update-position")
     public ResponseEntity<String> updatePlayerPosition(@RequestBody PlayerDropRequest playerDropRequest) {
         try {
