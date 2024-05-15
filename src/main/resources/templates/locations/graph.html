@@ -3,7 +3,82 @@
     <head>
         <title>Locations Graph</title>
         <script src="https://d3js.org/d3.v6.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
+            body {
+                font-family: Arial, sans-serif;
+            }
+            
+            nav {
+                background-color: #333;
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+
+            nav a {
+                float: left;
+                color: white;
+                text-align: center;
+                padding: 14px 20px;
+                text-decoration: none;
+            }
+            
+            nav a:hover, .dropdown:hover .dropbtn {
+                background-color: #575757;
+            }
+
+            .dropdown {
+                float: left;
+                overflow: hidden;
+            }
+
+            .dropdown .dropbtn {
+                font-size: 16px;
+                border: none;
+                outline: none;
+                color: white;
+                padding: 14px 20px;
+                background-color: inherit;
+                font-family: inherit;
+                margin: 0;
+                cursor: pointer;
+            }
+
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #f9f9f9;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+            }
+
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                text-align: left;
+            }
+
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+
+            #graph {
+                text-align: center;
+            }
+
+            svg {
+                border: 1px solid black;
+            }
+
             /* Style for the progress bar container */
             .progress-bar {
                 width: 100%;
@@ -11,7 +86,7 @@
                 border: 1px solid #ccc;
                 margin-bottom: 20px;
                 display: flex;
-                
+                padding: 5px;
             }
 
             /* Style for the progress indicator */
@@ -33,9 +108,25 @@
         </style>
     </head>
     <body>
-        <h1>Shortest Path</h1>
+        <h1 style="text-align: center;">Shortest Path</h1>
 
-        <div id="graph"></div>
+        <nav>
+            <a href="/locations/greedy/path">Greedy Path</a>
+            <a href="/locations/dfs/path">DFS Path</a>
+            <div class="dropdown">
+                <button class="dropbtn">Dijkstra Path <i class="fa fa-caret-down"></i></button>
+                <div class="dropdown-content">
+                    <a href="/locations/dijkstra/path/2">Golden State</a>
+                    <a href="/locations/dijkstra/path/3">Boston</a>
+                    <a href="/locations/dijkstra/path/4">Miami</a>
+                    <a href="/locations/dijkstra/path/5">Los Angeles</a>
+                    <a href="/locations/dijkstra/path/6">Pheonix</a>
+                    <a href="/locations/dijkstra/path/7">Orlando</a>
+                    <a href="/locations/dijkstra/path/8">Denver</a>
+                    <a href="/locations/dijkstra/path/9">Oklahoma City</a>
+                </div>
+            </div>
+        </nav>
         
         <div>
             <!-- Display the optimal distance traveled -->
@@ -47,13 +138,15 @@
             </div>
         </div>
 
+        <div id="graph"></div>
+
         <script>
             document.addEventListener("DOMContentLoaded", function (event) {
                 fetch('/locations/api/graph-data')
                         .then(response => response.json())
                         .then(data => {
                             createGraph(data);
-s                        });
+                        });
                 function createGraph(data) {
                     const links = data;
                     const nodesArray = Array.from(new Set(data.flatMap(link => [link.source, link.target])));
@@ -114,8 +207,6 @@ s                        });
                                 .attr("dy", d => (d.source.y + d.target.y) / 2);
                     });
                 }
-
-
             });
         </script>
     </body>

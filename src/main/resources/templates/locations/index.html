@@ -3,10 +3,106 @@
     <head>
         <title>Locations Graph</title>
         <script src="https://d3js.org/d3.v6.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+            }
+
+            nav {
+                background-color: #333;
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+
+            nav a {
+                float: left;
+                color: white;
+                text-align: center;
+                padding: 14px 20px;
+                text-decoration: none;
+            }
+
+            nav a:hover, .dropdown:hover .dropbtn {
+                background-color: #575757;
+            }
+
+            .dropdown {
+                float: left;
+                overflow: hidden;
+            }
+
+            .dropdown .dropbtn {
+                font-size: 16px;
+                border: none;
+                outline: none;
+                color: white;
+                padding: 14px 20px;
+                background-color: inherit;
+                font-family: inherit;
+                margin: 0;
+                cursor: pointer;
+            }
+
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #f9f9f9;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+            }
+
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                text-align: left;
+            }
+
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+
+            #graph {
+                text-align: center;
+            }
+
+            svg {
+                border: 1px solid black;
+            }
+        </style>
     </head>
     <body>
-        <h1>Graph</h1>
+        <h1 style="text-align: center;">Graph</h1>
+        
+        <nav>
+            <a href="/locations/greedy/path">Greedy Path</a>
+            <a href="/locations/dfs/path">DFS Path</a>
+            <div class="dropdown">
+                <button class="dropbtn">Dijkstra Path <i class="fa fa-caret-down"></i></button>
+                <div class="dropdown-content">
+                    <a href="/locations/dijkstra/path/2">Golden State</a>
+                    <a href="/locations/dijkstra/path/3">Boston</a>
+                    <a href="/locations/dijkstra/path/4">Miami</a>
+                    <a href="/locations/dijkstra/path/5">Los Angeles</a>
+                    <a href="/locations/dijkstra/path/6">Pheonix</a>
+                    <a href="/locations/dijkstra/path/7">Orlando</a>
+                    <a href="/locations/dijkstra/path/8">Denver</a>
+                    <a href="/locations/dijkstra/path/9">Oklahoma City</a>
+                </div>
+            </div>
+        </nav>
+        
         <div id="graph"></div>
+        
         <script>
             document.addEventListener("DOMContentLoaded", function (event) {
                 fetch('/locations/api/graph-data')
@@ -54,19 +150,7 @@
                             .style("font-weight", "bold") // Make the font bold
                             .style("fill", "black")
                             .attr("dx", 12)
-                            .attr("dy", "-0.7em"); // Move text a few em above the node
-
-                    const edgeText = svg.selectAll(".edgeText")
-                            .data(links)
-                            .enter().append("text")
-                            .attr("class", "edgeText")
-                            .text(d => d.distance) // Display distance on edge
-                            .style("text-anchor", "middle")
-                            .style("font-size", "12px")
-                            .style("font-weight", "bold") // Make the font bold
-                            .style("fill", "blue")
-                            .attr("dx", d => (d.source.x + d.target.x) / 2)
-                            .attr("dy", d => (d.source.y + d.target.y) / 2);
+                            .attr("dy", "-0.7em");
 
                     simulation.on("tick", () => {
                         link.attr("x1", d => d.source.x)
@@ -79,13 +163,8 @@
 
                         text.attr("x", d => d.x)
                                 .attr("y", d => d.y);
-
-                        edgeText.attr("dx", d => (d.source.x + d.target.x) / 2)
-                                .attr("dy", d => (d.source.y + d.target.y) / 2);
                     });
                 }
-
-
             });
         </script>
     </body>
