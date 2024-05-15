@@ -31,7 +31,7 @@ public class TeamStatsController {
     @GetMapping("/teamStats")
     public Map<String, String> getTeamStats() {
         Map<String, String> stats = new HashMap<>();
-        stats.put("teamRanking", teamStatsService.getStat("TEAM RANK"));
+        stats.put("teamRanking", teamStatsService.getRanking());
         stats.put("ppg", teamStatsService.getStat("PPG"));
         stats.put("rpg", teamStatsService.getStat("RPG"));
         stats.put("apg", teamStatsService.getStat("APG"));
