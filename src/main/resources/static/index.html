@@ -289,9 +289,9 @@
      });
      
      $(document).ready(function() {
-            loadPlayers('/players/api/bench', '#playerContainer', true);
-            loadAndSortPlayers('/players/api/bench', '#sortContainer', true);
-            loadAndSortTopThreePlayers('/players/api/bench', '#topThreeContainer', true);
+            loadPlayers('/players/api/sortedPlayerByRank', '#playerContainer', true);
+            loadAndSortPlayers('/players/api/sortedPlayerByRank', '#sortContainer', true);
+            loadAndSortTopThreePlayers('/players/api/sortedPlayerByRank', '#topThreeContainer', true);
         });
         function loadPlayers(url, containerId) {
             $.get(url, function(players) {
@@ -312,7 +312,6 @@
         
         function loadAndSortPlayers(url, containerId) {
             $.get(url, function(players) {
-                players.sort((a, b) => b.points - a.points);
                 var tableHtml = '<table class="ranking-table"><tr><th>Name</th><th>Position</th><th>Points</th></tr>';
                 players.forEach(player => {
                     tableHtml += `
@@ -329,7 +328,6 @@
         
         function loadAndSortTopThreePlayers(url, containerId) {
             $.get(url, function(players) {
-                players.sort((a, b) => b.points - a.points);
                 var tableHtml = '<table class="ranking-table"><tr><th>Image</th><th>Name</th><th>Position</th><th>Points</th></tr>';
                 var topThreePlayers = players.slice(0, 3); // Extracting top three players
                 topThreePlayers.forEach(player => {
