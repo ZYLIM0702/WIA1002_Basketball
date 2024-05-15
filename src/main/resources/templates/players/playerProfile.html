@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!--    <!DOCTYPE html>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8"/>
@@ -84,4 +84,290 @@
 
         </div>
     </body>
+</html>-->
+
+<<!DOCTYPE html>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8"/>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script></head>
+        <body>
+
+            <div class="container">
+                
+                <div class="left-container">
+                    <div class="title">
+                        <div class="back-button">
+                            <button onclick="window.history.back()"><img src='./profileBackButton.png'></button> 
+                        </div>
+                        <div class="head">
+                            <h1><b>Player Profile</b></h1>
+                        </div>
+                    </div>
+                    <div class="top-left-container">
+                        
+                        <div class="playerImage">
+                            <!--<p>pimage<img th: src="${player.Image}" width="320"></p>-->
+                            <img th:src="${player.Image}">
+
+                        </div>
+
+                        <div class="playerName">
+                            <p data-label="name"><strong></strong><span th:text="${player.name}"></span></p>
+                            <!--<p data-label="name">Hello World</p>-->
+                            <p data-label="age"><strong>Age : </strong><span th:text="${player.age}"></span> Years Old</p>
+                            <!--<p data-label="age">Age :  30 Years Old</p>				-->
+                        </div>
+
+                    </div>
+
+                    <div class="mid-left-container">
+                        <h3>Personal Information : </h3>
+                        <table border="1">
+                            <tr>
+                                <th><strong>Height:</strong> <span th:text="${player.height}"></span> Feets</th>
+                                <th><strong>Weight:</strong> <span th:text="${player.weight}"></span> Pounds </th>
+                                <th><strong>Jersey Number:</strong> <span th:text="${player.jerseyNum}"></span></th>
+                                <th><strong>Country:</strong> <span th:text="${player.country}"></span></th>
+                                <th><strong>Position:</strong> <span th:text="${player.position}"></span></th>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="bottom-left-container">
+                        <p>Contract Status</p>
+                    </div>
+                </div>
+                
+                <!------------RIGHT SIDE OF THE PAGE----------------->
+                
+                <div class="right-container">
+                	<h2>Player's Statistic</h2>
+                        <div class="score"><strong>Overall Score : </strong><span th:text="${#numbers.formatDecimal(player.overallScore, 1, 'POINT', 2, 'POINT')}"></span></div>
+                	<div class="radar">
+                		<canvas id="nbaRadarChart"></canvas>
+                	</div>
+                	
+                	<div class="details">
+                		<table>
+                			<tr>
+                				<th><strong>Points</strong></th>
+                				<th><strong>Blocks</strong></th>
+                				<th><strong>Assists</strong></th>
+                				<th><strong>Steals</strong></th>
+                				<th><strong>Rebounds</strong></th>
+                			</tr>
+                			<tr>
+                				<td> <span id='points' th:text="${player.points}"></span></td>
+                				<td> <span id='blocks' th:text="${player.blocks}"></span></td>
+                				<td> <span id='assists' th:text="${player.assists}"></span></td>
+                				<td> <span id='steals' th:text="${player.steals}"></span></td>
+                				<td> <span id='rebounds' th:text="${player.rebounds}"></span></td>
+                			</tr>
+                		</table>
+                	</div>
+                </div>
+            </div>
+        </body>
+        
+        <!----------radaar--------------->
+        
+        <script>
+        const ctx = document.getElementById('nbaRadarChart').getContext('2d');
+        const steals = parseFloat(document.getElementById('steals').innerText);
+        const blocks = parseFloat(document.getElementById('blocks').innerText);
+        const assists = parseFloat(document.getElementById('assists').innerText);
+        const rebounds = parseFloat(document.getElementById('rebounds').innerText);
+        const points = parseFloat(document.getElementById('points').innerText);
+        const data = {
+            labels: ['Steals', 'Blocks', 'Assists', 'Rebounds', 'Points'],
+            datasets: [{
+                label: ['Steals', 'Blocks', 'Assists', 'Rebounds', 'Points'],
+                data: [steals, blocks, assists, rebounds, points], // Example data
+                backgroundColor: 'rgba(34, 202, 236, 0.2)',
+                borderColor: 'rgba(34, 202, 236, 1)',
+                borderWidth: 3
+            }]
+        };
+        const config = {
+            type: 'radar',
+            data: data,
+            options: {
+                scales: {
+                    r: {
+                        angleLines: {
+                            display: true
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 5
+                    }
+                }
+            }
+        };
+        const nbaRadarChart = new Chart(ctx, config);
+   		 </script>
+        
+        <style>
+        body{
+                height: 100%;
+                margin: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 0px;
+            min-height: 100vh;
+        }
+
+        .left-container {
+            flex-basis: 60%;
+            background-color : /*#066bb6;*/#000000;
+        }
+        
+        .title{
+            align-items: center;
+        }
+        
+         .back-button {
+                margin-top: 10px;
+                text-align: left;
+            }
+            .back-button button {
+                padding: 10px 20px;
+                color: #fff;
+                border: none;
+                border-radius: 20px;
+                cursor: pointer;
+            }
+            .back-button button:hover {
+                background-color: #0056b3;
+            }
+            
+            .head{
+                flex-grow: 1;
+            }
+
+        h1 {
+                padding: 10px;
+                font-family: Knockout Wide, sans-serif;
+                color: #FFFFFF;
+                font-size: 36px;
+        }
+
+        .top-left-container {
+                padding: 20px;
+                display: flex;
+        }
+        
+        .playerImage{
+        	background-color: white;
+        	border: 10px solid grey;
+        	padding: 10px;
+        	border-radius: 20px;
+        }
+
+        .playerImage img{
+                width: 250px;
+                height: auto;
+        }
+
+        .playerName {
+            margin-left: 40px;
+            text-transform: uppercase;
+            font-family: knockout Wide, sans-serif;
+            font-size: 50px;
+            font-weight: 400;
+            color: #FFFFFF;
+            line-height: 1;
+            /*max-width: 200px;*/
+           }
+
+        .playerName p[data-label="name"]{
+                font-size:  50px;
+        }
+
+        .playerName p[data-label="age"]{
+                font-size: 20px;
+                display: block;
+        }
+
+        .mid-left-container{
+                padding:13px;
+        }
+
+        h3{
+                color: #ffffff;
+        }
+
+        table {
+            padding: 10px;
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+            color: black;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border: 1px solid #dddddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        .table-header-bottom {
+            font-weight: normal;
+            display: block; /* Ensure the span takes up the full width */
+            font-size: 12px; /* Adjust font size as needed */
+            line-height: 1.5; /* Adjust line height as needed */
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .bottom-left-container{
+            
+        }
+
+        .right-container {
+        	padding: 10px;
+            flex-basis: 40%;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        h2{
+       		font-size: 20px;
+       		font-family: Knockout Wide, sans-serif;
+       		text-transform: uppercase;
+       	}	
+       	
+        .score{
+            font-size: 20px;
+            font-family: Knockout Wide, sans-serif;
+            text-transform: uppercase;
+            
+        }
+        
+       	.radar{
+       		padding: 20px;
+       		width: 74%
+       	}
+       	
+       	.details{
+       		
+       	}
+        </style>
 </html>

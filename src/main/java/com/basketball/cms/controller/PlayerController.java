@@ -62,7 +62,6 @@ public class PlayerController {
 
     @GetMapping("/gameplay")
     public String playerManagementInGame(Model model) {
-        System.out.println("test");
         List<Player> players = repo.findIsAddedPlayers();
         model.addAttribute("players", players);
         return "players/gameplay";
@@ -92,6 +91,7 @@ public class PlayerController {
             // Handle player not found error
             return "redirect:/players";
         }
+        player.setOverallScore();
         model.addAttribute("player", player);
         return "players/playerProfile";
     }
