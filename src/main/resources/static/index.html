@@ -148,18 +148,28 @@
             justify-content: center;
             padding: 20px;
         }
-        .carousel-container {
-            position: relative;
-            display: flex;
-            align-items: center;
+        .marquee-container {
             overflow: hidden;
             white-space: nowrap;
+            box-sizing: border-box;
+            width: 100%;
         }
-        .carousel-inner {
-            display: flex;
-            transition: transform 0.5s ease;
+
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 15s linear infinite;
+        }
+
+        @keyframes marquee {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(-100%);
+            }
         }
         .card {
+            display: inline-block;
             background-color: #f0f0f0;
             border: 1px solid #ccc;
             border-radius: 10px;
@@ -175,6 +185,7 @@
         }
         .card-content {
             padding: 15px;
+            color: black;
         }
         .card-content h2 {
             font-size: 20px;
@@ -183,23 +194,6 @@
         .card-content p {
             margin: 5px 0;
             font-size: 16px;
-        }
-        .nav-button {
-            background-color: rgba(0,0,0,0.5);
-            color: white;
-            border: none;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 24px;
-            cursor: pointer;
-            z-index: 1;
-        }
-        .nav-button.left {
-            left: 0;
-        }
-        .nav-button.right {
-            right: 0;
         }
         .container6 {
             display: grid;
@@ -246,17 +240,93 @@
         .container7 .right-content li {
             font-size: 25px; /* Adjust the font size for list items */
         }
+        .top-three-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .container7 .right-content .player-name {
+            font-size: 20px; /* Adjust the desired font size */
+        }
         .container8 {
             display: grid;
-            grid-template-rows: 300px; /* Adjust the height of the first container here */
+            grid-template-rows: 100px; /* Adjust the height of the first container here */
+        }
+        .container8 .row{
+            font-size: 50px;
+            justify-content: center;
+            align-self: flex-start;
+            padding-top: 30px;
         }
         .container9 {
             display: grid;
-            grid-template-rows: 300px; /* Adjust the height of the first container here */
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 350px; /* Adjust the height of the first container here */
+        }
+        .container9 .column1 img {
+            width: 200px; /* Adjust the width of the image */
+            height: auto; /* Maintain aspect ratio */
+            padding-top: 70px;
+            padding-left: 150px;
+        }
+        .container9 .column2 img {
+            width: 200px; /* Adjust the width of the image */
+            height: auto; /* Maintain aspect ratio */
+            padding-top: 70px;
+            padding-left: 150px;
+        }
+        .container9 .column3 img {
+            width: 200px; /* Adjust the width of the image */
+            height: auto; /* Maintain aspect ratio */
+            padding-top: 70px;
+            padding-left: 150px;
         }
         .container10 {
             display: grid;
-            grid-template-rows: 300px; /* Adjust the height of the first container here */
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 180px; /* Adjust the height of the first container here */
+        }
+        .container11 {
+            display: grid;
+            grid-template-rows: 100px; /* Adjust the height of the first container here */
+        }
+        .container11 .row{
+            font-size: 50px;
+            justify-content: center;
+            align-self: flex-start;
+            padding-top: 30px;
+        }
+        .container12 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: 500px; /* Adjust the height of the first container here */
+        }
+        .container13 {
+            display: grid;
+            grid-template-rows: 100px; /* Adjust the height of the first container here */
+        }
+        .container13 .row{
+            font-size: 50px;
+            justify-content: center;
+            align-self: flex-start;
+            padding-top: 30px;
+        }
+        .container14 {
+            display: grid;
+            grid-template-rows: 500px; /* Adjust the height of the first container here */
+        }
+        .container15 {
+            display: grid;
+            background-image: url('clip.jpg' ); /* Specify the path to your image */
+            background-size: cover; /* Cover the entire container */
+            background-position: 10% 30%; /* Center the image */
+            grid-template-rows: 200px; /* Adjust the height of the first container here */
+        }
+        .container15 .row{
+            font-size: 50px;
+            justify-content: center;
+            align-self: flex-start;
+            padding-top: 30px;
         }
         .row {
             display: flex;
@@ -312,10 +382,11 @@
         
         function loadAndSortPlayers(url, containerId) {
             $.get(url, function(players) {
-                var tableHtml = '<table class="ranking-table"><tr><th>Name</th><th>Position</th><th>Points</th></tr>';
-                players.forEach(player => {
+                var tableHtml = '<table class="ranking-table"><tr><th>Ranking</th><th>Name</th><th>Position</th><th>Points</th></tr>';
+                players.forEach((player, index) => {
                     tableHtml += `
                         <tr>
+                            <td>${index + 1}</td> <!-- Add 1 to index because rankings usually start from 1, not 0 -->
                             <td>${player.name}</td>
                             <td>${player.position}</td>
                             <td>${player.points}</td>
@@ -328,59 +399,27 @@
         
         function loadAndSortTopThreePlayers(url, containerId) {
             $.get(url, function(players) {
-                var tableHtml = '<table class="ranking-table"><tr><th>Image</th><th>Name</th><th>Position</th><th>Points</th></tr>';
                 var topThreePlayers = players.slice(0, 3); // Extracting top three players
-                topThreePlayers.forEach(player => {
-                    tableHtml += `
-                        <tr>
-                            <td><img src="${player.image}" alt="${player.name}" style="width: 50px; height: auto;"></td>
-                            <td>${player.name}</td>
-                            <td>${player.position}</td>
-                            <td>${player.points}</td>
-                        </tr>`;
-                });
-                tableHtml += '</table>';
-                $(containerId).html(tableHtml);
 
-                // Append top three players to right-content in container7
-                var topPlayersHtml = '<div><h2>Top Three Players</h2><ul>';
+                // Clear previous content
+                $(containerId).empty();
+
                 topThreePlayers.forEach(player => {
-                    topPlayersHtml += `
-                        <li>
-                            <img src="${player.image}" alt="${player.name}" style="width: 100px; height: auto;">
-                            ${player.name} - ${player.position} - ${player.points}
-                        </li>`;
+                    var cardHtml = `
+                        <div class="card" id="playerCard_${player.playerId}">
+                            <img src="${player.image}" alt="Player Image">
+                            <div class="card-content">
+                                <h2 class="player-name">${player.name}</h2>
+                                <p>Position: ${player.position}</p>
+                                <p>Points: ${player.points}</p>
+                            </div>
+                        </div>`;
+                $(containerId).append(cardHtml);
                 });
-                topPlayersHtml += '</ul></div>';
-                $('.container7 .right-content').html(topPlayersHtml);
             });
         }
+    </script>
 
-
-    let currentIndex = 0;
-    const itemsPerPage = 5;
-
-    function updateCarousel() {
-        const carouselInner = document.querySelector('.carousel-inner');
-        const totalItems = carouselInner.children.length;
-        const maxIndex = Math.max(totalItems - itemsPerPage, 0);
-        currentIndex = Math.min(currentIndex, maxIndex);
-        currentIndex = Math.max(currentIndex, 0);
-        const offset = -currentIndex * (200 + 20); // card width + margin
-        carouselInner.style.transform = `translateX(${offset}px)`;
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelector('.nav-button.left').addEventListener('click', () => {
-            currentIndex -= itemsPerPage;
-            updateCarousel();
-        });
-
-        document.querySelector('.nav-button.right').addEventListener('click', () => {
-            currentIndex += itemsPerPage;
-            updateCarousel();
-        });
-    });
  </script>
 </head>
 <body>
@@ -429,10 +468,8 @@
         <div class="row">PLAYERS</div>
     </div>
         <div class="container5 white">
-            <div class="carousel-container">
-            <button class="nav-button left">&#10094;</button>
-            <div id="playerContainer" class="carousel-inner"></div>
-            <button class="nav-button right">&#10095;</button>
+            <div class="marquee-container">
+                <div class="marquee-content" id="playerContainer"></div>
             </div>
         </div>
         <div class="container6 black">
@@ -443,23 +480,67 @@
                     <div id="sortContainer"></div>
                 </div>
                 <div class="right-content">
-                    <div id="topThreeContainer"></div>
+                     <h2>Top Three Players</h2>
+                    <div class="top-three-container" id="topThreeContainer"></div>
                 </div>
             </div>
         <div class="container8 white">
-            <div class="row">Content 8</div>
+            <div class="row">FUTURE MATCH</div>
         </div>
-        <div class="container9 black">
-            <div class="row">Content 9</div>
-    </div>
+        <div class="container9 white">
+            <div class="column1">
+                <img src="clippers.png" alt="Schedule1">
+            </div>
+            <div class="column2">
+                <img src="wolves.png" alt="Schedule2">
+            </div>
+            <div class="column3">
+                <img src="mavericks.png" alt="Schedule3">
+            </div>
+        </div>
         <div class="container10 white">
-            <div class="row">Content 10</div>
+            <div class="column1">
+                <div class="caption">TUES 20 MAY 2025</div>
+                <div class="caption">6.30pm MDT</div>
+                <div class="caption">FROST BANK CENTER</div>
+            </div>
+            <div class="column2">
+                <div class="caption">FRI 23 MAY 2025</div>
+                <div class="caption">8.30pm MDT</div>
+                <div class="caption">FROST BANK CENTER</div>
+            </div>
+            <div class="column3">
+                <div class="caption">WED 28 MAY 2025</div>
+                <div class="caption">4.30pm MDT</div>
+                <div class="caption">American Airlines Center</div>
+            </div>
     </div>
         <div class="container11 black">
-            <div class="row">Content 11</div>
-    </div>
-        <div class="container12 white">
-            <div class="row">Content 12</div>
-    </div>
+            <div class="row">HIGHLIGHTS</div>
+        </div>
+        <div class="container12 black">
+           <div class="column1" style="padding-left: 50px; padding-top: 40px">
+                <video controls width="700">
+                    <source src="highlight1.mp4" type="video/mp4"> 
+                </video>
+                <div class="caption">SAS vs MIL</div>
+            </div>
+            <div class="column2" style="padding-left: 50px; padding-top: 40px">
+                <video controls width="700">
+                    <source src="highlight2.mp4" type="video/mp4">
+                </video>
+                <div class="caption">SAS vs OKC</div>
+            </div>
+        </div>
+        <div class="container13 white">
+            <div class="row">PATHWAY MATCH</div>
+        </div>
+        <div class="container14 white">
+            
+        </div>
+        <div class="container15 black" style">
+            <div class="row" style="padding-top: 40px; padding-left: 50px;">"Basketball is a pretty simple game. What wins is consistency and competitiveness"</div>
+            <div class="caption" style="font-size: 20px; text-align: left; padding-left: 50px; padding-bottom: 50px;">~ Gregg Popovich</div>
+        </div>
 </body>
 </html>
