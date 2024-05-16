@@ -7,6 +7,14 @@ package com.basketball.cms.controller;
 import com.basketball.cms.model.Player;
 import com.basketball.cms.service.PlayerRepository;
 import com.basketball.cms.service.PlayerService;
+import com.sun.syndication.feed.synd.SyndEntry;
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.io.FeedException;
+import com.sun.syndication.io.SyndFeedInput;
+import com.sun.syndication.io.XmlReader;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -91,10 +99,10 @@ public class TeamController {
         model.addAttribute("players", players);
         return "team/index";
     }
-    
+
     @Autowired
     private PlayerService playerService;
-    
+
     @ResponseBody
     @PostMapping("/api/update-position")
     public ResponseEntity<String> updatePlayerPosition(@RequestBody PlayerDropRequest playerDropRequest) {
@@ -114,7 +122,7 @@ public class TeamController {
 
     @ResponseBody
     @PostMapping("/save")
-        public ResponseEntity<String> savePlayers(@RequestBody List<String> playerIds) {
+    public ResponseEntity<String> savePlayers(@RequestBody List<String> playerIds) {
         // Convert player IDs from String to Integer
         List<Integer> playerIntIds = playerIds.stream()
                 .map(Integer::valueOf)
@@ -180,4 +188,6 @@ public class TeamController {
         return ResponseEntity.ok("Players saved successfully.");
 
     }
+
+
 }
