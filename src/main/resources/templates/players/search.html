@@ -7,7 +7,7 @@
         <title>Player Search</title>
         <style>
             body {
-                font-family: Arial, sans-serif;
+                font-family: knockout wide, sans-serif;
                 margin: 0;
                 padding: 0;
                 background-color: #f0f0f0;
@@ -18,8 +18,18 @@
             }
 
             .sidebar {
-                flex-basis: 30%;
+                flex-basis: 20%;
                 padding: 20px;
+                height: 100%;
+                position: sticky;
+                top: 0;
+                overflow-y: auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                border: 3px solid #000; /* Add border */
+                border-radius: 0px; /* Optional: Add border radius */
+                margin-top: -120px;
             }
 
             .content {
@@ -28,20 +38,21 @@
             }
 
             .sidebar h1 {
-                text-align: center;
-                color: #333;
+                 text-align: center;
+                 font-family: knockout wide, sans-serif;
+                 font-weight: 300;
             }
 
             .sidebar form {
                 background-color: #fff;
                 padding: 20px;
-                border-radius: 8px;
+                border-radius: 20px;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }
 
             .sidebar form label {
                 display: block;
-                margin-bottom: 10px;
+                margin-bottom: 40px;
             }
 
             .sidebar form input[type="text"],
@@ -49,15 +60,15 @@
             .sidebar form select {
                 width: calc(100% - 20px);
                 padding: 10px;
-                margin-bottom: 10px;
+                margin-bottom: 30px;
                 border: 1px solid #ccc;
-                border-radius: 5px;
+                border-radius: 15px;
             }
 
             .sidebar form button[type="submit"] {
                 width: calc(100% - 20px);
                 padding: 10px;
-                background-color: #337ab7;
+                background-color: #666666;
                 color: #fff;
                 border: none;
                 border-radius: 5px;
@@ -65,13 +76,18 @@
             }
 
             .sidebar form button[type="submit"]:hover {
-                background-color: #23527c;
+                background-color: #222222;
             }
 
             .sidebar form button[type="submit"]:active {
                 background-color: #1e466c;
             }
-
+            
+            .starred {
+                display: flex;
+                margin-bottom: -2px; /* Increased margin-bottom to add more space */
+            }
+            
             .content h2 {
                 text-align: center;
                 color: #333;
@@ -122,6 +138,21 @@
     margin-bottom : 50px;
 }
 
+
+.noUi-tooltip {
+    font-size: 13px; /* Adjust the font size as needed */
+}
+
+.noUi-connect {
+            background: repeating-linear-gradient(
+                45deg,            /* Angle of the stripes */
+                #999999,          /* Stripe color */
+                #999999 10px,     /* Stripe width */
+                #cccccc 10px,     /* Space color */
+                #cccccc 20px      /* Space width + Stripe width */
+            )!important;
+        }
+
  /*-------------------------------------------------*/
             
             
@@ -133,44 +164,28 @@
 
         <div class="container">
             <div class="sidebar">
-                <h1>Player Search</h1>
-                <a th:href="@{/players/sort}">Sort Players by Overall Score</a>
                 <form id="searchForm">
+                     <h1><b>Search Bar</b></h1>
                     
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" th:value="${param.name}">
-                        <label for="country">Country Code:</label>
+                    <input type="text" id="name" name="name" th:value="${param.name}" placeholder="Name">
+                        
                         <select id="country" name="country">
                                 <option value="">Select Country Code</option>
                                 <div th:each="country : ${allCountries}">
                                     <option th:value="${country}" th:text="${country}" th:selected="${country == param.country}"></option>
                                 </div>
                         </select>
-                            <label>Position:</label>
+                            
                             <select id="position" name="position">
                                 <option value="">Select Position</option>
                                 <div th:each="position : ${allPositions}">
                                     <option th:value="${position}" th:text="${position}" th:selected="${position == param.position}"></option>
                                 </div>
                             </select>
-                                <label>Injury ID:</label>
-                            <select id="injury" name="injury">
-                                <option value="">Select recent injury status</option>
-                                <option value="0">No Injuries</option>
-                                <option value="1">Ankle Sprains</option>
-                                <option value="2">Facial Cuts</option>
-                                <option value="3">Knee Injuries</option>
-                                <option value="4">Jammed Fingers</option>
-                                <option value="5">Calf Strains/Achilles Tears</option>
-                                <option value="6">Thigh bruises</option>
-                                
-                                <!--<div th:each="injury : ${allInjuries}">
-                                    <option th:value="${injury}" th:text="${injury}" th:selected="${injury == param.injury}"></option>
-                                </div>-->
-                            </select>
+                               
                                                            
 <!-- Age Range -->
-<label for="ageRange" style="margin-bottom: 20px;">Age Range:</label>
+<label for="ageRange" style="margin-bottom: 20px; padding-bottom: 20px; padding-top: 0px">Age Range:</label>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css">
 <div id="ageSlider"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
@@ -188,16 +203,7 @@
     range: {
       'min': 20,
       'max': 45
-    }/*,
-    pips: { // Show labels at both edges regarding the possible range
-      mode: 'values',
-      values: [20, 45],
-      density: 100,
-      format: {
-        to: value => value,
-        from: value => value
-      }
-    }*/
+    }
   });
  //Update hidden input fields with slider values
     ageSlider.noUiSlider.on('update', function (values, handle) {
@@ -210,36 +216,6 @@
         param.maxAge = maxAgeInput.value;
     });
     });
-
-    // Submit form data to controller on form submission
-//    $('#searchForm').submit(function (event) {
-//        // Prevent default form submission
-//        event.preventDefault();
-//        
-//        // Serialize form data
-//        const formData = $(this).serialize();
-//        
-//        // Submit form data to controller via AJAX
-//        $.ajax({
-//            type: 'GET',
-//            url: '/players/search',
-//            data: formData,
-//            success: function (response) {
-//                $('#searchResults').html(response); // Assuming the response contains HTML for search results
-//            },
-//            error: function (xhr, status, error) {
-//                // Handle error response if needed
-//            }
-//        });
-//    });
-//    
-//ageSlider.noUiSlider.on('update', function (values, handle) {
-//    const leftValue = parseInteger(values[0]);
-//    const rightValue = parseInteger(values[1]);
-//
-//    document.getElementById('minAge').value = leftValue;
-//    document.getElementById('maxAge').value = rightValue;
-//});
   // Listen for changes on the slider
   ageSlider.noUiSlider.on('update', function(values, handle) {
     console.log('Slider values:', values);
@@ -247,17 +223,11 @@
 </script>
 
 
-
-
-
-
-
-
 <!-- Include necessary CSS and JavaScript files for the range slider -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
 <l<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css">
-<label for="heightRange" style="margin-bottom: 20px;">Height Range:</label>
+<label for="heightRange" style="margin-bottom: 20px; padding-bottom: 20px; padding-top: 20px">Height Range:</label>
 <!-- Create a container for the range slider -->
 <div id="heightSlider"></div>
 
@@ -307,34 +277,12 @@
 
 </script>
 
+                                <div class="starred">
+                    <p>Starred Player : </p>
+                    <input type="checkbox" id="starred" name="starred" value="true">
+                </div>
 
-
-                                 <!--   <label for="minHeight">Minimum Height:</label> 
-                                    <input type="number" step="any" id="minHeight" name="minHeight" th:value="${param.minHeight}">
-                                        <label for="maxHeight">Maximum Height:</label>
-                                        <input type="number" step="any" id="maxHeight" name="maxHeight" th:value="${param.maxHeight}"> -->
-                                 <!--<label for="injury">Select Recent Injury Experience</label>
-                                 <select id="injury" name="injury">
-                                     <option value="injury">Injury Options</option>
-                                     <!-- Iterate over allInjuries list to generate options 
-                                     <div th:each="injury : ${allInjuries}">
-                                         <option th:value="${injury}" th:text="${injury}" th:selected="${injury == param.injury}"></option>
-                                     </div>
-                                 </select> -->
-
-                                 <label for="starred">Starred Player: </label> <!--Starred Player Check Box-->
-                                            <input type="checkbox" id="starred" name="starred" value="true">
-                                            <label for="rank">Rank:</label> <!--Rank Player Check Box-->
-                                            <input type="checkbox" id="rank" name="rank" value="true">
-                                                <label for="rankBy">Rank By:</label>
-                                                <select id="rankBy" name="rankBy">
-                                                    <option value="">Select Subject</option>
-                                                    <option value="rebounds">Rebounds</option>
-                                                    <option value="blocks">Blocks</option>
-                                                    <option value="steals">Steals</option>
-                                                    <option value="points">Points</option>
-                                                    <option value="assists">Assists</option>
-                                                </select>
+                                            
                                                 <input type="hidden" id="minHeight" name="minHeight">
                                                     <input type="hidden" id="maxHeight" name="maxHeight">
                                                         <input type="hidden" id="minAge" name="minAge">
@@ -342,7 +290,10 @@
                                                 <button type="submit">Search</button>
                                                 </form>
                                                 </div>
-            <!------------------------------2nd class----------------------------------->
+            
+            
+
+                                                <!------------------------------2nd class----------------------------------->
                                                 <div class="content">
                                                     <h2>Search Results</h2>
                                                     <div id="searchResults">
@@ -365,7 +316,7 @@
                                                                 <td th:text="${player.height}"></td>
                                                                 <td th:text="${player.position}"></td>
                                                                 <td th:text="${player.country}"></td>
-                                                                
+
                                                                 <td>
                                                                     <form th:action="@{/players/profile/{playerId}(playerId=${player.playerId})}" method="get">
                                                                         <button type="submit">View Profile</button>
@@ -380,51 +331,52 @@
                                                     </div>
                                                 </div>
                                                 </div>
+                                                </div>
                                                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                                                 <script>
-                                                     $(document).ready(function () {
-                                                    var timeoutId;
-                                                    var autoUpdateEnabled = false;
+    $(document).ready(function () {
+        var timeoutId;
+        var autoUpdateEnabled = false;
 
-                                                    $('#autoUpdateToggle').click(function () {
-                                                        autoUpdateEnabled = !autoUpdateEnabled;
-                                                        if (autoUpdateEnabled) {
-                                                            $('#autoUpdateToggle').text('Disable Live Search');
-                                                            updateSearchAutomatically();
-                                                        } else {
-                                                            $('#autoUpdateToggle').text('Live Search');
-                                                            clearTimeout(timeoutId);
-                                                        }
-                                                    });
-                                                    function updateSearchAutomatically() {
-                                                        timeoutId = setTimeout(function () {
-                                                            $('#searchForm').trigger('submit');
-                                                            updateSearchAutomatically();
-                                                        }, 1000);
-                                                    }
+        $('#autoUpdateToggle').click(function () {
+            autoUpdateEnabled = !autoUpdateEnabled;
+            if (autoUpdateEnabled) {
+                $('#autoUpdateToggle').text('Disable Live Search');
+                updateSearchAutomatically();
+            } else {
+                $('#autoUpdateToggle').text('Live Search');
+                clearTimeout(timeoutId);
+            }
+        });
+        function updateSearchAutomatically() {
+            timeoutId = setTimeout(function () {
+                $('#searchForm').trigger('submit');
+                updateSearchAutomatically();
+            }, 1000);
+        }
 
-                                                    $('#searchForm').submit(function (event) {
-                                                        event.preventDefault();
-                                                        var formData = $(this).serialize();
+        $('#searchForm').submit(function (event) {
+            event.preventDefault();
+            var formData = $(this).serialize();
 
-                                                        $.ajax({
-                                                            type: 'GET',
-                                                            url: '/players/search',
-                                                            data: formData,
-                                                            success: function (response) {
-                                                                $('#searchResults').empty();
-                                                                var table = $('<table>').addClass('content');//search-results-table
-                                                                $('#searchResults').append(table);
-                                                                $(response).find('.player-row').each(function () {
-                                                                    table.append($(this));
-                                                                });
-                                                            },
-                                                            error: function (xhr, status, error) {
-                                                                console.error(xhr.responseText);
-                                                            }
-                                                        });
-                                                    });
-                                                });
+            $.ajax({
+                type: 'GET',
+                url: '/players/search',
+                data: formData,
+                success: function (response) {
+                    $('#searchResults').empty();
+                    var table = $('<table>').addClass('content');//search-results-table
+                    $('#searchResults').append(table);
+                    $(response).find('.player-row').each(function () {
+                        table.append($(this));
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
                                                 </script>
                                                 </body>
                                                 </html>
