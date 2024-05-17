@@ -1,170 +1,86 @@
 <!DOCTYPE html>
-<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
     <head>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <meta charset="UTF-8" />
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-        <title>All Players</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f0f0f0;
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css"/>
-
-
-            <style>
-                * {
-                    box-sizing: border-box;
-                }
-
-                body {
-                    font-family: Arial, sans-serif;
-                    background-color: #fff;
-                    margin: 0;
-                    font-size: 16px;
-                }
-
-                .container {
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 20px;
-                    justify-content: center;
-                }
-
-                .card {
-                    width: 270px;
-                    background: rgba(255, 255, 255, 1);
-                    border-radius: 16px;
-                    box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.25);
-                    overflow: hidden;
-                    margin-bottom: 20px;
-                    position: relative;
-                    transition: transform 0.3s ease-in-out;
-                }
-
-                .card:hover {
-                    transform: scale(1.03);
-                }
-
-                .card img {
-                    width: 100%;
-                    height: auto;
-                    margin: 0;
-                    position: relative;
-                    background: rgb(225, 225, 225);
-                    border-radius: 10px 10px 0px 0px;
-                    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out; /* Added background transition */
-                }
-
-                .card:hover img {
-                    background: rgb(100, 100, 100);
-                    transform: scale(1.05);
-                }
-
-
-                .card .content {
-                    padding: 15px;
-                }
-
-                .card .content h2 {
-                    margin: 0 0 10px;
-                    font-size: 18px;
-                    font-family: 'Interstate', sans-serif;
-                }
-
-                .card .content p {
-                    margin: 5px 0;
-                    font-size: 16px;
-                }
-
-                .star {
-                    position: absolute;
-                    top: 15px;
-                    right: 15px;
-                    font-size: 24px;
-                    color: #fff;
-                    text-shadow: 2px 2px 5px rgb(0 0 0 / 14%);
-                    z-index: 1;
-                }
-                .star .starred:hover{
-                    transform: scale(1.03);
-                }
-
-                .star.starred {
-                    color: #ffea00;
-                }
-                .player-info {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: baseline;
-                }
-
-
-
-
-            </style>
+            }
+            .dashboard {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+                min-height: 380px;
+            }
+            .icon-container {
+                width: 100px;
+                height: 100px;
+                margin: 10px;
+                background-color: #fff;
+                border-radius: 60px;
+                display: flex;
+                padding: 20px;
+                justify-content: center;
+                align-items: center;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            .icon {
+                font-size: 40px;
+                color: #333;
+            }
+            .content {
+                text-align: center;
+                margin-top: 30px;
+            }
+        </style>
     </head>
     <body>
-        <link rel="stylesheet" href="../header-style.css">
+        <link rel="stylesheet" href="/header-style.css">
         <div th:replace="fragments/header :: header"></div>
-        
-        <div class="container" style="padding:20px;">
-
-            <div class="card" th:each="player : ${players}">
-                <i class="star fa-regular fa-star" th:classappend="${player.starred == 1 ? 'starred' : ''}" th:onclick="'toggleStar(this, \'' + ${player.playerId} + '\')'"></i>
-                <img th:src="${player.Image}" alt="Player Image"/>
-                <div class="content" th:onclick="'viewProfile(\'' + ${player.playerId} + '\')'">
-                    <div class="player-info">
-                        <h2 th:text="${player.name}"></h2>
-                        <i style="" th:class="'fi fi-' + ${player.country.toLowerCase()}"></i>
-                    </div>
-
-                    <p>Age: <span th:text="${player.age}"></span></p>
-                    <p>Height: <span th:text="${player.height}"></span> ft</p>
-                    <p>Position: <span style="font-weight: bold;" th:text="${player.position}"></span></p>
-                    <p>Overall Score: <span th:text="${#numbers.formatDecimal(player.points, 1, 2)}"></span></p>
+        <div style="text-align: center;font-size: 40px;font-weight: 600; padding-top:50px;">Team Manager Dashboard</div>
+        <div class="dashboard">
+            <div class="icon-container">
+                    <a href="/players/search">
+                        <div class="icon"><i class="fas fa-search"></i></div>
+                    </a>
+                </div>
+                <div class="icon-container">
+                    <a href="/">
+                        <div class="icon"><i class="fa-solid fa-home"></i></div>
+                    </a>
+                </div>
+                <div class="icon-container">
+                    <a href="/players/contract">
+                        <div class="icon"><i class="fa-solid fa-signature"></i></div>
+                    </a>
+                </div>
+                <div class="icon-container">
+                    <a href="/team">
+                        <div class="icon"><i class="fa-solid fa-basketball"></i></div>
+                    </a>
+                </div>
+                <div class="icon-container">
+                    <a href="/locations">
+                        <div class="icon"><i class="fa-solid fa-location-dot"></i></div>
+                    </a>
+                </div>
+                <div class="icon-container">
+                    <a href="/logout">
+                        <div class="icon"><i class="fa-solid fa-right-from-bracket"></i></div>
+                    </a>
                 </div>
             </div>
-        </div>
 
-        <script>
-            function toggleStar(icon, playerId) {
-                playerId = parseInt(playerId); // Convert playerId to integer if it's not already
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'players/toggleStar?playerId=' + playerId, true); // Include playerId in the URL
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
-                            icon.classList.toggle('starred');
-                            // Toggle the color of the star
-                            if (icon.classList.contains('starred')) {
-                                icon.style.color = '#ffea00'; // Yellow
-                            } else {
-                                icon.style.color = '#ffffff'; // White
-                            }
-                            var response = JSON.parse(xhr.responseText);
-                            if (response.success) {
+                <div th:replace="fragments/footer :: footer"></div>
 
-                            } else {
-                                console.error('Failed to toggle star.');
-                            }
-                        } else {
-                            console.error('Failed to toggle star: ' + xhr.status);
-                        }
-                    }
-                };
-
-                var data = JSON.stringify({playerId: playerId});
-                xhr.send(data);
-            }
-            function viewProfile(playerId) {
-                window.location.href = '/players/profile/' + playerId;
-            }
-
-        </script>
-        <div th:replace="fragments/footer :: footer"></div>
-
-    </body>
-
-
-
-</html>
+                </body>
+                </html>

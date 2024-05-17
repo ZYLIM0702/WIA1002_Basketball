@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <title>NBA Contract Status Table</title>
+    <title>NBA Contract Status</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -17,9 +17,9 @@
             background-size: 200px 200px;
         }
         .table-title {
-            font-size: 32px;
+            font-size: 35px;
             font-weight: 700;
-            color: #2C3E50;
+            color: #000;
             margin-top: 30px;
             text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.3);
         }
@@ -64,7 +64,7 @@
             box-sizing: border-box;
             font-size: 16px;
             border: 1px solid #D3D3D3;
-            border-radius: 5px;
+            border-radius: 20px;
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
         }
         .calendar-dropdown {
@@ -77,7 +77,7 @@
             font-size: 16px;
             color: #000;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 20px;
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         }
         .save-form button:hover, .remove-form button:hover {
@@ -95,6 +95,8 @@
     </style>
 </head>
 <body>
+        <link rel="stylesheet" href="/header-style.css">
+        <div th:replace="fragments/header :: header"></div>
 
     <!-- Contract Table Title -->
     <div class="table-title">Contract</div>
@@ -110,27 +112,32 @@
                 <th>Date of Contract Expiration</th>
                 <th>Contract Status</th>
                 <th>Set New Contract Expiration Date</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="player : ${players}">
+            <tr th:each="player, iterStat : ${players}">
                 <td th:text="${player.playerId}"></td>
                 <td th:text="${player.name}"></td>
                 <td th:text="${player.getIsStarPlayer}"></td>
                 <td th:text="${#dates.format(player.dateCreated, 'yyyy-MM-dd')}" class="creation-date"></td>
                 <td class="expiration-date"></td> 
                 <td th:text="${player.getContractStatus}"></td>
-                <td>
+                <td th:if="${iterStat.index == 0}"> 
                     <select class="contract-status-dropdown" onchange="handleDropdownChange(this)">
                         <option value="Renew">Renew</option>
                         <option value="Remove">Remove</option>
                         <option value="Extend">Extend</option>
                     </select>
                 </td>
+                <td th:if="${iterStat.index != 0}"> 
+                </td>
+                <td th:if="${iterStat.index != 0}"> 
+                </td>
                 <td class="calendar-dropdown">
                     <input type="date" class="expiration-date-picker">
                 </td>
-                <td>
+                <td th:if="${iterStat.index == 0}">
                     <form class="save-form" method="post">
                         <input type="hidden" name="playerId" th:value="${player.playerId}" />
                         <input type="hidden" name="contractStatus" class="contract-status" />
@@ -175,6 +182,7 @@
             </tr>
         </tbody>
     </table>
+    <div style="padding-bottom: 100px;"></div>
 
     <script>
         // JavaScript function to handle dropdown change
@@ -297,6 +305,7 @@
             });
         });
     </script>
+        <div th:replace="fragments/footer :: footer"></div>
 
 </body>
 </html>

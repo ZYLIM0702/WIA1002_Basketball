@@ -1,176 +1,244 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>Locations Graph</title>
         <script src="https://d3js.org/d3.v6.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-            }
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                }
 
-            nav {
-                background-color: #333;
-                overflow: hidden;
-                display: flex;
-                justify-content: center;
-                margin-bottom: 20px;
-            }
+                .pathNav {
+                    background-color: #616161;
+                    overflow: hidden;
+                    display: flex;
+                    justify-content: center;
+                    margin-bottom: 20px;
+                    margin-right: 0px;
+                }
 
-            nav a {
-                float: left;
-                color: white;
-                text-align: center;
-                padding: 14px 20px;
-                text-decoration: none;
-            }
+                .pathNav a {
+                    float: left;
+                    color: white;
+                    text-align: center;
+                    padding: 14px 20px;
+                    text-decoration: none;
+                }
 
-            nav a:hover, .dropdown:hover .dropbtn {
-                background-color: #575757;
-            }
+                .pathNav a:hover, .dropdown:hover .dropbtn {
+                    background-color: #575757;
+                }
 
-            .dropdown {
-                float: left;
-                overflow: hidden;
-            }
+                .dropdown {
+                    float: left;
+                    overflow: hidden;
+                }
 
-            .dropdown .dropbtn {
-                font-size: 16px;
-                border: none;
-                outline: none;
-                color: white;
-                padding: 14px 20px;
-                background-color: inherit;
-                font-family: inherit;
-                margin: 0;
-                cursor: pointer;
-            }
+                .dropdown .dropbtn {
+                    font-size: 16px;
+                    border: none;
+                    outline: none;
+                    color: white;
+                    padding: 14px 20px;
+                    background-color: inherit;
+                    font-family: inherit;
+                    margin: 0;
+                    cursor: pointer;
+                }
 
-            .dropdown-content {
-                display: none;
-                position: absolute;
-                background-color: #f9f9f9;
-                min-width: 160px;
-                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-                z-index: 1;
-            }
+                .dropdown-content {
+                    display: none;
+                    position: absolute;
+                    background-color: #f9f9f9;
+                    min-width: 160px;
+                    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                    z-index: 1;
+                }
 
-            .dropdown-content a {
-                color: black;
-                padding: 12px 16px;
-                text-decoration: none;
-                display: block;
-                text-align: left;
-            }
+                .dropdown-content a {
+                    color: black;
+                    padding: 12px 16px;
+                    text-decoration: none;
+                    display: block;
+                    text-align: left;
+                }
 
-            .dropdown-content a:hover {
-                background-color: #f1f1f1;
-            }
+                .dropdown-content a:hover {
+                    background-color: #f1f1f1;
+                }
 
-            .dropdown:hover .dropdown-content {
-                display: block;
-            }
+                .dropdown:hover .dropdown-content {
+                    display: block;
+                }
 
-            #graph {
-                text-align: center;
-            }
+                #graph {
+                    text-align: center;
+                }
 
-            svg {
-                border: 1px solid black;
-            }
-        </style>
+                svg {
+                }
+
+                .progress-bar {
+                    height: 30px;
+                    position: relative;
+                    overflow: hidden;
+                    animation: progressAnimation 5s ease-in-out forwards;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-evenly;
+                    align-items: center;
+                    color: white;
+                    font-size: 20px;
+                    font-weight: 700;
+                    /* Gradient Background */
+                    background-image: linear-gradient(to right, #ff0000, #2d57ff);
+                                            border-radius: 30px;
+
+                }
+
+                .progress-bar-text {
+                    width: 100%;
+                    height: 30px;
+                    overflow: hidden;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-evenly;
+                    align-items: center;
+                    color: white;
+                    font-size: 20px;
+                    font-weight: 700;
+                    position: absolute;
+                    z-index: 2;
+
+                }
+
+                @keyframes progressAnimation {
+                    0% {
+                        width: 0;
+                    }
+                    100% {
+                        width: 100%;
+                    }
+                }
+                .container {
+                    position: relative;
+                }
+
+
+
+
+            </style>
     </head>
     <body>
-        <h1 style="text-align: center;">Graph</h1>
-        
-        <nav>
-            <a href="/locations/greedy/path">Greedy Path</a>
-            <a href="/locations/dfs/path">DFS Path</a>
-            <div class="dropdown">
-                <button class="dropbtn">Dijkstra Path <i class="fa fa-caret-down"></i></button>
-                <div class="dropdown-content">
-                    <a href="/locations/dijkstra/path/2">Golden State</a>
-                    <a href="/locations/dijkstra/path/3">Boston</a>
-                    <a href="/locations/dijkstra/path/4">Miami</a>
-                    <a href="/locations/dijkstra/path/5">Los Angeles</a>
-                    <a href="/locations/dijkstra/path/6">Pheonix</a>
-                    <a href="/locations/dijkstra/path/7">Orlando</a>
-                    <a href="/locations/dijkstra/path/8">Denver</a>
-                    <a href="/locations/dijkstra/path/9">Oklahoma City</a>
+        <link rel="stylesheet" href="/header-style.css">
+            <div th:replace="fragments/header :: header"></div>
+
+            <h1 style="text-align: center;">NBA Season Map</h1>
+
+            <nav class="pathNav">
+                <a href="/locations/">Our Journey (DFS Path)</a>
+                <div class="dropdown">
+                    <button class="dropbtn">Team Distance (Dijkstra Path)<i class="fa fa-caret-down"></i></button>
+                    <div class="dropdown-content">
+                        <a href="/locations/dijkstra/path/2">Golden State</a>
+                        <a href="/locations/dijkstra/path/3">Boston</a>
+                        <a href="/locations/dijkstra/path/4">Miami</a>
+                        <a href="/locations/dijkstra/path/5">Los Angeles</a>
+                        <a href="/locations/dijkstra/path/6">Pheonix</a>
+                        <a href="/locations/dijkstra/path/7">Orlando</a>
+                        <a href="/locations/dijkstra/path/8">Denver</a>
+                        <a href="/locations/dijkstra/path/9">Oklahoma City</a>
+                    </div>
+                </div>
+            </nav>
+
+            <div>
+                <h2 style="text-align: center;font-size: 40px;font-weight: 600;">Optimal Distance</h2>
+                <h2 th:text="${optimumDist} + ' km'" style="text-align: center; font-size: 40px; font-weight: 600; color: #ffb700"></h2>
+            </div>
+
+            <div id="graph" style="padding-bottom: 30px"></div>
+            <div style="padding:20px;">
+                <div class="progress-bar-text">
+<div th:each="nodeList : ${path}" th:text="${nodeList.city.cityName + ' &nbsp;&#8594;  '}"></div></div>
+
+                <div class="progress-bar">
                 </div>
             </div>
-        </nav>
-        
-        <div id="graph"></div>
-        
-        <script>
-            document.addEventListener("DOMContentLoaded", function (event) {
-                fetch('/locations/api/graph-data')
-                        .then(response => response.json())
-                        .then(data => {
-                            createGraph(data);
-                        });
-                function createGraph(data) {
-                    const links = data;
-                    const nodesArray = Array.from(new Set(data.flatMap(link => [link.source, link.target])));
-                    const nodes = nodesArray.map(id => ({id}));
-                    const width = 1200, height = 800;
-                    const svg = d3.select("#graph").append("svg")
-                            .attr("width", width)
-                            .attr("height", height);
-                    const simulation = d3.forceSimulation(nodes)
-                            .force("link", d3.forceLink(links).id(d => d.id).distance(150))
-                            .force("charge", d3.forceManyBody().strength(-500))
-                            .force("center", d3.forceCenter(width / 2, height / 2));
-                    const link = svg.selectAll(".link")
-                            .data(links)
-                            .enter().append("line")
-                            .attr("class", "link")
-                            .style("stroke", "black")
-                            .style("stroke-width", 2);
-                    const node = svg.selectAll(".node")
-                            .data(nodes)
-                            .enter().append("circle")
-                            .attr("class", "node")
-                            .attr("r", 10)
-                            .style("fill", "red");
-                    const text = svg.selectAll(".text")
-                            .data(nodes)
-                            .enter().append("text")
-                            .attr("class", "text")
-                            .text(d => d.id) // Display node id (city name)
-                            .style("text-anchor", "middle")
-                            .style("font-size", "12px")
-                            .style("font-weight", "bold") // Make the font bold
-                            .style("fill", "black")
-                            .attr("dx", 12)
-                            .attr("dy", "-0.7em"); // Move text a few em above the node
 
-                    const edgeText = svg.selectAll(".edgeText")
-                            .data(links)
-                            .enter().append("text")
-                            .attr("class", "edgeText")
-                            .text(d => d.distance) // Display distance on edge
-                            .style("text-anchor", "middle")
-                            .style("font-size", "12px")
-                            .style("font-weight", "bold") // Make the font bold
-                            .style("fill", "blue")
-                            .attr("dx", d => (d.source.x + d.target.x) / 2)
-                            .attr("dy", d => (d.source.y + d.target.y) / 2);
-                    simulation.on("tick", () => {
-                        link.attr("x1", d => d.source.x)
-                                .attr("y1", d => d.source.y)
-                                .attr("x2", d => d.target.x)
-                                .attr("y2", d => d.target.y);
-                        node.attr("cx", d => d.x)
-                                .attr("cy", d => d.y);
-                        text.attr("x", d => d.x)
-                                .attr("y", d => d.y);
-                        edgeText.attr("dx", d => (d.source.x + d.target.x) / 2)
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function (event) {
+                    fetch('/locations/api/graph-data')
+                            .then(response => response.json())
+                            .then(data => {
+                                createGraph(data);
+                            });
+                    function createGraph(data) {
+                        const links = data;
+                        const nodesArray = Array.from(new Set(data.flatMap(link => [link.source, link.target])));
+                        const nodes = nodesArray.map(id => ({id}));
+                        const width = 800, height = 400;
+                        const svg = d3.select("#graph").append("svg")
+                                .attr("width", width)
+                                .attr("height", height);
+                        const simulation = d3.forceSimulation(nodes)
+                                .force("link", d3.forceLink(links).id(d => d.id).distance(150))
+                                .force("charge", d3.forceManyBody().strength(-500))
+                                .force("center", d3.forceCenter(width / 2, height / 2));
+                        const link = svg.selectAll(".link")
+                                .data(links)
+                                .enter().append("line")
+                                .attr("class", "link")
+                                .style("stroke", "black")
+                                .style("stroke-width", 2);
+                        const node = svg.selectAll(".node")
+                                .data(nodes)
+                                .enter().append("circle")
+                                .attr("class", "node")
+                                .attr("r", 10)
+                                .style("fill", "grey");
+                        const text = svg.selectAll(".text")
+                                .data(nodes)
+                                .enter().append("text")
+                                .attr("class", "text")
+                                .text(d => d.id) // Display node id (city name)
+                                .style("text-anchor", "middle")
+                                .style("font-size", "20px")
+                                .style("font-weight", "bold") // Make the font bold
+                                .style("fill", "red")
+                                .attr("dx", 12)
+                                .attr("dy", "-0.7em"); // Move text a few em above the node
+
+                        const edgeText = svg.selectAll(".edgeText")
+                                .data(links)
+                                .enter().append("text")
+                                .attr("class", "edgeText")
+                                .text(d => d.distance) // Display distance on edge
+                                .style("text-anchor", "middle")
+                                .style("font-size", "12px")
+                                .style("font-weight", "900") // Make the font bold
+                                .style("fill", "rgb(65 65 65)")
+                                .attr("dx", d => (d.source.x + d.target.x) / 2)
                                 .attr("dy", d => (d.source.y + d.target.y) / 2);
-                    });
-                }
-            });
-        </script>
+                        simulation.on("tick", () => {
+                            link.attr("x1", d => d.source.x)
+                                    .attr("y1", d => d.source.y)
+                                    .attr("x2", d => d.target.x)
+                                    .attr("y2", d => d.target.y);
+                            node.attr("cx", d => d.x)
+                                    .attr("cy", d => d.y);
+                            text.attr("x", d => d.x)
+                                    .attr("y", d => d.y);
+                            edgeText.attr("dx", d => (d.source.x + d.target.x) / 2)
+                                    .attr("dy", d => (d.source.y + d.target.y) / 2);
+                        });
+                    }
+                });
+            </script>
+            <div th:replace="fragments/footer :: footer"></div>
+
     </body>
 </html>

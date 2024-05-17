@@ -1,949 +1,1126 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>San Antonio Spurs</title>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <style>
-        body, html {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            height: 100%;
-        }
-        
-        .container1 {
-            display: grid;
-            grid-template-rows: 500px; /* Adjust the height of the first container here */
-            grid-template-columns: 1fr 1fr;
-        }
-        
-        .container1 .left-content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* Move the first row content to the right */
-            align-items: flex-start;
-            padding-left: 100px; /* Adjust the right padding to move it to the right */
-        }
-        
-        .container1 .left-content .row:nth-child(1) {
-            font-size: 80px; /* or any other desired size */
-        }
-        
-        .container1 .left-content .row:nth-child(2) {
-            font-size: 60px; /* or any other desired size */
-        }
-        
-        .container1 .left-content img {
-            width: 300px; /* Adjust the width of the logo */
-            margin-top: 20px; /* Add some space between text and logo */
-            padding-left: 50px;
-        }
-        
-        .container1 .right-content{
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* Move the first row content to the right */
-            align-items: flex-start;
-            padding-left: 200px; /* Adjust the right padding to move it to the right */
-        }
-        
-        .container1 .right-content .row:nth-child(1) {
-            display: flex;
-            flex-direction: row;
-            font-size: 50px; /* or any other desired size */
-        }
-        
-        .container1 .right-content .row:nth-child(2) {
-            display: flex;
-            flex-direction: column;
-            font-size: 30px; /* or any other desired size */
-            line-height: 0.1;
-        }
-        
-        .container2 {
-            display: grid;
-            grid-template-rows: 100px; /* Adjust the height of the first container here */
-        }
-        
-        .container2 .row{
-            font-size: 50px;
-            justify-content: center;
-            align-self: flex-start;
-            padding-top: 30px;
-        }
-        
-        .container3 {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            grid-template-rows: 520px; /* Adjust the height of the first container here */
-        }
-        
-        .container3 .colomn1 {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-        }
-        
-        .container3 .column1 img {
-            width: 200px; /* Adjust the width of the image */
-            height: auto; /* Maintain aspect ratio */
-            padding-top: 20px;
-            padding-left: 50px;
-        }
-        
-        .caption {
-            text-align: center;
-            font-size: 30px;
-            padding-top: 10px;
-        }
-        
-        .container3 .colomn2 {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-        }
-        
-        .container3 .column2 img {
-            width: 200px; /* Adjust the width of the image */
-            height: auto; /* Maintain aspect ratio */
-            padding-top: 20px;
-            padding-left: 50px;
-        }
-        
-        .container3 .colomn3 {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-        }
-        
-        .container3 .column3 img {
-            width: 200px; /* Adjust the width of the image */
-            height: auto; /* Maintain aspect ratio */
-            padding-top: 20px;
-            padding-left: 50px;
-        }
-        
-        .container3 .colomn4 {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-        }
-        
-        .container3 .column4 img {
-            width: 200px; /* Adjust the width of the image */
-            height: auto; /* Maintain aspect ratio */
-            padding-top: 20px;
-            padding-left: 50px;
-        }
-        
-        .container3 .colomn5 {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-        }
-        
-        .container3 .column5 img {
-            width: 200px; /* Adjust the width of the image */
-            height: auto; /* Maintain aspect ratio */
-            padding-top: 20px;
-            padding-left: 50px;
-        }
-        
-        .container4 {
-            display: grid;
-            grid-template-rows: 100px; /* Adjust the height of the first container here */
-        }
-        
-        .container4 .row{
-            font-size: 50px;
-            justify-content: center;
-            align-self: flex-start;
-            padding-top: 30px;
-        }
-        
-        .container5 {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding: 20px;
-        }
-        
-        .marquee-container {
-            overflow: hidden;
-            white-space: nowrap;
-            box-sizing: border-box;
-            width: 100%;
-        }
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-        .marquee-content {
-            display: inline-flex;
-            animation: marquee 30s linear infinite;
-        }
+    <head>
+        <title>San Antonio Spurs</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-        @keyframes marquee {
-            from {
-                transform: translateX(100%);
-            }
-            to {
-                transform: translateX(-100%);
-            }
-        }
-        
-        .card {
-            display: inline-block;
-            width: 200px;
-            background: rgba(255, 255, 255, 1);
-            border-radius: 16px;
-            box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.25);
-            overflow: hidden;
-            margin-right: 20px;
-            margin-bottom: 50px;
-            position: relative;
-            transition: transform 0.3s ease-in-out;
-        }
-        
-        .card:hover {
-            transform: scale(1.03);
-        }
-        
-        .card img {
-            width: 100%;
-            height: auto;
-            margin: 0;
-            position: relative;
-            background: rgb(225, 225, 225);
-            border-radius: 10px 10px 0px 0px;
-            transition: transform 0.3s ease-in-out, background 0.3s ease-in-out; /* Added background transition */
-        }
-        
-        .card:hover img {
-            background: rgb(100, 100, 100);
-            transform: scale(1.05);
-        }
-        
-        .card .content {
-            padding: 15px;
-        }
-        
-        .card .content h2 {
-            margin: 0 0 10px;
-            font-size: 18px;
-            font-family: 'Interstate', sans-serif;
-        }
-        
-        .card .content p {
-            margin: 5px 0;
-            font-size: 16px;
-        }
-        
-        .container6 {
-            display: grid;
-            grid-template-rows: 100px; /* Adjust the height of the first container here */
-        }
-        
-        .container6 .row{
-            font-size: 50px;
-            justify-content: center;
-            align-self: flex-start;
-            padding-top: 30px;
-        }
-        
-        .container7 {
-            display: grid;
-            grid-template-rows: auto; /* Adjust the height of the first container here */
-            grid-template-columns: 1fr 1fr;
-        }
-        
-        .container7 .left-content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* Move the first row content to the right */
-            align-items: flex-start;
-            padding-left: 80px;
-            padding-bottom: 30px;
-        }
-        
-        .ranking-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        
-        .ranking-table th, .ranking-table td {
-            border: 1px solid #ccc;
-            padding: 15px; /* Increased padding for more space */
-            text-align: left;
-        }
-        
-        .container7 .right-content {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            padding-left: 60px;
-        }
-        
-        .container7 .right-content h2 {
-            font-size: 50px; /* Adjust the font size for headings */
-        }
-        .container7 .right-content li {
-            font-size: 25px; /* Adjust the font size for list items */
-        }
-        
-        .top-three-container {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-        
-        .container7 .right-content .player-name {
-            font-size: 20px; /* Adjust the desired font size */
-        }
-        
-        .container8 {
-            display: grid;
-            grid-template-rows: 100px; /* Adjust the height of the first container here */
-        }
-        
-        .container8 .row{
-            font-size: 50px;
-            justify-content: center;
-            align-self: flex-start;
-            padding-top: 30px;
-        }
-        
-        .container9 {
-            display: grid;
-            justify-content: center;
-            grid-template-rows: 350px; /* Adjust the height of the first container here */
-        }
-        
-        .wrapper {
-            max-width: 1100px;
-            width: 100%;
-            position: relative;
-        }
+            <link rel="stylesheet" href="/header-style.css"/>
 
-        .wrapper i {
-            height: 50px;
-            width: 50px;
-            background: rgb(0 0 0);
-            text-align: center;
-            line-height: 50px;
-            color: white;
-            border-radius: 50%;
-            cursor: pointer;
-            position: absolute;
-            top: 50%;
-            font-size: 1.25rem;
-            transform: translateY(-50%);
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.23);
-        }
+            <style>
+                body, html {
+                    font-family: Arial, sans-serif;
+                    margin: 0px;
+                    padding: 0;
+                    height: 100%;
+                }
 
-        .wrapper i:first-child {
-            left: -100px;
-        }
+                .container1 {
+                    display: grid;
+                    grid-template-rows: 500px; /* Adjust the height of the first container here */
+                    grid-template-columns: 1fr 1fr;
+                }
 
-        .wrapper i:last-child {
-            right: -40px;
-        }
+                .container1 .left-content {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center; /* Move the first row content to the right */
+                    align-items: flex-start;
+                    padding-left: 100px; /* Adjust the right padding to move it to the right */
+                }
 
-        .carousel {
-            display: grid;
-            grid-auto-flow: column;
-            grid-auto-columns: calc((100% / 3) - -18px);
-            gap: 16px;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-            scrollbar-width: 0;
-            justify-content: start;
-        }
+                .container1 .right-content .row:nth-child(1) {
+                    font-size: 100px;
+                    font-weight: 700;
+                }
 
-        .carousel::-webkit-scrollbar {
-            display: none;
-        }
+                .container1 .right-content .row:nth-child(2) {
+                    font-size: 60px;
+                    font-weight: 600;
+                    background: linear-gradient(to right, #f32170,
+                        #ff6b08, #cf23cf, #eedd44);
+                    -webkit-text-fill-color: transparent;
+                    -webkit-background-clip: text;
 
-        .carousel :where(.card, .img) {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+                }
 
-        .carousel.dragging {
-            scroll-snap-type: none;
-            scroll-behavior: auto;
-        }
+                .container1 .left-content img {
+                    width: 400px; /* Adjust the width of the logo */
+                    margin-top: 20px; /* Add some space between text and logo */
+                    align-content: center;
+                    padding-left: 100px;
+                }
 
-        .carousel.no-transition {
-            scroll-behavior: auto;
-        }
+                .container1 .right-content{
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center; /* Move the first row content to the right */
+                    align-items: flex-start;
+                    padding-left: 0px; /* Adjust the right padding to move it to the right */
+                }
 
-        .carousel.dragging .card {
-            cursor: grab;
-            user-select: none;
-        }
-         
-        h2New {
-                padding-left: 10px;
-                padding-right: 10px;
-                padding-top: 10px;
-                padding-bottom: 0px;
-                font-size: 19px;
-            }
+                .container1 .right-content .row:nth-child(3) {
+                    display: flex;
+                    flex-direction: row;
+                    font-size: 40px; /* or any other desired size */
+                    font-weight: 600;
+                    color: #8b8b8b;
+                }
 
-        .cardNew {
-            width: 250px;
-            position: relative;
-            color: black;
-            overflow: hidden;
-            border-radius: 15px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            font-family: Arial, sans-serif;
-            align-items: flex-start;
-            box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
-            transition: transform 0.2s ease-in-out;
-            background: white;
-            margin-bottom: 10px;
-            margin-top: 10px;
-            height: 250px;
-        }
 
-        .cardNew:hover {
-            transform: scale(1.05);
-            transition: transform 0.2s ease-in-out;
-        }
+                .container2 {
+                    display: grid;
+                    grid-template-rows: 100px; /* Adjust the height of the first container here */
+                    padding-top: 40px;
+                    padding-bottom: 30px;
+                }
 
-        .cardNew img {
-            width: 100%;
-            height: auto;
-        }
+                .container2 .row{
+                    font-size: 50px;
+                    justify-content: center;
+                    align-self: flex-start;
+                    padding-top: 30px;
+                }
 
-        .cardNew-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-            border-radius: 8px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
+                .container3 {
+                    display: grid;
+                    grid-template-columns: repeat(5, 1fr);
+                    grid-template-rows: 520px; /* Adjust the height of the first container here */
+                    padding-bottom: 40px;
 
-        .cardNew:hover .cardNew-overlay {
-            opacity: 1;
-        }
+                }
 
-        .cardNew-title {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #fff;
-            text-align: center;
-            font-size: 15px;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            width: 90%; /* Adjust as needed */
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
 
-        .cardNew-link {
-            display: block;
-            text-decoration: none;
-            color: inherit;
-        }
 
-        a {
-            text-decoration: none;
-        }
+                .caption {
+                    text-align: center;
+                    font-size: 30px;
+                    padding-top: 20px;
+                    padding-bottom: 20px;
+                    font-weight: 700;
+                }
 
-        @media screen and (max-width: 900px) {
-            .wrapper .carousel {
-                grid-auto-columns: calc((100% / 2) - 9px);
-            }
-        }
 
-        @media screen and (max-width: 600px) {
-            .wrapper .carousel {
-                grid-auto-columns: 100%;
-            }
-        }
-            
-        .container10 {
-            display: grid;
-            grid-template-rows: 100px; /* Adjust the height of the first container here */
-        }
-        
-        .container10 .row{
-            font-size: 50px;
-            justify-content: center;
-            align-self: flex-start;
-            padding-top: 30px;
-        }
-        
-        .container11 {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: 500px; /* Adjust the height of the first container here */
-        }
-        
-        .container12 {
-            display: grid;
-            grid-template-rows: 100px; /* Adjust the height of the first container here */
-        }
-        
-        .container12 .row{
-            font-size: 50px;
-            justify-content: center;
-            align-self: flex-start;
-            padding-top: 30px;
-        }
-        
-        .container13 {
-            display: grid;
-            grid-template-rows: 500px; /* Adjust the height of the first container here */
-        }
-        
-        .container14 {
-            display: grid;
-            background-image: url('clip.jpg' ); /* Specify the path to your image */
-            background-size: cover; /* Cover the entire container */
-            background-position: 10% 60%; /* Center the image */
-            grid-template-rows: 500px; /* Adjust the height of the first container here */
-            filter: blur(2px);
-        }
-        
-        .container15 {
-            display: grid;
-            grid-template-rows: 150px; /* Adjust the height of the first container here */
-        }
-        
-        .container15 .row{
-            font-size: 45px;
-            justify-content: center;
-            align-self: flex-start;
-            padding-top: 30px;
-        }
-        
-        .row {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            font-size: 24px;
-        }
-        
-        .black {
-            background-color: black;
-            color: white;
-        }
-        
-        .white {
-            background-color: white;
-            color: black;
-        }
-    </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://d3js.org/d3.v6.min.js"></script>
-    <script>
-     document.addEventListener("DOMContentLoaded", function() {
-         fetch('/api/teamStats')
-             .then(response => response.json())
-             .then(data => {
-                 document.getElementById('teamRanking').innerText = data.teamRanking || 'N/A';
-                 document.getElementById('ppg').innerText = data.ppg || '0';
-                 document.getElementById('rpg').innerText = data.rpg || '0';
-                 document.getElementById('apg').innerText = data.apg || '0';
-                 document.getElementById('oppg').innerText = data.oppg || '0';
-             })
-             .catch(error => console.error('Error fetching team stats:', error));
-     });
-     
-     $(document).ready(function() {
-            loadPlayers('/players/api/sortedPlayerByRank', '#playerContainer', true);
-            loadAndSortPlayers('/players/api/sortedPlayerByRank', '#sortContainer', true);
-            loadAndSortTopThreePlayers('/players/api/sortedPlayerByRank', '#topThreeContainer', true);
-        });
-        function loadPlayers(url, containerId) {
-            $.get(url, function(players) {
-                players.forEach(player => {
-                    var cardHtml = `
-                        <div class="card" id="playerCard_${player.playerId}">
-                            <img src="${player.image}" alt="Player Image">
-                            <div class="card-content">
-                                <h2>${player.name}</h2>
-                                <p>Jersey Number: ${player.jerseyNum}</p>
-                                <p>Position: ${player.position}</p>
-                            </div>
-                        </div>`;
-                    $(containerId).append(cardHtml);
-                });
-            });    
-        }    
-        
-        function loadAndSortPlayers(url, containerId) {
-            $.get(url, function(players) {
-                var tableHtml = '<table class="ranking-table"><tr><th>Ranking</th><th>Name</th><th>Position</th><th>Points</th></tr>';
-                var rankingCounter = 4;
-                players.forEach((player, index) => {
-                    var image = '';
-                    if (index < 3) {
-                        if (index === 0) {
-                            image = '<img src="first.png" alt="First Image" style="width: 50px; height: auto;">';
-                        } else if (index === 1) {
-                            image = '<img src="second.png" alt="First Image" style="width: 50px; height: auto;">';
-                        } else if (index === 2) {
-                            image = '<img src="third.png" alt="First Image" style="width: 50px; height: auto;">';
-                        }
-                        tableHtml += `
-                            <tr>
-                                <td>${image}</td>
-                                <td>${player.name}</td>
-                                <td>${player.position}</td>
-                                <td>${player.points}</td>
-                            </tr>`;
-                    } else {
-                        tableHtml += `
-                            <tr>
-                                <td>${rankingCounter}</td>
-                                <td>${player.name}</td>
-                                <td>${player.position}</td>
-                                <td>${player.points}</td>
-                            </tr>`;
-                        rankingCounter++;
+                .column img {
+                    width: 200px; /* Adjust the width of the image */
+                    height: auto; /* Maintain aspect ratio */
+                    padding-top: 20px;
+                    align-content: center;
+                    display: block;
+                }
+
+                .column {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 24px;
+                }
+
+                .container4 {
+                    display: grid;
+                    grid-template-rows: 100px; /* Adjust the height of the first container here */
+                    padding-top: 40px;
+                }
+
+                .container4 .row{
+                    font-size: 50px;
+                    justify-content: center;
+                    align-self: flex-start;
+                    padding-top: 30px;
+                }
+
+                .container5 {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                    padding: 20px;
+                    padding-bottom: 40px;
+                }
+
+                .marquee-container {
+                    overflow: hidden;
+                    white-space: nowrap;
+                    box-sizing: border-box;
+                    width: 100%;
+                }
+
+
+                .marquee-content {
+                    display: inline-flex;
+                    animation: marquee 5s linear infinite;
+                }
+
+                @keyframes marquee {
+                    from {
+                        transform: translateX(5%);
                     }
-                });
-                tableHtml += '</table>';
-                $(containerId).html(tableHtml);
-            });
-        }
-        
-        function loadAndSortTopThreePlayers(url, containerId) {
-            $.get(url, function(players) {
-                var topThreePlayers = players.slice(0, 3); // Extracting top three players
+                    to {
+                        transform: translateX(-20%);
+                    }
+                }
 
-                // Clear previous content
-                $(containerId).empty();
+                .card {
+                    display: inline-block;
+                    width: 180px;
+                    height: 241px;
 
-                topThreePlayers.forEach(player => {
-                    var cardHtml = `
-                        <div class="card" id="playerCard_${player.playerId}">
-                            <img src="${player.image}" alt="Player Image">
-                            <div class="card-content">
-                                <h2 class="player-name">${player.name}</h2>
-                                <p>Position: ${player.position}</p>
-                                <p>Points: ${player.points}</p>
-                            </div>
-                        </div>`;
-                $(containerId).append(cardHtml);
-                });
-            });
-        }
-        
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch('new.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('container9').innerHTML = data;
-                })
-                .catch(error => console.error('Error loading new.html:', error));
-        });
-        
-         document.addEventListener("DOMContentLoaded", function () {
-                const carousel = document.getElementById("carousel");
-                const arrowBtns = document.querySelectorAll(".wrapper i");
-                const wrapper = document.querySelector(".wrapper");
-                const firstCardWidth = 370;
+                    background: rgba(255, 255, 255, 1);
+                    border-radius: 16px;
+                    box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.25);
+                    overflow: hidden;
+                    margin-right: 20px;
+                    margin-bottom: 50px;
+                    position: relative;
+                    transition: transform 0.3s ease-in-out;
+
+                }
+
+                .card:hover {
+                    transform: scale(1.03);
+                }
+                .card-content {
+                    padding-left: 10px;
+                    padding-right: 20px;
+                    padding-top: 0px;
+                    font-weight: 600;
+
+                }
+                .card-content h2 {
+                    font-size: 18px;
+                    margin: 0px;
+                    margin-top: 10px;
+                    margin-bottom: 4px;
+                }
+                .card-content p {
+                    margin: 0px;
+                }
+
+                .card img {
+                    width: 100%;
+                    height: auto;
+                    margin: 0;
+                    position: relative;
+                    background: rgb(225, 225, 225);
+                    border-radius: 10px 10px 0px 0px;
+                    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out; /* Added background transition */
+                }
+
+                .card:hover img {
+                    background: rgb(100, 100, 100);
+                    transform: scale(1.05);
+                }
+
+                .card .content {
+                    padding: 15px;
+
+                }
+
+                .card .content h2 {
+                    margin: 0 0 10px;
+                    font-size: 18px;
+                    font-family: 'Interstate', sans-serif;
+                }
+
+                .card .content p {
+                    margin: 5px 0;
+                    font-size: 16px;
+                }
+
+                .container6 {
+                    display: grid;
+                    grid-template-rows: 100px; /* Adjust the height of the first container here */
+                    padding-top: 40px;
+                }
+
+                .container6 .row{
+                    font-size: 50px;
+                    justify-content: center;
+                    align-self: flex-start;
+                    padding-top: 30px;
+                }
+
+                .container7 {
+                    display: grid;
+                    grid-template-rows: auto; /* Adjust the height of the first container here */
+                    grid-template-columns: 1fr 1fr;
+                    padding-bottom: 30px;
+                    align-items: end;
+                }
+
+                .container7 .left-content {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center; /* Move the first row content to the right */
+                    align-items: flex-start;
+                    padding-left: 80px;
+                    padding-bottom: 30px;
+                }
 
 
-                let isDragging = false,
-                        startX,
-                        startScrollLeft,
-                        timeoutId;
+                .ranking-table table {
+                    border-collapse: collapse;
+                    width: 100%;
+                    border-radius: 10px;
+                }
 
-                const dragStart = (e) => {
-                    isDragging = true;
-                    carousel.classList.add("dragging");
-                    startX = e.pageX;
-                    startScrollLeft = carousel.scrollLeft;
-                };
+                .ranking-table th {
+                    background-color: #333;
+                    color: white;
+                    padding: 8px;
+                    text-align: left;
+                }
 
-                const dragging = (e) => {
-                    if (!isDragging)
-                        return;
+                .ranking-table td {
+                    border-bottom: 1px solid #ddd;
+                    padding: 8px;
+                    text-align: left;
+                }
 
-                    const newScrollLeft = startScrollLeft - (e.pageX - startX);
 
-                    if (newScrollLeft <= 0 || newScrollLeft >= carousel.scrollWidth - carousel.offsetWidth) {
-                        isDragging = false;
-                        return;
+                .container7 .right-content {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    padding-right: 60px;
+                    align-content: center;
+                    flex-wrap: wrap;
+                }
+                .container7 .right-content h2 {
+                    font-size: 50px; /* Adjust the font size for headings */
+                }
+                .container7 .right-content li {
+                    font-size: 25px; /* Adjust the font size for list items */
+                }
+
+                .top-three-container {
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                }
+
+                .container7 .right-content .player-name {
+                    font-size: 28px; /* Adjust the desired font size */
+                }
+
+                .container8 {
+                    display: grid;
+                    grid-template-rows: 100px; /* Adjust the height of the first container here */
+                    padding-top: 30px;
+                }
+
+                .container8 .row{
+                    font-size: 50px;
+                    justify-content: center;
+                    align-self: flex-start;
+                    padding-top: 30px;
+                }
+
+                .container9 {
+                    display: grid;
+                    justify-content: center;
+                    grid-template-rows: 350px; /* Adjust the height of the first container here */
+                    padding-top: 30px;
+                }
+
+                .wrapper {
+                    max-width: 1100px;
+                    width: 100%;
+                    position: relative;
+                }
+
+                .wrapper i {
+                    height: 50px;
+                    width: 50px;
+                    background: rgb(0 0 0);
+                    text-align: center;
+                    line-height: 50px;
+                    color: white;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    position: absolute;
+                    top: 40%;
+                    font-size: 1.25rem;
+                    transform: translateY(-50%);
+                    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.23);
+                }
+
+                .wrapper i:first-child {
+                    left: -100px;
+                }
+
+                .wrapper i:last-child {
+                    right: -40px;
+                }
+
+                .carousel {
+                    display: grid;
+                    grid-auto-flow: column;
+                    grid-auto-columns: calc((100% / 3) - -18px);
+                    gap: 16px;
+                    overflow-x: auto;
+                    scroll-snap-type: x mandatory;
+                    scroll-behavior: smooth;
+                    scrollbar-width: 0;
+                    justify-content: start;
+                }
+
+                .carousel::-webkit-scrollbar {
+                    display: none;
+                }
+
+                .carousel :where(.card, .img) {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .carousel.dragging {
+                    scroll-snap-type: none;
+                    scroll-behavior: auto;
+                }
+
+                .carousel.no-transition {
+                    scroll-behavior: auto;
+                }
+
+                .carousel.dragging .card {
+                    cursor: grab;
+                    user-select: none;
+                }
+
+                h2New {
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    padding-top: 10px;
+                    padding-bottom: 0px;
+                    font-size: 19px;
+                }
+
+                .cardNew {
+                    width: 250px;
+                    position: relative;
+                    color: black;
+                    overflow: hidden;
+                    border-radius: 15px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    font-family: Arial, sans-serif;
+                    align-items: flex-start;
+                    box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+                    transition: transform 0.2s ease-in-out;
+                    background: white;
+                    margin-bottom: 10px;
+                    margin-top: 10px;
+                    height: 250px;
+                }
+
+                .cardNew:hover {
+                    transform: scale(1.05);
+                    transition: transform 0.2s ease-in-out;
+                }
+
+                .cardNew img {
+                    width: 100%;
+                    height: auto;
+                }
+
+                .cardNew-overlay {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+                    border-radius: 8px;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                }
+
+                .cardNew:hover .cardNew-overlay {
+                    opacity: 1;
+                }
+
+                .cardNew-title {
+                    position: absolute;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    color: #fff;
+                    text-align: center;
+                    font-size: 15px;
+                    font-weight: bold;
+                    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+                    width: 90%; /* Adjust as needed */
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .cardNew-link {
+                    display: block;
+                    text-decoration: none;
+                    color: inherit;
+                }
+
+                a {
+                    text-decoration: none;
+                }
+
+                @media screen and (max-width: 900px) {
+                    .wrapper .carousel {
+                        grid-auto-columns: calc((100% / 2) - 9px);
+                    }
+                }
+
+                @media screen and (max-width: 600px) {
+                    .wrapper .carousel {
+                        grid-auto-columns: 100%;
+                    }
+                }
+
+                .container10 {
+                    padding-top: 30px;
+                    display: grid;
+                    grid-template-rows: 100px; /* Adjust the height of the first container here */
+                }
+
+                .container10 .row{
+                    font-size: 50px;
+                    justify-content: center;
+                    align-self: flex-start;
+                    padding-top: 30px;
+                }
+
+                .container11 {
+                    display: flex;
+                    grid-template-columns: repeat(2, 1fr);
+                    grid-template-rows: 500px;
+                    justify-content: space-around;
+                    padding-bottom: 30px;
+                }
+                .container11 .column1 {
+                    padding-top: 50px;
+                }
+                .container11 .column2 {
+                    padding-top: 50px;
+                }
+
+                .container12 {
+                    display: grid;
+                    grid-template-rows: 100px; /* Adjust the height of the first container here */
+                }
+
+                .container12 .row{
+                    font-size: 50px;
+                    justify-content: center;
+                    align-self: flex-start;
+                    padding-top: 30px;
+                }
+
+                .container13 {
+                    display: grid;
+                    grid-template-rows: 500px; /* Adjust the height of the first container here */
+                }
+
+                .container14 {
+                    display: grid;
+                    background-image: url('clip.jpg'); /* Specify the path to your image */
+                    background-size: cover; /* Cover the entire container */
+                    background-position: 10% 60%; /* Center the image */
+                    grid-template-rows: 500px; /* Adjust the height of the first container here */
+                    position: relative;
+                }
+
+                .container14-overlay {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.6); /* Black background with 60% opacity */
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
+
+                .container14-quote {
+                    color: white; /* Text color */
+                    text-align: left;
+                    padding-left: 50px;
+                }
+
+                .container14-quote .row {
+                    padding-top: 40px;
+                    padding-left: 50px;
+                    font-size: 24px; /* Adjust as needed */
+                }
+
+                .container14-quote .caption {
+                    font-size: 20px;
+                    text-align: left;
+                    padding-left: 50px;
+                    padding-bottom: 50px;
+                }
+
+
+                .container15 {
+                    display: grid;
+                    grid-template-rows: 150px; /* Adjust the height of the first container here */
+                }
+
+                .container15 .row{
+                    font-size: 45px;
+                    justify-content: center;
+                    align-self: flex-start;
+                    padding-top: 30px;
+                }
+
+                .row {
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    font-size: 24px;
+                }
+
+                .black {
+                    background-color: black;
+                    color: white;
+                }
+
+                .white {
+                    background-color: white;
+                    color: black;
+                }
+                .team-rank {
+                    font-size: 60px;
+                    font-weight: 600;
+                    width: 60%;
+                    border-spacing: 140px 0px;
+                    text-align: center;
+                }
+
+                .container1 {
+                    height: 400px;
+                    padding-bottom: 100px;
+                }
+                .position-container {
+                    background-color: #333;
+                    color: #fff;
+                    text-align: center;
+                    padding: 10px;
+                    font-size: 14px;
+                    font-weight: bold;
+                    border-radius: 0 0 16px 16px;
+                    position: absolute;
+                    bottom: 0;
+                    width: 160px;
+                }
+                .top-three-container .position-container {
+                    background-color: #fff;
+                    color: #fff;
+                    text-align: center;
+                    padding: 20px;
+                    font-size: 20px;
+                    font-weight: bold;
+                    border-radius: 0 0 16px 16px;
+                    position: absolute;
+                    bottom: 0;
+                    width: 210px;
+                }
+                .top-three-container .card:nth-child(1) {
+                    .position-container{
+                        background-color: #ffb700;
                     }
 
-                    carousel.scrollLeft = newScrollLeft;
-                };
+                }
+                .top-three-container .card:nth-child(2) {
+                    .position-container{
+                        background-color: #8c8c8c;
+                    }
 
-                const dragStop = () => {
-                    isDragging = false;
-                    carousel.classList.remove("dragging");
-                };
+                }
+                .top-three-container .card:nth-child(3) {
+                    .position-container{
+                        background-color: #ff8100;
+                    }
 
-                const autoPlay = () => {
-                    if (window.innerWidth < 800)
-                        return;
+                }
 
-                    const totalCardWidth = carousel.scrollWidth;
-                    const maxScrollLeft = totalCardWidth - carousel.offsetWidth;
+                .top-three-container .card {
+                    width: 250px;
+                    height: 350px;
+                    font-size: 21px;
+                }
 
-                    if (carousel.scrollLeft >= maxScrollLeft)
-                        return;
-
-                    timeoutId = setTimeout(() =>
-                        carousel.scrollLeft += firstCardWidth, 2500);
-                };
-
-                carousel.addEventListener("mousedown", dragStart);
-                carousel.addEventListener("mousemove", dragging);
-                document.addEventListener("mouseup", dragStop);
-                wrapper.addEventListener("mouseenter", () =>
-                    clearTimeout(timeoutId));
-                wrapper.addEventListener("mouseleave", autoPlay);
-
-                arrowBtns.forEach(btn => {
-                    btn.addEventListener("click", () => {
-                        carousel.scrollLeft += btn.id === "left" ?
-                                -firstCardWidth : firstCardWidth;
-                    });
+            </style>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://d3js.org/d3.v6.min.js"></script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    fetch('/api/teamStats')
+                            .then(response => response.json())
+                            .then(data => {
+                                document.getElementById('teamRanking').innerText = data.teamRanking || 'N/A';
+                                document.getElementById('ppg').innerText = data.ppg || '0';
+                                document.getElementById('rpg').innerText = data.rpg || '0';
+                                document.getElementById('apg').innerText = data.apg || '0';
+                                document.getElementById('oppg').innerText = data.oppg || '0';
+                            })
+                            .catch(error => console.error('Error fetching team stats:', error));
                 });
 
-                fetch("https://rss.app/feeds/2VTxg78EWQqdiWVL.xml")
-                        .then(response => response.text())
-                        .then(data => {
-                            // Parse the XML response
-                            const parser = new DOMParser();
-                            const xmlDoc = parser.parseFromString(data, "text/xml");
-
-                            // Get the items from the XML
-                            const items = xmlDoc.querySelectorAll("item");
-
-                            // Display each item
-                            items.forEach(item => {
-                                const title = item.querySelector("title").textContent;
-                                const link = item.querySelector("link").textContent;
-                                const description = item.querySelector("description").textContent;
-
-                                // Extract image URL from description
-                                const parser = new DOMParser();
-                                const descDoc = parser.parseFromString(description, "text/xml");
-                                const imageUrl = descDoc.querySelector("img").getAttribute("src");
-
-                                // Create card element
-                                const card = document.createElement("a");
-                                card.classList.add("cardNew");
-                                card.href = link; // Set the link for the card
-
-                                // Create elements for image, title, and description
-                                const imageDiv = document.createElement("div");
-                                imageDiv.classList.add("img");
-                                const image = document.createElement("img");
-                                image.src = imageUrl;
-
-                                const newsTitle = document.createElement("h2New");
-                                newsTitle.textContent = title;
-
-                                const newsDescription = document.createElement("span");
-                                newsDescription.textContent = description;
-
-                                // Append elements to card
-                                imageDiv.appendChild(image);
-                                card.appendChild(imageDiv);
-                                card.appendChild(newsTitle);
-
-                                // Append card to carousel
-                                carousel.appendChild(card);
-                            });
-                        })
-                        .catch(error => console.error("Error fetching the RSS feed:", error));
-            });
-            
-            document.addEventListener("DOMContentLoaded", function (event) {
-                fetch('/locations/api/graph-data')
-                        .then(response => response.json())
-                        .then(data => {
-                            createGraph(data);
+                $(document).ready(function () {
+                    loadPlayers('/players/api/sortedPlayerByRank', '#playerContainer', true);
+                    loadAndSortPlayers('/players/api/sortedPlayerByRank', '#sortContainer', true);
+                    loadAndSortTopThreePlayers('/players/api/sortedPlayerByRank', '#topThreeContainer', true);
+                });
+                function loadPlayers(url, containerId) {
+                    $.get(url, function (players) {
+                        players.forEach(player => {
+                            var cardHtml = `
+                                <div class="card" id="playerCard_${player.playerId}">
+                                    <img src="${player.image}" alt="Player Image">
+                                    <div class="card-content" onclick="viewProfile('${player.playerId}')">
+                                        <h2>${player.name}</h2>
+                                        <p>Jersey Number: ${player.jerseyNum}</p>
+                                    </div>
+                        <div class="position-container">
+                            <span>${player.position}</span>
+                        </div>
+                                </div>`;
+                            $(containerId).append(cardHtml);
                         });
-                function createGraph(data) {
-                    const links = data;
-                    const nodesArray = Array.from(new Set(data.flatMap(link => [link.source, link.target])));
-                    const nodes = nodesArray.map(id => ({id}));
-                    const width = 800, height = 600;
-                    const svg = d3.select("#graph").append("svg")
-                            .attr("width", width)
-                            .attr("height", height);
-                    const simulation = d3.forceSimulation(nodes)
-                            .force("link", d3.forceLink(links).id(d => d.id).distance(150))
-                            .force("charge", d3.forceManyBody().strength(-500))
-                            .force("center", d3.forceCenter(width / 2, height / 2));
-                    const link = svg.selectAll(".link")
-                            .data(links)
-                            .enter().append("line")
-                            .attr("class", "link")
-                            .style("stroke", "black")
-                            .style("stroke-width", 2);
-                    const node = svg.selectAll(".node")
-                            .data(nodes)
-                            .enter().append("circle")
-                            .attr("class", "node")
-                            .attr("r", 10)
-                            .style("fill", "red");
-                    const text = svg.selectAll(".text")
-                            .data(nodes)
-                            .enter().append("text")
-                            .attr("class", "text")
-                            .text(d => d.id) // Display node id (city name)
-                            .style("text-anchor", "middle")
-                            .style("font-size", "12px")
-                            .style("font-weight", "bold") // Make the font bold
-                            .style("fill", "black")
-                            .attr("dx", 12)
-                            .attr("dy", "-0.7em"); // Move text a few em above the node
-
-                    const edgeText = svg.selectAll(".edgeText")
-                            .data(links)
-                            .enter().append("text")
-                            .attr("class", "edgeText")
-                            .text(d => d.distance) // Display distance on edge
-                            .style("text-anchor", "middle")
-                            .style("font-size", "12px")
-                            .style("font-weight", "bold") // Make the font bold
-                            .style("fill", "blue")
-                            .attr("dx", d => (d.source.x + d.target.x) / 2)
-                            .attr("dy", d => (d.source.y + d.target.y) / 2);
-                    simulation.on("tick", () => {
-                        link.attr("x1", d => d.source.x)
-                                .attr("y1", d => d.source.y)
-                                .attr("x2", d => d.target.x)
-                                .attr("y2", d => d.target.y);
-                        node.attr("cx", d => d.x)
-                                .attr("cy", d => d.y);
-                        text.attr("x", d => d.x)
-                                .attr("y", d => d.y);
-                        edgeText.attr("dx", d => (d.source.x + d.target.x) / 2)
-                                .attr("dy", d => (d.source.y + d.target.y) / 2);
                     });
                 }
-            });
-    </script>
-</head>
-<body>
-    <link rel="stylesheet" href="../header-style.css">
+                function viewProfile(playerId) {
+                    window.location.href = '/players/profile/' + playerId;
+                }
 
-    <div class="container1 white">
-        <div class="left-content">
-            <div class="row">SPURS</div>
-            <div class="row">SAN ANTONIO SPURS</div>
-            <img src="spurs.png" alt="Spurs Logo">
+                function loadAndSortPlayers(url, containerId) {
+                    $.get(url, function (players) {
+                        var tableHtml = '<table class="ranking-table"><tr><th>Ranking</th><th>Name</th><th>Position</th><th>Points</th></tr>';
+                        var rankingCounter = 1; // Start ranking counter from 1
+                        players.forEach((player, index) => {
+                            var ranking = '';
+                            // For other players, use incremental ranking numbers
+                            ranking = index + 1;
+                            tableHtml += `
+                <tr>
+                    <td>${ranking}</td>
+                    <td>${player.name}</td>
+                    <td>${player.position}</td>
+                    <td>${player.points}</td>
+                </tr>`;
+                        });
+                        tableHtml += '</table>';
+                        $(containerId).html(tableHtml);
+                    });
+                }
+
+
+
+                function loadAndSortTopThreePlayers(url, containerId) {
+                    $.get(url, function (players) {
+                        var topThreePlayers = players.slice(0, 3); // Extracting top three players
+
+                        // Clear previous content
+                        $(containerId).empty();
+
+                        topThreePlayers.forEach(player => {
+                            var cardHtml = `
+                                <div class="card" id="playerCard_${player.playerId}">
+                                    <img src="${player.image}" alt="Player Image">
+                                    <div class="card-content" onclick="viewProfile('${player.playerId}')">
+                                        <h2 class="player-name">${player.name}</h2>
+                                        <p>Points: ${player.points}</p>
+                                    </div>
+                                    <div class="position-container">
+                            <span>${player.position}</span>
+                        </div>
+
+                                </div>`;
+                            $(containerId).append(cardHtml);
+                        });
+                    });
+                }
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    fetch('new.html')
+                            .then(response => response.text())
+                            .then(data => {
+                                document.getElementById('container9').innerHTML = data;
+                            })
+                            .catch(error => console.error('Error loading new.html:', error));
+                });
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    const carousel = document.getElementById("carousel");
+                    const arrowBtns = document.querySelectorAll(".wrapper i");
+                    const wrapper = document.querySelector(".wrapper");
+                    const firstCardWidth = 370;
+
+
+                    let isDragging = false,
+                            startX,
+                            startScrollLeft,
+                            timeoutId;
+
+                    const dragStart = (e) => {
+                        isDragging = true;
+                        carousel.classList.add("dragging");
+                        startX = e.pageX;
+                        startScrollLeft = carousel.scrollLeft;
+                    };
+
+                    const dragging = (e) => {
+                        if (!isDragging)
+                            return;
+
+                        const newScrollLeft = startScrollLeft - (e.pageX - startX);
+
+                        if (newScrollLeft <= 0 || newScrollLeft >= carousel.scrollWidth - carousel.offsetWidth) {
+                            isDragging = false;
+                            return;
+                        }
+
+                        carousel.scrollLeft = newScrollLeft;
+                    };
+
+                    const dragStop = () => {
+                        isDragging = false;
+                        carousel.classList.remove("dragging");
+                    };
+
+                    const autoPlay = () => {
+                        if (window.innerWidth < 800)
+                            return;
+
+                        const totalCardWidth = carousel.scrollWidth;
+                        const maxScrollLeft = totalCardWidth - carousel.offsetWidth;
+
+                        if (carousel.scrollLeft >= maxScrollLeft)
+                            return;
+
+                        timeoutId = setTimeout(() =>
+                            carousel.scrollLeft += firstCardWidth, 2500);
+                    };
+
+                    carousel.addEventListener("mousedown", dragStart);
+                    carousel.addEventListener("mousemove", dragging);
+                    document.addEventListener("mouseup", dragStop);
+                    wrapper.addEventListener("mouseenter", () =>
+                        clearTimeout(timeoutId));
+                    wrapper.addEventListener("mouseleave", autoPlay);
+
+                    arrowBtns.forEach(btn => {
+                        btn.addEventListener("click", () => {
+                            carousel.scrollLeft += btn.id === "left" ?
+                                    -firstCardWidth : firstCardWidth;
+                        });
+                    });
+
+                    fetch("https://rss.app/feeds/2VTxg78EWQqdiWVL.xml")
+                            .then(response => response.text())
+                            .then(data => {
+                                // Parse the XML response
+                                const parser = new DOMParser();
+                                const xmlDoc = parser.parseFromString(data, "text/xml");
+
+                                // Get the items from the XML
+                                const items = xmlDoc.querySelectorAll("item");
+
+                                // Display each item
+                                items.forEach(item => {
+                                    const title = item.querySelector("title").textContent;
+                                    const link = item.querySelector("link").textContent;
+                                    const description = item.querySelector("description").textContent;
+
+                                    // Extract image URL from description
+                                    const parser = new DOMParser();
+                                    const descDoc = parser.parseFromString(description, "text/xml");
+                                    const imageUrl = descDoc.querySelector("img").getAttribute("src");
+
+                                    // Create card element
+                                    const card = document.createElement("a");
+                                    card.classList.add("cardNew");
+                                    card.href = link; // Set the link for the card
+
+                                    // Create elements for image, title, and description
+                                    const imageDiv = document.createElement("div");
+                                    imageDiv.classList.add("img");
+                                    const image = document.createElement("img");
+                                    image.src = imageUrl;
+
+                                    const newsTitle = document.createElement("h2New");
+                                    newsTitle.textContent = title;
+
+                                    const newsDescription = document.createElement("span");
+                                    newsDescription.textContent = description;
+
+                                    // Append elements to card
+                                    imageDiv.appendChild(image);
+                                    card.appendChild(imageDiv);
+                                    card.appendChild(newsTitle);
+
+                                    // Append card to carousel
+                                    carousel.appendChild(card);
+                                });
+                            })
+                            .catch(error => console.error("Error fetching the RSS feed:", error));
+                });
+
+                function checkAuthentication() {
+                    fetch('/team/api/authenticated')
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data) {
+                                    document.getElementById("guest-menu").style.display = "none";
+                                    document.getElementById("admin-menu").style.display = "flex";
+                                } else {
+                                    document.getElementById("guest-menu").style.display = "flex";
+                                    document.getElementById("admin-menu").style.display = "none";
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error checking authentication:', error);
+                            });
+
+
+                }
+
+                window.onload = checkAuthentication;
+
+
+
+            </script>
+    </head>
+    <body>
+        <header style="background-color: black;
+                color: white;
+                position: sticky;
+                top: 0;
+                z-index: 1000;
+                width: 100%;
+                ">
+            <div class="container-header" style="display: flex;
+                 justify-content: space-between;
+                 align-items: center;
+                 padding: 10px;">
+                <div>
+                    <img src="/spurs.png" alt="Logo" style="width: 83px; margin-top: 6px; margin-bottom: 2px; margin-left: 60px;" onclick="window.location.href = '/';">
+                </div>
+                <nav>
+                    <!-- Render guest menu if user is not authenticated -->
+                    <ul id="guest-menu">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        <li>
+                            <a href="https://www.nba.com/team/1610612759">About Us</a>
+                        </li>
+                        <li>
+                            <a href='/'>Rank</a>
+                        </li>
+                        <li>
+                            <a href="/#players">Players</a>
+                        </li>
+                        <li>
+                            <a href="/locations">NBA Season</a>
+                        </li>
+                    </ul>
+                    <!-- Render admin menu if user has ROLE_ADMIN -->
+                    <ul id="admin-menu" style="display: none;">
+                        <li>
+                            <a href="/players/search">Players</a>
+                        </li>
+                        <li>
+                            <a href="/players/contract">Contract</a>
+                        </li>
+                        <li>
+                            <a href="/team">Team</a>
+                        </li>
+                        <li>
+                            <a href="/locations">NBA Season</a>
+                        </li>
+                        <li>
+                            <a href="/team/gameplay">New Match</a>
+                        </li>
+                        <li style="border: 2px solid #fff; border-radius: 20px; width: 104px; text-align: center; padding-top: 3px; padding-bottom: 3px;">
+                            <a href="/players">Dashboard</a>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
+        </header>
+
+        <div class="container1 white">
+            <div class="left-content">
+                <img src="spurs.png" alt="Spurs Logo">
+            </div>
+            <div class="right-content">
+                <div class="row">SPURS</div>
+                <div class="row">SAN ANTONIO SPURS</div>
+
+                <div class="row">Team Ranking &nbsp;<span id="teamRanking" style="color: gold; font-size:50px;">__</span>&nbsp; in Western</div>
+
+
+            </div>
         </div>
-        <div class="right-content">
-            <div class="row">Team Ranking: <span id="teamRanking">N/A</span></div>
-            <div class="row">
-            <p>PPG: <span id="ppg">0</span></p>
-            <p>RPG: <span id="rpg">0</span></p>
-            <p>APG: <span id="apg">0</span></p>
-            <p>OPPG: <span id="oppg">0</span></p>
+        <div style="background: #a1a1a1; display: flex; padding: 20px; color: white; flex-wrap: nowrap; align-content: center; justify-content: center;"><table class="team-rank">
+                <tr>
+                    <td id="ppg">0</td>
+                    <td id="rpg">0</td>
+                    <td id="apg">0</td>
+                    <td id="oppg">0</td>
+                </tr>
+                <tr>
+                    <td style="font-size:25px;color: black;">PPG</td>
+                    <td style="font-size:25px;color: black;">RPG</td>
+                    <td style="font-size:25px;color: black;">APG</td>
+                    <td style="font-size:25px;color: black;">OPPG</td>
+                </tr>
+
+            </table></div>
+        <div id="awards" class="container2 black">
+            <div class="row" style="font-weight:700;">AWARDS</div>
         </div>
+        <div class="container3 black">
+            <div class="column">
+                <img src="1999.png" alt="Championship 1">
+                    <div class="caption">1999 Championship</div>
+            </div>
+            <div class="column">
+                <img src="2003.png" alt="Championship 2">
+                    <div class="caption">2003 Championship</div>
+            </div>
+            <div class="column">
+                <img src="2005.png" alt="Championship 3">
+                    <div class="caption">2005 Championship</div>
+            </div>
+            <div class="column">
+                <img src="2007.png" alt="Championship 4">
+                    <div class="caption">2007 Championship</div>
+            </div>
+            <div class="column">
+                <img src="2014.png" alt="Championship 5">
+                    <div class="caption">2014 Championship</div>
+            </div>
         </div>
-    </div>
-    <div class="container2 black">
-        <div class="row">AWARDS</div>
-    </div>
-    <div class="container3 black">
-        <div class="column1">
-            <img src="1999.png" alt="Championship 1">
-             <div class="caption">1999 Championship</div>
+        <div id='players'class="container4 white">
+            <div class="row" style="font-weight:700;">PLAYERS</div>
         </div>
-        <div class="column2">
-            <img src="2003.png" alt="Championship 2">
-            <div class="caption">2003 Championship</div>
-        </div>
-        <div class="column3">
-            <img src="2005.png" alt="Championship 3">
-            <div class="caption">2005 Championship</div>
-        </div>
-        <div class="column4">
-            <img src="2007.png" alt="Championship 4">
-            <div class="caption">2007 Championship</div>
-        </div>
-        <div class="column5">
-            <img src="2014.png" alt="Championship 5">
-            <div class="caption">2014 Championship</div>
-        </div>
-    </div>
-    <div class="container4 white">
-        <div class="row">PLAYERS</div>
-    </div>
         <div class="container5 white">
             <div class="marquee-container">
                 <div class="marquee-content" id="playerContainer"></div>
+
             </div>
         </div>
-        <div class="container6 black">
-            <div class="row">PLAYERS' RANKING</div>
+        <div id="playerRank" class="container6 black">
+            <div class="row" style="font-weight:600;font-size: 50px;">PLAYERS' RANKING</div>
         </div>
-            <div class="container7 black">
-                <div class="left-content">
-                    <div id="sortContainer"></div>
+        <div class="container7 black">
+            <div class="left-content">
+                <div id="sortContainer"></div>
+            </div>
+            <div class="right-content">
+                <h2 style="color: burlywood;">Top Three Players</h2>
+                <div class="top-three-container" id="topThreeContainer" style="color: black;"></div>
+            </div>
+        </div>
+        <div id="news"class="container8 white">
+            <div class="row" style="font-weight:600;font-size: 50px;">NEWS</div>
+        </div>
+        <div class="container9 white">
+            <div class="wrapper">
+                <i id="left" class="fa-solid fas fa-angle-left"></i>
+                <div class="carousel" id="carousel">
                 </div>
-                <div class="right-content">
-                     <h2>Top Three Players</h2>
-                    <div class="top-three-container" id="topThreeContainer" style="color: black;"></div>
-                </div>
+                <i id="right" class="fa-solid fas fa-angle-right"></i>
             </div>
-        <div class="container8 white">
-            <div class="row">NEWS</div>
         </div>
-    <div class="container9 white">
-        <div class="wrapper">
-            <i id="left" class="fa-solid fas fa-angle-left"></i>
-            <div class="carousel" id="carousel">
-                <!-- Content will be dynamically added here -->
-            </div>
-            <i id="right" class="fa-solid fas fa-angle-right"></i>
-        </div>
-    </div>
-        <div class="container10 black">
-            <div class="row">HIGHLIGHTS</div>
+        <div id="highlights" class="container10 black">
+            <div class="row" style="font-weight:600;font-size: 50px;">HIGHLIGHTS</div>
         </div>
         <div class="container11 black">
-           <div class="column1" style="padding-left: 20px; padding-top: 40px">
-               <iframe width="700" height="315" src="https://www.youtube.com/embed/ZQI1SC1m52Q?si=jI6lgW3Z-scbD01_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-               <div class="caption">SAS vs PHX</div>
+            <div class="column1" >
+                <iframe width="700" height="315" src="https://www.youtube.com/embed/ZQI1SC1m52Q?si=jI6lgW3Z-scbD01_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <div class="caption">SAS vs PHX</div>
             </div>
-            <div class="column2" style="padding-left: 50px; padding-top: 40px">
+            <div class="column2">
                 <iframe width="700" height="315" src="https://www.youtube.com/embed/Nn-oABj0beY?si=8zL3r-boVbmwKJr9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 <div class="caption">SAS vs OKC</div>
             </div>
         </div>
-        <div class="container12 white">
-            <div class="row">PATHWAY MATCH</div>
-        </div>
-        <div class="container13 white">
-             <div id="graph" style="display: flex; justify-content: center; align-items: center;"></div>
-        </div>
-        <div class="container14 black"></div>
-        <div class="container15 black">
-            <div class="row" style="padding-top: 40px; padding-left: 50px;">"Basketball is a pretty simple game. What wins is consistency and competitiveness"</div>
-            <div class="caption" style="font-size: 20px; text-align: left; padding-left: 50px; padding-bottom: 50px;">~ Gregg Popovich</div>
+        <div class="container14">
+            <div class="container14-overlay">
+                <div class="container14-quote">
+                    <div class="row" style="padding-top: 40px; justify-content: center;font-size: 35px; font-family: fangsong; font-style: italic;">
+                        "Basketball is a pretty simple game. What wins is consistency and competitiveness"
+                    </div>
+                    <div class="caption" style="font-size: 40px; text-align: center; padding-left: 50px; padding-bottom: 50px;">
+                        ~ Gregg Popovich
+                    </div>
+                </div>
+            </div>
         </div>
 
-    <div th:replace="fragments/footer :: footer"></div>
-</body>
+        <footer class="footer-css">
+            <div class="container-footer">
+                <div >
+                    <img src="/spurs.png" alt="Logo" style="margin-right:40px;width: 140px;">
+                </div>
+                <div class="footer-nav">
+                    <div class="footer-column">
+                        <h4 class="subtitle" >Spurs Management Team</h4>
+                        <ul>
+                            <li><a href="mailto:teammanager@spurs.com">Contact Us</a></li>
+                            <li><a href="https://spursfanshop.com/">Fans Shop</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4 class="subtitle" >Players</h4>
+                        <ul>
+                            <li><a href="/#playerRank">Player Stats</a></li>
+                            <li><a href="/#playerRank">Top Three Players</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4 class="subtitle" >Team</h4>
+                        <ul>
+                            <li><a href="/#news">Team News</a></li>
+                            <li><a href="/#highlights">Team Highlights</a></li>
+                            <li><a href="/#awards">Team Awards</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4 class="subtitle" >Follow Us</h4>
+                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+                        <div class="social-media">
+                            <a href="https://www.facebook.com/Spurs/" target="_blank">
+                                <i class="fa-brands fa-facebook-f" style="color: #ffffff; font-size: 25px;"></i>
+                            </a>
+                            <a href="https://www.instagram.com/spurs" target="_blank">
+                                <i class="fa-brands fa-instagram" style="color: #ffffff; font-size: 25px;"></i>
+                            </a>
+                            <a href="https://twitter.com/spurs" target="_blank">
+                                <i class="fa-brands fa-x-twitter" style="color: #ffffff; font-size: 25px;"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/company/spurs-sports-&-entertainment/" target="_blank">
+                                <i class="fa-brands fa-linkedin" style="color: #ffffff; font-size: 25px;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 San Antonio Spurs. All Rights Reserved.</p>
+            </div>
+        </footer>
+    </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-US">
+        <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
     <title>Edit Player</title>
@@ -7,12 +7,13 @@
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: Arial, sans-serif;
             margin: 0; 
             padding: 0;
             background: black url('https://cdn.nba.com/logos/nba/1610612759/primary/L/logo.svg') no-repeat center center fixed;
             background-size: contain;
             color: #FFFFFF;
+            font-size: 18px;
         }
         .container {
             background-color: rgba(0, 0, 0, 0.85);
@@ -39,24 +40,26 @@
             margin-bottom: 5px;
             color: #C4CED4;
             font-weight: 700;
+            padding-bottom: 10px;
         }
         input, select {
             padding: 8px;
             margin-bottom: 10px;
             border: 2px solid #C4CED4;
-            border-radius: 10px;
+            border-radius: 20px;
             background-color: #2E2E2E;
             color: #FFFFFF;
         }
         button {
             padding: 10px 20px;
-            background-color: #C4CED4;
+            background-color: #fff;
             color: #000000;
             border: none;
             cursor: pointer;
-            border-radius: 10px;
+            border-radius: 20px;
             transition: background-color 0.3s ease;
             font-weight: 700;
+            font-size: 18px;
         }
         button:hover {
             background-color: #A0A0A0;
@@ -81,7 +84,7 @@
         }
         .player-image img {
             max-width: 100%;
-            border-radius: 10px;
+            border-radius: 20px;
             border: 2px solid #C4CED4;
         }
         .player-image input {
@@ -101,8 +104,8 @@
             width: 100%;
             -webkit-appearance: none;
             background-color: #2E2E2E;
-            height: 5px; /* Adjust the height of the slider track */
-            border-radius: 5px;
+            height: 12px; /* Adjust the height of the slider track */
+            border-radius: 20px;
         }
 
         input[type="range"]::-webkit-slider-thumb {
@@ -148,22 +151,35 @@
             background: #FFFFFF;
             box-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF, 0 0 30px #FFFFFF;
         }
+        .left-section form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
     </style>
 </head>
 <body>
+                    <link rel="stylesheet" href="/header-style.css">
+        <div th:replace="fragments/header :: header"></div>
+
     <div class="header">
         <img src="https://cdn.nba.com/logos/nba/1610612759/primary/L/logo.svg" alt="San Antonio Spurs Logo">
     </div>
     <div class="container">
-        <div class="left-section">
-            <label for="Image">Image:</label>
+                    
+
+        <form action="/players/update" method="post" th:action="@{/players/update}" th:object="${player}">
+            <div th:if="${#authorization.expression('isAuthenticated()')}" 
+                 style="color: white;padding: 50px; text-align: center; font-size: 35px; font-weight: 800; position: relative; z-index: 1300; cursor: pointer;">
+                Edit Profile
+            </div>
             <div class="player-image">
                 <img th:src="${player.Image}" alt="Player Image"/>
             </div>
             <input type="text" id="Image" name="Image" th:value="${player.Image}" />
-        </div>
-        <form action="/players/update" method="post" th:action="@{/players/update}" th:object="${player}">
-            <input type="hidden" name="playerId" th:value="${player.playerId}" />
+
+<input type="hidden" id="playerId" name="playerId" th:value="${player.playerId}" />
 
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" th:value="${player.name}" />
@@ -188,8 +204,8 @@
 
             <label for="jerseyNum">Jersey Number:</label>
             <div class="slider-container">
-                <input type="range" id="jerseyNum" name="jerseyNum" min="0" max="100" th:value="${player.jerseyNum}" oninput="updateSliderValue(this, 'jerseyNumValue')" />
-                <input type="number" id="jerseyNumValue" min="0" max="100" th:value="${player.jerseyNum}" oninput="updateRangeValue(this, 'jerseyNum')" />
+                <input type="range" id="jerseyNum" name="jerseyNum" min="0" max="99" th:value="${player.jerseyNum}" oninput="updateSliderValue(this, 'jerseyNumValue')" />
+                <input type="number" id="jerseyNumValue" min="0" max="99" th:value="${player.jerseyNum}" oninput="updateRangeValue(this, 'jerseyNum')" />
             </div>
 
             <label for="country">Country:</label>
@@ -200,62 +216,44 @@
 
             <label for="salary">Salary:</label>
             <div class="slider-container">
-                <input type="range" id="salary" name="salary" min="0" max="10000000" step="0.1" th:value="${player.salary}" oninput="updateSliderValue(this, 'salaryValue')" />
-                <input type="number" id="salaryValue" min="0" max="10000000" step="0.1" th:value="${player.salary}" oninput="updateRangeValue(this, 'salary')" />
-            </div>
-
-            <label for="is_added">Is Added:</label>
-            <div class="slider-container">
-                <input type="range" id="is_added" name="is_added" min="0" max="1" th:value="${player.is_added}" oninput="updateSliderValue(this, 'isAddedValue')" />
-                <input type="number" id="isAddedValue" min="0" max="1" th:value="${player.is_added}" oninput="updateRangeValue(this, 'is_added')" />
+                <input type="range" id="salary" name="salary" min="0" max="10000000" step="0.01"  th:value="${player.salary}" oninput="updateSliderValue(this, 'salaryValue')" />
+                <input type="number" id="salaryValue" min="0" max="10000000" step="0.01" th:value="${player.salary}" oninput="updateRangeValue(this, 'salary')" />
             </div>
 
             <label for="points">Points:</label>
             <div class="slider-container">
-                <input type="range" id="points" name="points" min="0" max="100" step="0.1" th:value="${player.points}" oninput="updateSliderValue(this, 'pointsValue')" />
-                <input type="number" id="pointsValue" min="0" max="100" step="0.1" th:value="${player.points}" oninput="updateRangeValue(this, 'points')" />
+                <input type="range" id="points" name="points" min="0" max="100" step="0.001"  th:value="${player.points}" oninput="updateSliderValue(this, 'pointsValue')" />
+                <input type="number" id="pointsValue" min="0" max="100" step="0.001" th:value="${player.points}" oninput="updateRangeValue(this, 'points')" />
             </div>
 
             <label for="blocks">Blocks:</label>
             <div class="slider-container">
-                <input type="range" id="blocks" name="blocks" min="0" max="100" th:field="*{blocks}" oninput="updateSliderValue(this, 'blocksValue')" />
-                <input type="number" id="blocksValue" min="0" max="100" step="0.1" th:value="${player.blocks}" oninput="updateRangeValue(this, 'blocks')" />
+                <input type="range" id="blocks" name="blocks" min="0" max="100" step="0.001" th:field="*{blocks}" oninput="updateSliderValue(this, 'blocksValue')" />
+                <input type="number" id="blocksValue" min="0" max="100" step="0.001" th:value="${player.blocks}" oninput="updateRangeValue(this, 'blocks')" />
             </div>
 
             <label for="steals">Steals:</label>
             <div class="slider-container">
-                <input type="range" id="steals" name="steals" min="0" max="100" th:field="*{steals}" oninput="updateSliderValue(this, 'stealsValue')" />
-                <input type="number" id="stealsValue" min="0" max="100" step="0.1" th:value="${player.steals}" oninput="updateRangeValue(this, 'steals')" />
+                <input type="range" id="steals" name="steals" min="0" max="100" step="0.001"  th:field="*{steals}" oninput="updateSliderValue(this, 'stealsValue')" />
+                <input type="number" id="stealsValue" min="0" max="100" step="0.001" th:value="${player.steals}" oninput="updateRangeValue(this, 'steals')" />
             </div>
 
             <label for="assists">Assists:</label>
             <div class="slider-container">
-                <input type="range" id="assists" name="assists" min="0" max="100" th:field="*{assists}" oninput="updateSliderValue(this, 'assistsValue')" />
-                <input type="number" id="assistsValue" min="0" max="100" step="0.1" th:value="${player.assists}" oninput="updateRangeValue(this, 'assists')" />
+                <input type="range" id="assists" name="assists" min="0" max="100" step="0.001"  th:field="*{assists}" oninput="updateSliderValue(this, 'assistsValue')" />
+                <input type="number" id="assistsValue" min="0" max="100" step="0.001" th:value="${player.assists}" oninput="updateRangeValue(this, 'assists')" />
             </div>
 
             <label for="rebounds">Rebounds:</label>
             <div class="slider-container">
-                <input type="range" id="rebounds" name="rebounds" min="0" max="100" th:field="*{rebounds}" oninput="updateSliderValue(this, 'reboundsValue')" />
-                <input type="number" id="reboundsValue" min="0" max="100" step="0.1" th:value="${player.rebounds}" oninput="updateRangeValue(this, 'rebounds')" />
+                <input type="range" id="rebounds" name="rebounds" min="0" max="100" step="0.001" th:field="*{rebounds}" oninput="updateSliderValue(this, 'reboundsValue')" />
+                <input type="number" id="reboundsValue" min="0" max="100" step="0.001" th:value="${player.rebounds}" oninput="updateRangeValue(this, 'rebounds')" />
             </div>
 
-            <label for="contractStatus">Contract Status:</label>
-            <input type="text" id="contractStatus" name="contractStatus" th:field="*{contractStatus}" />
-
-            <label for="statusId">Status:</label>
-            <input type="text" id="statusId" name="statusId" th:field="*{statusId}" />
-
-            <label for="dateCreated">Date Created:</label>
-            <input type="date" id="dateCreated" name="dateCreated" th:field="*{dateCreated}" />
-
-            <label for="starred">Starred:</label>
-            <div class="slider-container">
-                <input type="range" id="starred" name="starred" min="0" max="1" th:value="${player.starred}" oninput="updateSliderValue(this, 'starredValue')" />
-                <input type="number" id="starredValue" min="0" max="1" th:value="${player.starred}" oninput="updateRangeValue(this, 'starred')" />
-            </div>
 
             <button type="submit">Update Player</button>
+                        <button type="button" onclick="removePlayer()" style="margin-top:  20px; background-color: red;color:white;">Remove Player</button>
+
         </form>
     </div>
 
@@ -267,6 +265,27 @@
         function updateRangeValue(input, sliderId) {
             document.getElementById(sliderId).value = input.value;
         }
+                 function removePlayer() {
+            var playerId = document.getElementById("playerId").value;
+            if (confirm("Are you sure you want to remove this player?")) {
+                // Send a POST request to remove the player
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/players/remove", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        // Player removed, redirect or update UI as needed
+                        alert("Player removed successfully!");
+                        window.location.href = "/players"; // Redirect to players page
+                    }
+                };
+                xhr.send("playerId=" + playerId);
+            }
+        }
+
+
     </script>
+            <div th:replace="fragments/footer :: footer"></div>
+
 </body>
 </html>

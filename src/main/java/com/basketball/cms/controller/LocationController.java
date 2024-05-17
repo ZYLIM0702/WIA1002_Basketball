@@ -55,7 +55,29 @@ public class LocationController {
 
     @GetMapping({"","/"})
     public String showLocationGraph(Model model) {
+                shortestPath.clear();
+        minDistance = Double.MAX_VALUE; //reset the min distance to infinity
+        nodeLists.clear();
+        nodeMap.clear();
+        init();
+
+        if (sourceLocationNode == null || nodeMap.get(sourceLocationNode) == null) {
+            System.out.println("null node fetched.");
+            // Handle error if source location not found
+            return "redirect:/locations";
+        }
+
+        
+        dfsPathDist(nodeMap.get(sourceLocationNode), new ArrayList<>(), new HashSet<>(), 0.0);
+        
+        // Print the path and total distance traveled
+        System.out.println("Optimal travel path: " + shortestPath);
+        System.out.println("Optimal distance: " + minDistance);
+        
+        model.addAttribute("path", shortestPath);
+        model.addAttribute("optimumDist", minDistance);
         return "locations/index";
+
     }
     
     private void buildGraph() {
@@ -107,7 +129,7 @@ public class LocationController {
         
         model.addAttribute("path", shortestPath);
         model.addAttribute("optimumDist", minDistance);
-        return "locations/graph";
+        return "locations/index";
     }
 
     private void dfsPathDist(LocationNodeList current, List<LocationNodeList> path, Set<LocationNodeList> visited, double currentDist) {
@@ -141,60 +163,7 @@ public class LocationController {
         visited.remove(current);
         path.remove(path.size() - 1);
     }
-    
-    @GetMapping("/greedy/path")
-    public String showGreedyPath(Model model) {
-        
-        shortestPath.clear();
-        nodeLists.clear();
-        nodeMap.clear();
-        init();
-        
-        if (sourceLocationNode == null || nodeMap.get(sourceLocationNode) == null) {
-            System.out.println("null node fetched.");
-            // Handle error if source location not found
-            return "redirect:/locations";
-        }
-        
-        greedyPathDist(nodeMap.get(sourceLocationNode));
-
-
-        // Print the path and total distance traveled
-        System.out.println("Optimal travel path: " + shortestPath);
-        System.out.println("Optimal distance: " + minDistance);
-
-        // Add necessary attributes to the model
-        model.addAttribute("path", shortestPath);
-        model.addAttribute("optimumDist", minDistance);
-
-        return "locations/graph";
-    }
-
-    private void greedyPathDist(LocationNodeList source) {
-        minDistance = 0; //reset the min distance to be 0
-        Set<LocationNodeList> visited = new HashSet<>();
-        LocationNodeList current = source;
-
-        while (visited.size() != nodeLists.size()) {
-            if (!visited.contains(current)) {
-                shortestPath.add(current);
-                visited.add(current);
-                
-                current.sortNeighboursByDistance();
-                ArrayList<LocationNodeList> neighbours = current.getNeighbour();
-                                
-                for (int i = 0; i < neighbours.size(); i++) {
-                    LocationNodeList neighbour = neighbours.get(i);
-                    if (visited.contains(neighbour)) {
-                        continue;
-                    }
-                    current = neighbour;
-                    minDistance += neighbour.getNeighbourDistance().get(i);
-                    break;
-                }
-            }
-        }
-    }
+   
     
     @GetMapping("/dijkstra/path/{destinationId}")
     public String showDijkstra(@PathVariable int destinationId, Model model) {
@@ -232,7 +201,7 @@ public class LocationController {
         model.addAttribute("optimumDist", minDistance);
 
         //model.addAttribute("destination", destLocationNode);
-        return "locations/graph";
+        return "locations/index";
     }
     
     

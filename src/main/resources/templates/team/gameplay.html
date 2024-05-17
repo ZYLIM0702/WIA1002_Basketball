@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>New Match</title>
+        <style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    width: 100%;
+        background: linear-gradient(to right, #ff6347, #ff6347 50%, #6495ed 50%, #6495ed);
+
+}
+            .container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+                justify-content: center;
+            }
+
+            .card {
+                width: 270px;
+                background: rgba(255, 255, 255, 1);
+                border-radius: 16px;
+                box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.25);
+                overflow: hidden;
+                margin-bottom: 20px;
+                position: relative;
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .card:hover {
+                transform: scale(1.03);
+            }
+
+            .card img {
+                width: 100%;
+                height: auto;
+                margin: 0;
+                position: relative;
+                background: rgb(225, 225, 225);
+                border-radius: 10px 10px 0px 0px;
+                transition: transform 0.3s ease-in-out, background 0.3s ease-in-out; /* Added background transition */
+            }
+
+            .card:hover img {
+                background: rgb(100, 100, 100);
+                transform: scale(1.05);
+            }
+
+            .card .content {
+                padding: 15px;
+            }
+
+            .card .content h2 {
+                margin: 0 0 10px;
+                font-size: 18px;
+                font-family: 'Interstate', sans-serif;
+            }
+
+            .card .content p {
+                margin: 5px 0;
+                font-size: 16px;
+            }
+
+            .star {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                font-size: 24px;
+                color: #fff;
+                text-shadow: 2px 2px 5px rgb(0 0 0 / 14%);
+                z-index: 1;
+            }
+
+            .star.starred:hover {
+                transform: scale(1.03);
+            }
+
+            .star.starred {
+                color: #ffea00;
+            }
+            .card-content {
+                padding: 15px;
+            }
+            .player-info {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+            }
+
+            .injury-dropdown {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                font-size: 16px;
+                border-radius: 20px;
+                transition: opacity 0.3s ease;
+            }
+            .injury-dropdown[disabled] {
+                pointer-events: none;
+                opacity: 0.5;
+            }
+            .injuryStack-container .card {
+                cursor: default;
+            }
+            .injuryStack-container {
+                position: relative;
+                display: flex;
+                align-items: center;
+                flex-direction: column-reverse;
+                justify-content: flex-end;
+
+            }
+            .pop-button {
+                margin-top: 10px;
+                padding: 10px 20px;
+                border: none;
+                background-color: #ff6347;
+                color: #fff;
+                font-size: 16px;
+                margin-bottom: 20px;
+                border-radius: 30px;
+                cursor: pointer;
+                transition: background-color 0.3s ease, transform 0.3s ease;
+            }
+            .pop-button:hover {
+                background-color: #0056b3;
+                transform: translateY(-5px);
+            }
+            .containers {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                padding-top: 40px;
+            }
+
+        </style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+    <body>
+        <link rel="stylesheet" href="/header-style.css">
+            <div th:replace="fragments/header :: header"></div>
+<div style="text-align: center; color: white; font-size: 60px; font-weight: 600; padding-top: 100px; text-shadow: 7px 7px 0px rgba(0, 0, 0, 1);">New NBA Match</div>
+
+            <div class="containers">
+                <div class="card-container bench-container" id="benchContainer" >
+                    <div style="text-align:center; font-size: 18px;"><h2>Current Match</h2><h2>Players</h2></div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; /* align-content: center; */ align-items: center;">
+                    <h2>Injury Players Stack</h2>
+                    <button class="pop-button" onclick="popToBench()">Pop to Ready</button>
+                    <div class="card-container injuryStack-container" id="injuryStackContainer">
+                    </div>
+
+                </div>
+            </div>
+
+            <script>
+                $(document).ready(function () {
+                    loadPlayers('/players/api/bench', '#benchContainer', true);
+                    loadPlayers('/players/api/injuryStack', '#injuryStackContainer', false, true);
+                });
+
+                function loadPlayers(url, containerId, enableDropdown, disableDropdown = false) {
+                    $.get(url, function (players) {
+                        players.forEach(player => {
+                            var cardHtml = `
+                                <div class="card" id="playerCard_${player.playerId}">
+                                    <img src="${player.image}" alt="Player Image">
+                                    <div class="card-content">
+                                        <h2>${player.name}</h2>
+                                        <p>Jersey Number: ${player.jerseyNum}</p>
+                                        <p>Position: ${player.position}</p>
+                                    </div>`;
+                            if (enableDropdown) {
+                                cardHtml += `
+                                    <select class="injury-dropdown" onchange="selectInjury(this, ${player.playerId})">
+                                        <option value="">No Injury</option>
+                                        <option value="knee">Knee Injury</option>
+                                        <option value="ankle">Ankle Sprain</option>
+                                    </select>`;
+                            }
+                            cardHtml += `</div>`;
+                            $(containerId).append(cardHtml);
+                        });
+                    });
+                }
+
+                function selectInjury(select, playerId) {
+                    var selectedInjury = select.value;
+                    $.ajax({
+                        url: '/players/api/addInjury',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({playerId: playerId, injuryStatus: selectedInjury}),
+                        success: function () {
+                            location.reload();
+                        }
+                    });
+                }
+
+                function popToBench() {
+                    $.post('/players/api/removeInjury', function (data) {
+                        if (data) {
+                            location.reload();
+                        }
+                    });
+                }
+            </script>
+            <div th:replace="fragments/footer :: footer"></div>
+
+    </body>
+</html>

@@ -45,6 +45,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/players")
@@ -60,13 +61,7 @@ public class PlayerController {
         return "players/index";
     }
 
-    @GetMapping("/gameplay")
-    public String playerManagementInGame(Model model) {
-        List<Player> players = repo.findIsAddedPlayers();
-        model.addAttribute("players", players);
-        return "players/gameplay";
-    }
-
+    
     @GetMapping("/edit")
     public String showEditPlayerPage(@RequestParam int playerId, Model model) {
         Player player = repo.findById(playerId).orElse(null);
@@ -79,9 +74,10 @@ public class PlayerController {
     }
 
     @PostMapping("/update")
-    public String updatePlayer(@ModelAttribute("player") @DateTimeFormat(pattern = "yyyy-MM-dd") Player player) {
+    public String updatePlayer(@ModelAttribute("player") @DateTimeFormat(pattern = "yyyy-MM-dd") Player player, RedirectAttributes redirectAttributes) {
         repo.save(player);
-        return "redirect:/players";
+        redirectAttributes.addAttribute("playerId", player.getPlayerId());
+        return "redirect:/players/profile/{playerId}";
     }
 
     @GetMapping("/profile/{playerId}")
@@ -104,10 +100,21 @@ public class PlayerController {
 
     @PostMapping("/add")
     public String addPlayer(@ModelAttribute("player") Player player) {
-        // Perform validation if needed
         repo.save(player);
         return "redirect:/players";
     }
+        @PostMapping("/remove")
+    public String removePlayer(@RequestParam("playerId") Integer playerId) {
+        // Retrieve the player by ID
+        Player player = repo.findById(playerId).orElse(null);
+        
+        if (player != null) {
+            repo.delete(player);
+        }
+        
+        return "redirect:/players";
+    }
+
 
     @GetMapping("/search")
     public String searchPlayers(@RequestParam(required = false) String name,
@@ -253,7 +260,6 @@ public class PlayerController {
 //        }
 //        return injuries;
 //    }
-
     @GetMapping("/sort")
 //    public String sortPlayersByOverallScore(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
 //        List<Player> players = repo.findAll();
@@ -343,64 +349,60 @@ public class PlayerController {
 //        return "players/sort";
 //    }
 
-
-
     @GetMapping("/contract")
-    public String sortStarredPlayersByPriority(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
-        List<Player> players = repo.findAll();
-        List<Player> addedPlayers = players.stream()
-                .filter(player -> player.getIs_added() > 0)
-                .collect(Collectors.toList());
+public String sortStarredPlayersByPriority(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
+    List<Player> players = repo.findAll();
+    List<Player> addedPlayers = players.stream()
+            .filter(player -> player.getIs_added() > 0)
+            .collect(Collectors.toList());
 
-        List<Player> unaddedPlayers = players.stream()
-                .filter(player -> player.getIs_added() == 0)
-                .collect(Collectors.toList());
+    List<Player> unaddedPlayers = players.stream()
+            .filter(player -> player.getIs_added() == 0)
+            .collect(Collectors.toList());
 
-        // Calculate contract status for each player
-        for (Player player : addedPlayers) {
-            LocalDate currentDate = LocalDate.now();
-            LocalDate expirationDate = player.getDateCreated().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusYears(3);
-            Date dateCreated = player.getDateCreated();
+    // Calculate contract status for each player
+    for (Player player : addedPlayers) {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate expirationDate = player.getDateCreated().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusYears(3);
+        Date dateCreated = player.getDateCreated();
 
-            String contractStatus;
-            if (isMinDate(dateCreated)) {
-                contractStatus = "No Contract";
-            } else if (expirationDate.isBefore(currentDate)) {
-                contractStatus = "Expired";
-            } else if (currentDate.plusMonths(3).isAfter(expirationDate)) {
-                contractStatus = "Almost Expired";
-            } else {
-                contractStatus = "Active";
-            }
-
-            player.setContractStatus(contractStatus);
+        String contractStatus;
+        if (isMinDate(dateCreated)) {
+            contractStatus = "No Contract";
+        } else if (expirationDate.isBefore(currentDate)) {
+            contractStatus = "Expired";
+        } else if (currentDate.plusMonths(3).isAfter(expirationDate)) {
+            contractStatus = "Almost Expired";
+        } else {
+            contractStatus = "Active";
         }
 
-        // Create a priority queue that sorts players based on isStarPlayer and dateCreated
-        Queue<Player> priorityQueue = new PriorityQueue<>(Comparator.comparing(Player::getDateCreated, Comparator.reverseOrder()).thenComparing(Player::getIsStarPlayer));
-        // Add players to the priority queue
-        for (Player player : addedPlayers) {
-            priorityQueue.add(player);
-        }
-
-        // Convert the priority queue back to a list
-        List<Player> priorityPlayers = new ArrayList<>();
-        while (!priorityQueue.isEmpty()) {
-            priorityPlayers.add(priorityQueue.poll());
-        }
-
-        if ("asc".equals(order)) {
-            Collections.sort(priorityPlayers, Comparator.comparing(Player::getDateCreated, Comparator.reverseOrder()).thenComparing(Player::getIsStarPlayer));
-        } else if ("desc".equals(order)) {
-            Collections.sort(priorityPlayers, Comparator.comparing(Player::getDateCreated).thenComparing(Player::getIsStarPlayer));
-
-        }
-
-        model.addAttribute("players", priorityPlayers);
-        model.addAttribute("unaddedPlayers", unaddedPlayers);
-        model.addAttribute("order", order); // Add order to pass the sort order to the view
-        return "players/contract";
+        player.setContractStatus(contractStatus);
     }
+
+    // Create a comparator for sorting players
+    Comparator<Player> playerComparator = Comparator.comparing((Player player) -> {
+        if ("Active".equals(player.getContractStatus()) && player.getIsStarPlayer()) {
+            return 1; // Lower priority for active star players, sorting based on dateCreated
+        } else {
+            return 0; // Higher priority for almost expired or expired star players and non-star players
+        }
+    }).thenComparing(Player::getIsStarPlayer, Comparator.reverseOrder())
+      .thenComparing(Player::getDateCreated);
+
+    // Sort addedPlayers based on the comparator
+    if ("asc".equals(order)) {
+        addedPlayers.sort(playerComparator);
+    } else if ("desc".equals(order)) {
+        addedPlayers.sort(playerComparator.reversed());
+    }
+
+    model.addAttribute("players", addedPlayers);
+    model.addAttribute("unaddedPlayers", unaddedPlayers);
+    model.addAttribute("order", order); // Add order to pass the sort order to the view
+    return "players/contract";
+}
+
 
     private boolean isMinDate(Date date) {
         Calendar cal = Calendar.getInstance();
@@ -436,22 +438,25 @@ public class PlayerController {
         return "redirect:/players/contract";
     }
 
-    @PostMapping("/contract/remove")
-    public String removeContract(@RequestParam("playerId") Integer playerId, Model model) {
-        // Retrieve player from the database
-        Optional<Player> playerOptional = repo.findById(playerId);
-        if (playerOptional.isPresent()) {
-            Player player = playerOptional.get();
-            player.setDateCreated(new Date(-1900, Calendar.JANUARY, 1));; // Setting dateCreated to "0001-01-01"
-            String contractStatus;
-            contractStatus = "Removed";
-            player.setContractStatus(contractStatus);
-            repo.save(player);
-        }
-
-        // Redirect back to the contract page
-        return "redirect:/players/contract";
+@PostMapping("/contract/remove")
+public String removeContract(@RequestParam("playerId") Integer playerId, Model model) {
+    // Retrieve player from the database
+    Optional<Player> playerOptional = repo.findById(playerId);
+    if (playerOptional.isPresent()) {
+        Player player = playerOptional.get();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(1, Calendar.JANUARY, 1); // Setting date to "0001-01-01"
+        Date date = calendar.getTime();
+        player.setDateCreated(date);
+        String contractStatus = "No Contract";
+        player.setContractStatus(contractStatus);
+        repo.save(player);
     }
+
+    // Redirect back to the contract page
+    return "redirect:/players/contract";
+}
+
     @ResponseBody
     @PostMapping("/toggleStar")
     public ResponseEntity<Object> toggleStar(@RequestParam("playerId") int playerId) {
@@ -464,6 +469,5 @@ public class PlayerController {
         repo.save(player);
         return ResponseEntity.ok().build();
     }
-
 
 }

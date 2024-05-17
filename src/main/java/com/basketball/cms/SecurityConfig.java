@@ -46,12 +46,18 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeRequests()
                 .requestMatchers("/").permitAll() // Allow access to homepage
-                .requestMatchers("/players").authenticated()// Require authentication for other requests
+                .requestMatchers("/players/api/**").permitAll()
+                .requestMatchers("/locations/**").permitAll()
+                .requestMatchers("/players/profile/**").permitAll()
+                .requestMatchers("/players/**").authenticated()// Require authentication for other requests
+                .requestMatchers("/team/**").authenticated()// Require authentication for other requests
                 .and()
                 .formLogin()
                 .loginPage("/login") // Specifies the custom login page URL
+                .defaultSuccessUrl("/players", true) // Redirect to /dashboard after successful login
+
                 .permitAll(); // Allow access to the custom login page without authentication
-        http.formLogin(); // Use form-based authentication
+        http.formLogin();
         return http.build();
     }
 

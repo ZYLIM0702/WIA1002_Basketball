@@ -7,14 +7,6 @@ package com.basketball.cms.controller;
 import com.basketball.cms.model.Player;
 import com.basketball.cms.service.PlayerRepository;
 import com.basketball.cms.service.PlayerService;
-import com.sun.syndication.feed.synd.SyndEntry;
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.io.FeedException;
-import com.sun.syndication.io.SyndFeedInput;
-import com.sun.syndication.io.XmlReader;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -189,5 +183,18 @@ public class TeamController {
 
     }
 
+    @GetMapping("/gameplay")
+    public String playerManagementInGame(Model model) {
+        List<Player> players = repo.findIsAddedPlayers();
+        model.addAttribute("players", players);
+        return "team/gameplay";
+    }
+
+    @ResponseBody
+    @GetMapping("/auth/authenticated")
+    public boolean isAuthenticated() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && authentication.isAuthenticated();
+    }
 
 }

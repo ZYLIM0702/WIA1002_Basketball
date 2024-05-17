@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import java.util.logging.Logger;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 class InjuryUpdateRequest {
 
@@ -114,7 +116,7 @@ public class PlayerRestController {
         }
 
         injuryStack.push(player);
-        System.out.println("Added injury for player: " + player);
+        System.out.println("Added injury for player: " + player.getName());
         return ResponseEntity.ok().build();
     }
 
@@ -129,4 +131,5 @@ public class PlayerRestController {
             return ResponseEntity.noContent().build();
         }
     }
+
 }

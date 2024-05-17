@@ -64,7 +64,7 @@ public class Player{
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "date_created", table = "CONTRACT")
-    private Date dateCreated ;
+    private Date dateCreated;
 
     @Column(name = "contract_status", table = "CONTRACT")
     private String contractStatus;

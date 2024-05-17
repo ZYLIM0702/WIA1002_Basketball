@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html>
     <head>
         <title>Locations Graph</title>
@@ -7,6 +7,7 @@
         <style>
             body {
                 font-family: Arial, sans-serif;
+                margin: 0;
             }
             
             nav {
@@ -111,7 +112,6 @@
         <h1 style="text-align: center;">Shortest Path</h1>
 
         <nav>
-            <a href="/locations/greedy/path">Greedy Path</a>
             <a href="/locations/dfs/path">DFS Path</a>
             <div class="dropdown">
                 <button class="dropbtn">Dijkstra Path <i class="fa fa-caret-down"></i></button>
@@ -129,10 +129,10 @@
         </nav>
         
         <div>
-            <!-- Display the optimal distance traveled -->
+             Display the optimal distance traveled 
             <p>Optimal Distance: <span th:text="${optimumDist}"></span> km</p>
 
-            <!-- Display the optimal travel path as a progress bar -->
+             Display the optimal travel path as a progress bar 
             <div class="progress-bar">
                 <div class="progress" th:each="nodeList : ${path}" th:text="${nodeList.city.cityName}"></div>
             </div>
@@ -210,4 +210,4 @@
             });
         </script>
     </body>
-</html>
+</html>-->

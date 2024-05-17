@@ -23,51 +23,50 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                  align-items: center;
                                  padding: 10px;">
                                 <div>
-                                    <img src="../spurs.png" alt="Logo" style="width: 83px;margin-top: 6px;margin-bottom: 2px;margin-left: 60px;">
+                                    <img src="/spurs.png" alt="Logo" style="width: 83px; margin-top: 6px; margin-bottom: 2px; margin-left: 60px;" onclick="window.location.href = '/';">
                                 </div>
                                 <nav>
                                     <!-- Render guest menu if user is not authenticated -->
                                     <ul th:if="${not #authorization.expression('isAuthenticated()')}">
                                         <li>
-                                            <a href="#">About Us</a>
+                                            <a href="/">Home</a>
                                         </li>
                                         <li>
-                                            <a href="#">Rank</a>
+                                            <a href="https://www.nba.com/team/1610612759">About Us</a>
                                         </li>
                                         <li>
-                                            <a href="#">Players</a>
+                                            <a href='/'>Rank</a>
                                         </li>
                                         <li>
-                                            <a href="#">NBA Season</a>
+                                            <a href="/#players">Players</a>
+                                        </li>
+                                        <li>
+                                            <a href="/locations">NBA Season</a>
                                         </li>
                                     </ul>
                                     <!-- Render admin menu if user has ROLE_ADMIN -->
                                     <ul th:if="${#authorization.expression('isAuthenticated()')}">
                                         <li>
-                                            <a href="#">Players</a>
+                                            <a href="/players/search">Players</a>
                                         </li>
                                         <li>
-                                            <a href="#">Contract</a>
+                                            <a href="/players/contract">Contract</a>
                                         </li>
                                         <li>
-                                            <a href="#">Team</a>
+                                            <a href="/team">Team</a>
                                         </li>
                                         <li>
-                                            <a href="#">NBA Season</a>
+                                            <a href="/locations">NBA Season</a>
                                         </li>
                                         <li>
-                                            <a href="#">New Match</a>
+                                            <a href="/team/gameplay">New Match</a>
                                         </li>
                                         <li style="border: 2px solid #fff; border-radius: 20px; width: 104px; text-align: center; padding-top: 3px; padding-bottom: 3px;">
-                                            <a href="#">Dashboard</a>
+                                            <a href="/players">Dashboard</a>
                                         </li>
                                     </ul>
                                 </nav>
                             </div>
                         </header>
-
-</html>
-
-
-                                            </body>
+                    </body>
                     </html>

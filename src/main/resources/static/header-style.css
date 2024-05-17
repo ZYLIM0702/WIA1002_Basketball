@@ -49,6 +49,8 @@ nav ul li a:hover::after {
                             background-color: black;
                             color: white;
                             width: 100%;
+                            z-index: 1000;
+    position: relative;
                         }
                         .container-footer {
                             max-width: 90%;

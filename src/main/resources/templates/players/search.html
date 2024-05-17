@@ -5,48 +5,57 @@
     <head>
         <meta charset="UTF-8"/>
         <title>Player Search</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css"/>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
         <style>
             body {
-                font-family: knockout wide, sans-serif;
+                font-family: Arial, sans-serif;
+                background-color: #fafafa;
                 margin: 0;
-                padding: 0;
-                background-color: #f0f0f0;
+                font-size: 16px;
             }
 
-            .container {
-                display: flex;
-            }
+
+
 
             .sidebar {
                 flex-basis: 20%;
-                padding: 20px;
+                padding: 30px;
                 height: 100%;
                 position: sticky;
                 top: 0;
                 overflow-y: auto;
+                padding-top: 100px;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-evenly;
-                border: 3px solid #000; /* Add border */
-                border-radius: 0px; /* Optional: Add border radius */
-                margin-top: -120px;
+                border-radius: 0px;
+                margin-top: 20px;
+                width: 250px;
             }
 
             .content {
-                flex-basis: 70%;
+                flex-basis: 100%;
                 padding: 20px;
             }
 
             .sidebar h1 {
-                 text-align: center;
-                 font-family: knockout wide, sans-serif;
-                 font-weight: 300;
+                text-align: center;
+                font-family: knockout wide, sans-serif;
+                font-weight: 300;
             }
 
             .sidebar form {
+                width: 250px;
                 background-color: #fff;
                 padding: 20px;
-                border-radius: 20px;
+                border-radius: 15px;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }
 
@@ -56,38 +65,45 @@
             }
 
             .sidebar form input[type="text"],
-            .sidebar form input[type="number"],
-            .sidebar form select {
+            .sidebar form input[type="number"]{
                 width: calc(100% - 20px);
                 padding: 10px;
                 margin-bottom: 30px;
                 border: 1px solid #ccc;
                 border-radius: 15px;
             }
+            .sidebar form select{
+                width: calc(100% - 0px);
+                padding: 10px;
+                margin-bottom: 30px;
+                border: 1px solid #ccc;
+                border-radius: 15px;
+
+            }
 
             .sidebar form button[type="submit"] {
-                width: calc(100% - 20px);
+                width: calc(100%);
                 padding: 10px;
-                background-color: #666666;
+                background-color: #000;
                 color: #fff;
                 border: none;
-                border-radius: 5px;
+                border-radius: 20px;
                 cursor: pointer;
             }
 
             .sidebar form button[type="submit"]:hover {
-                background-color: #222222;
+                background-color: #333;
             }
 
             .sidebar form button[type="submit"]:active {
                 background-color: #1e466c;
             }
-            
+
             .starred {
                 display: flex;
                 margin-bottom: -2px; /* Increased margin-bottom to add more space */
             }
-            
+
             .content h2 {
                 text-align: center;
                 color: #333;
@@ -114,269 +130,414 @@
                 max-width: 100%;
                 height: auto;
             }
-            /*---------------------------------------*/
-            .container {
-    display: flex;
-    height: 100vh; /* Ensure the container fills the viewport height */
-}
 
-.sidebar {
-    flex-basis: 30%;
-    padding: 20px;
-    position: sticky; /* Make the sidebar sticky */
-    top: 0; /* Stick to the top of the container */
-    overflow-y: auto; /* Enable vertical scrolling */
-}
+            div#ageSlider{
+                border:none;
+                height: 9px;
+                width: 230px;
+            }
+            div#heightSlider{
+                border:none;
+                height: 9px;
+                width: 230px;
+            }
 
-.content {
-    flex-basis: 70%;
-    padding: 20px;
-    overflow-y: auto; /* Enable vertical scrolling */
-}
-
-.heightSlider{
-    margin-bottom : 50px;
-}
+            .heightSlider{
+                margin-bottom : 50px;
+            }
 
 
-.noUi-tooltip {
-    font-size: 13px; /* Adjust the font size as needed */
-}
+            .noUi-tooltip {
+                font-size: 13px;
+            }
 
-.noUi-connect {
-            background: repeating-linear-gradient(
-                45deg,            /* Angle of the stripes */
-                #999999,          /* Stripe color */
-                #999999 10px,     /* Stripe width */
-                #cccccc 10px,     /* Space color */
-                #cccccc 20px      /* Space width + Stripe width */
-            )!important;
+            .noUi-connect {
+                background: repeating-linear-gradient(
+                    45deg,            /* Angle of the stripes */
+                    #999999,          /* Stripe color */
+                    #999999 10px,     /* Stripe width */
+                    #cccccc 10px,     /* Space color */
+                    #cccccc 20px      /* Space width + Stripe width */
+                    )!important;
+            }
+            div#ageSlider .noUi-handle {
+                width: 20px;
+                height: 15px;
+                right: -17px;
+                top: -2px;
+            }
+            div#ageSlider .noUi-handle:before {
+                display: none;
+
+            }
+            div#ageSlider .noUi-handle:after{
+                display: none;
+
+            }
+            div#heightSlider .noUi-handle {
+                width: 20px;
+                height: 15px;
+                right: -17px;
+                top: -2px;
+            }
+            div#heightSlider .noUi-handle:before {
+                display: none;
+
+            }
+            div#heightSlider .noUi-handle:after{
+                display: none;
+
+            }
+
+            .containers {
+                display: flex;
+                gap: 20px;
+                justify-content: center;
+            }
+
+            .card {
+                width: 270px;
+                background: rgba(255, 255, 255, 1);
+                border-radius: 16px;
+                box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.25);
+                overflow: hidden;
+                margin-bottom: 20px;
+                position: relative;
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .card:hover {
+                transform: scale(1.03);
+            }
+
+            .card img {
+                width: 100%;
+                height: auto;
+                margin: 0;
+                position: relative;
+                background: rgb(225, 225, 225);
+                border-radius: 10px 10px 0px 0px;
+                transition: transform 0.3s ease-in-out, background 0.3s ease-in-out; /* Added background transition */
+            }
+
+            .card:hover img {
+                background: rgb(100, 100, 100);
+                transform: scale(1.05);
+            }
+
+
+            .card .content {
+                padding: 15px;
+            }
+
+            .card .content h2 {
+                margin: 0 0 10px;
+                font-size: 18px;
+                font-family: 'Interstate', sans-serif;
+            }
+
+            .card .content p {
+                margin: 5px 0;
+                font-size: 16px;
+            }
+
+            .star {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                font-size: 24px;
+                color: #fff;
+                text-shadow: 2px 2px 5px rgb(0 0 0 / 14%);
+                z-index: 1;
+            }
+            .star .starred:hover{
+                transform: scale(1.03);
+            }
+
+            .star.starred {
+                color: #ffea00;
+            }
+            .player-info {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+            }
+            div#searchResults {
+                padding-left: 50px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 40px;
+                justify-content: flex-start;
+
+            }
+            .container-result{
+                display: flex;
+                flex-wrap: wrap;
+                gap: 40px;
+                justify-content: flex-start;
+            }
+        .no-results {
+            padding-left: 520px;
+            padding-top: 200px;
+            font-size: 40px;
+            font-weight: 700;
+            opacity: 0.5;
+            
         }
 
- /*-------------------------------------------------*/
-            
-            
+
+
         </style>
     </head>
     <body>
-                <link rel="stylesheet" href="../header-style.css">
+        <link rel="stylesheet" href="../header-style.css"/>
         <div th:replace="fragments/header :: header"></div>
 
-        <div class="container">
+        <div class="containers">
             <div class="sidebar">
                 <form id="searchForm">
-                     <h1><b>Search Bar</b></h1>
-                    
+                    <h1 style="font-size:25px;font-weight:700;">Search Bar</h1>
+
                     <input type="text" id="name" name="name" th:value="${param.name}" placeholder="Name">
-                        
+
                         <select id="country" name="country">
-                                <option value="">Select Country Code</option>
-                                <div th:each="country : ${allCountries}">
-                                    <option th:value="${country}" th:text="${country}" th:selected="${country == param.country}"></option>
-                                </div>
+                            <option value="">Select Country Code</option>
+                            <div th:each="country : ${allCountries}">
+                                <option th:value="${country}" th:text="${country}" th:selected="${country == param.country}"></option>
+                            </div>
                         </select>
-                            
-                            <select id="position" name="position">
-                                <option value="">Select Position</option>
-                                <div th:each="position : ${allPositions}">
-                                    <option th:value="${position}" th:text="${position}" th:selected="${position == param.position}"></option>
-                                </div>
-                            </select>
-                               
-                                                           
-<!-- Age Range -->
-<label for="ageRange" style="margin-bottom: 20px; padding-bottom: 20px; padding-top: 0px">Age Range:</label>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css">
-<div id="ageSlider"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-     var param = {};
-  const ageSlider = document.getElementById('ageSlider');
-  const minAgeInput = document.getElementById('minAge');
-  const maxAgeInput = document.getElementById('maxAge');
-  noUiSlider.create(ageSlider, {
-    start: [22, 40], // Initial values
-    connect: true, // Draw a colored bar between the handles
-    tooltips: [true, true], // Display tooltips for both handles
-    range: {
-      'min': 20,
-      'max': 45
-    }
-  });
- //Update hidden input fields with slider values
-    ageSlider.noUiSlider.on('update', function (values, handle) {
-        const leftValue = parseInt(values[0]); //age only accepts int
-        const rightValue = parseInt(values[1]);
-
-        minAgeInput.value = leftValue;
-        param.minAge = minAgeInput.value;
-        maxAgeInput.value = rightValue;
-        param.maxAge = maxAgeInput.value;
-    });
-    });
-  // Listen for changes on the slider
-  ageSlider.noUiSlider.on('update', function(values, handle) {
-    console.log('Slider values:', values);
-  });
-</script>
+                        <select id="position" name="position">
+                            <option value="">Select Position</option>
+                            <div th:each="position : ${allPositions}">
+                                <option th:value="${position}" th:text="${position}" th:selected="${position == param.position}"></option>
+                            </div>
+                        </select>
 
 
-<!-- Include necessary CSS and JavaScript files for the range slider -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
-<l<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css">
-<label for="heightRange" style="margin-bottom: 20px; padding-bottom: 20px; padding-top: 20px">Height Range:</label>
-<!-- Create a container for the range slider -->
-<div id="heightSlider"></div>
+                        <!-- Age Range -->
+                        <label for="ageRange" style="margin-bottom: 20px; padding-bottom: 20px; padding-top: 0px">Age Range:</label>
+                        <div id="ageSlider"></div>
 
-<!-- JavaScript to initialize the range slider -->
-<script>
-    // Wait for the DOM to be fully loaded
-    document.addEventListener('DOMContentLoaded', function () {
-        var param = {};
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                var param = {};
+                                const ageSlider = document.getElementById('ageSlider');
+                                const minAgeInput = document.getElementById('minAge');
+                                const maxAgeInput = document.getElementById('maxAge');
+                                noUiSlider.create(ageSlider, {
+                                    start: [20, 45], // Initial values
+                                    connect: true, // Draw a colored bar between the handles
+                                    tooltips: [true, true], // Display tooltips for both handles
+                                    range: {
+                                        'min': 20,
+                                        'max': 45
+                                    },
+                                    step: 1
+                                });
+                                //Update hidden input fields with slider values
+                                ageSlider.noUiSlider.on('update', function (values, handle) {
+                                    const leftValue = parseInt(values[0]); //age only accepts int
+                                    const rightValue = parseInt(values[1]);
 
-        // Select the height slider container element
-        const heightSlider = document.getElementById('heightSlider');
-        const minHeightInput = document.getElementById('minHeight');
-        const maxHeightInput = document.getElementById('maxHeight');
+                                    minAgeInput.value = leftValue;
+                                    param.minAge = minAgeInput.value;
+                                    maxAgeInput.value = rightValue;
+                                    param.maxAge = maxAgeInput.value;
+                                });
+                            });
+                            // Listen for changes on the slider
+                            ageSlider.noUiSlider.on('update', function (values, handle) {
+                                console.log('Slider values:', values);
+                            });
+                        </script>
 
-        // Get the initial values for the slider from the server-side parameters
-        //const initialMinHeight = ${param.minHeight || 5.0);
-        //const initialMaxHeight = ${param.maxHeight || 8.0};
-        const initialMinHeight = 5.0;
-        const initialMaxHeight = 8.0;
 
-        // Create the range slider with initial values
-        noUiSlider.create(heightSlider, {
-            start: [initialMinHeight, initialMaxHeight], // Initial values
-            connect: true, // Draw a colored bar between the handles
-            tooltips: [true, true], // Display tooltips for both handles
-            range: {
-                'min': 5.0,
-                'max': 8.0
-            }
-        });
+                        <!-- Include necessary CSS and JavaScript files for the range slider -->
+                        <label for="heightRange" style="margin-bottom: 20px; padding-bottom: 20px; padding-top: 20px">Height Range:</label>
+                        <!-- Create a container for the range slider -->
+                        <div id="heightSlider"></div>
 
-        // Update hidden input fields with slider values
-        heightSlider.noUiSlider.on('update', function (values, handle) {
-            const leftValue = parseFloat(values[0]);
-            const rightValue = parseFloat(values[1]);
+                        <!-- JavaScript to initialize the range slider -->
+                        <script>
+                            // Wait for the DOM to be fully loaded
+                            document.addEventListener('DOMContentLoaded', function () {
+                                var param = {};
 
-            minHeightInput.value = leftValue;
-            param.minHeight = minHeightInput.value;
-            maxHeightInput.value = rightValue;
-            param.maxHeight = maxHeightInput.value;
-        });
-    });
-        // Listen for changes on the slider
-        heightSlider.noUiSlider.on('update', function (values, handle) {
-            console.log('Slider values:', values);
-        });
+                                // Select the height slider container element
+                                const heightSlider = document.getElementById('heightSlider');
+                                const minHeightInput = document.getElementById('minHeight');
+                                const maxHeightInput = document.getElementById('maxHeight');
 
-</script>
+                                // Get the initial values for the slider from the server-side parameters
+                                //const initialMinHeight = ${param.minHeight || 5.0);
+                                //const initialMaxHeight = ${param.maxHeight || 8.0};
+                                const initialMinHeight = 5.0;
+                                const initialMaxHeight = 8.0;
 
-                                <div class="starred">
-                    <p>Starred Player : </p>
-                    <input type="checkbox" id="starred" name="starred" value="true">
-                </div>
+                                // Create the range slider with initial values
+                                noUiSlider.create(heightSlider, {
+                                    start: [initialMinHeight, initialMaxHeight], // Initial values
+                                    connect: true, // Draw a colored bar between the handles
+                                    tooltips: [true, true], // Display tooltips for both handles
+                                    range: {
+                                        'min': 5.0,
+                                        'max': 8.0
+                                    }
+                                });
 
-                                            
-                                                <input type="hidden" id="minHeight" name="minHeight">
-                                                    <input type="hidden" id="maxHeight" name="maxHeight">
-                                                        <input type="hidden" id="minAge" name="minAge">
-                                                            <input type="hidden" id="maxAge" name="maxAge">
-                                                <button type="submit">Search</button>
-                                                </form>
-                                                </div>
-            
-            
+                                // Update hidden input fields with slider values
+                                heightSlider.noUiSlider.on('update', function (values, handle) {
+                                    const leftValue = parseFloat(values[0]);
+                                    const rightValue = parseFloat(values[1]);
 
-                                                <!------------------------------2nd class----------------------------------->
-                                                <div class="content">
-                                                    <h2>Search Results</h2>
-                                                    <div id="searchResults">
-                                                        <table border="1" class="player-row">
-                                                            <tr>
-                                                                <th>Name</th>
-                                                                <th>Image</th>
-                                                                <th>Overall Score</th>
-                                                                <th>Age</th>
-                                                                <th>Height</th>
-                                                                <th>Position</th>
-                                                                <th>Country Code</th>
-                                                                <th>View Profile</th>
-                                                            </tr>
-                                                            <tr th:each="player : ${players}">
-                                                                <td th:text="${player.name}"></td>
-                                                                <td><img th:src="${player.Image}" width="320"/></td>
-                                                                <td th:text="${#numbers.formatDecimal(player.overallScore, 2, 'POINT', 2, 'POINT')}"></td>
-                                                                <td th:text="${player.age}"></td>
-                                                                <td th:text="${player.height}"></td>
-                                                                <td th:text="${player.position}"></td>
-                                                                <td th:text="${player.country}"></td>
+                                    minHeightInput.value = leftValue;
+                                    param.minHeight = minHeightInput.value;
+                                    maxHeightInput.value = rightValue;
+                                    param.maxHeight = maxHeightInput.value;
+                                });
+                            });
+                            // Listen for changes on the slider
+                            heightSlider.noUiSlider.on('update', function (values, handle) {
+                                console.log('Slider values:', values);
+                            });
 
-                                                                <td>
-                                                                    <form th:action="@{/players/profile/{playerId}(playerId=${player.playerId})}" method="get">
-                                                                        <button type="submit">View Profile</button>
-                                                                    </form>
-                                                                    <form action="/players/edit" method="get">
-                                                                        <input type="hidden" name="playerId" th:value="${player.playerId}"/>
-                                                                        <button type="submit">Update</button>
-                                                                    </form>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
+                        </script>
+
+                        <div class="starred">
+                            <p>Starred Player : </p>
+                            <input type="checkbox" id="starred" name="starred" value="true">
+                        </div>
+
+
+                        <input type="hidden" id="minHeight" name="minHeight">
+                            <input type="hidden" id="maxHeight" name="maxHeight">
+                                <input type="hidden" id="minAge" name="minAge">
+                                    <input type="hidden" id="maxAge" name="maxAge">
+                                        <button type="submit">Search</button>
+                                        </form>
+                                        </div>
+
+
+
+                                        <!------------------------------2nd class----------------------------------->
+                                        <div class="content">
+                                            <h2 style="font-size:30px;padding-bottom: 10px;">Search Results</h2>
+
+
+                                            <div id="searchResults">
+                                                <div class="card-container" th:each="player : ${players}">
+                                                    <div class="card">
+                                                        <i class="star fa-regular fa-star" th:classappend="${player.starred == 1 ? 'starred' : ''}" th:onclick="'toggleStar(this, \'' + ${player.playerId} + '\')'"></i>
+                                                        <img th:src="${player.Image}" alt="Player Image" width="320"/>
+                                                        <div class="content" th:onclick="'viewProfile(\'' + ${player.playerId} + '\')'">
+                                                            <div class="player-info">
+                                                                <h2 th:text="${player.name}"></h2>
+                                                                <i style="" th:class="'fi fi-' + ${player.country.toLowerCase()}"></i>
+                                                            </div>
+                                                            <p>Age: <span th:text="${player.age}"></span></p>
+                                                            <p>Height: <span th:text="${player.height}"></span> ft</p>
+                                                            <p>Position: <span style="font-weight: bold;" th:text="${player.position}"></span></p>
+                                                            <p>Overall Score: <span th:text="${#numbers.formatDecimal(player.overallScore, 2, 'POINT', 2, 'POINT')}"></span></p>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                </div>
-                                                </div>
-                                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                                                <script>
-    $(document).ready(function () {
-        var timeoutId;
-        var autoUpdateEnabled = false;
 
-        $('#autoUpdateToggle').click(function () {
-            autoUpdateEnabled = !autoUpdateEnabled;
-            if (autoUpdateEnabled) {
-                $('#autoUpdateToggle').text('Disable Live Search');
-                updateSearchAutomatically();
-            } else {
-                $('#autoUpdateToggle').text('Live Search');
-                clearTimeout(timeoutId);
-            }
-        });
-        function updateSearchAutomatically() {
-            timeoutId = setTimeout(function () {
-                $('#searchForm').trigger('submit');
-                updateSearchAutomatically();
-            }, 1000);
-        }
 
-        $('#searchForm').submit(function (event) {
-            event.preventDefault();
-            var formData = $(this).serialize();
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <script>
+                                            function viewProfile(playerId) {
+                                                window.open('/players/profile/' + playerId);
+                                            }
 
-            $.ajax({
-                type: 'GET',
-                url: '/players/search',
-                data: formData,
-                success: function (response) {
-                    $('#searchResults').empty();
-                    var table = $('<table>').addClass('content');//search-results-table
-                    $('#searchResults').append(table);
-                    $(response).find('.player-row').each(function () {
-                        table.append($(this));
-                    });
-                },
-                error: function (xhr, status, error) {
-                    console.error(xhr.responseText);
-                }
-            });
-        });
-    });
-                                                </script>
-                                                </body>
-                                                </html>
+                                            $(document).ready(function () {
+                                                var timeoutId;
+                                                var autoUpdateEnabled = false;
+
+
+                                                function updateSearchAutomatically() {
+                                                    timeoutId = setTimeout(function () {
+                                                        $('#searchForm').trigger('submit');
+                                                        updateSearchAutomatically();
+                                                    }, 1000);
+                                                }
+                                                autoUpdateEnabled = true;
+                                                if (autoUpdateEnabled) {
+                                                    $('#autoUpdateToggle').text('Disable Live Search');
+                                                    updateSearchAutomatically();
+                                                } else {
+                                                    $('#autoUpdateToggle').text('Live Search');
+                                                    clearTimeout(timeoutId);
+                                                }
+
+
+                                                $('#searchForm').submit(function (event) {
+                                                    event.preventDefault();
+                                                    var formData = $(this).serialize();
+
+                                                    $.ajax({
+                                                        type: 'GET',
+                                                        url: '/players/search',
+                                                        data: formData,
+                                                        success: function (response) {
+                                                            $('#searchResults').empty();
+                                                            var container = $('<div>').addClass('container-result');
+                                                            $('#searchResults').append(container);
+
+                                                            $(response).find('.card-container').each(function () {
+                                                                container.append($(this));
+                                                            });
+
+                                                            // Check if search results are empty
+                                                            if (container.children().length === 0) {
+                                                                container.addClass('no-results').text("No results");
+                                                            }
+                                                        },
+                                                        error: function (xhr, status, error) {
+                                                            console.error(xhr.responseText);
+                                                        }
+                                                    });
+                                                });
+
+
+                                            });
+
+                                            function toggleStar(icon, playerId) {
+                                                playerId = parseInt(playerId); // Convert playerId to integer if it's not already
+                                                var xhr = new XMLHttpRequest();
+                                                xhr.open('POST', '/players/toggleStar?playerId=' + playerId, true); // Include playerId in the URL
+                                                xhr.setRequestHeader('Content-Type', 'application/json');
+                                                xhr.onreadystatechange = function () {
+                                                    if (xhr.readyState === 4) {
+                                                        if (xhr.status === 200) {
+                                                            icon.classList.toggle('starred');
+                                                            // Toggle the color of the star
+                                                            if (icon.classList.contains('starred')) {
+                                                                icon.style.color = '#ffea00'; // Yellow
+                                                            } else {
+                                                                icon.style.color = '#ffffff'; // White
+                                                            }
+                                                            var response = JSON.parse(xhr.responseText);
+                                                            if (response.success) {
+
+                                                            } else {
+                                                                console.error('Failed to toggle star.');
+                                                            }
+                                                        } else {
+                                                            console.error('Failed to toggle star: ' + xhr.status);
+                                                        }
+                                                    }
+                                                };
+
+                                                var data = JSON.stringify({playerId: playerId});
+                                                xhr.send(data);
+                                            }
+
+
+                                        </script>
+                                        <div th:replace="fragments/footer :: footer"></div>
+
+                                        </body>
+                                        </html>
