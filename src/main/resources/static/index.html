@@ -11,11 +11,13 @@
             padding: 0;
             height: 100%;
         }
+        
         .container1 {
             display: grid;
             grid-template-rows: 500px; /* Adjust the height of the first container here */
             grid-template-columns: 1fr 1fr;
         }
+        
         .container1 .left-content {
             display: flex;
             flex-direction: column;
@@ -23,17 +25,21 @@
             align-items: flex-start;
             padding-left: 100px; /* Adjust the right padding to move it to the right */
         }
+        
         .container1 .left-content .row:nth-child(1) {
             font-size: 80px; /* or any other desired size */
         }
+        
         .container1 .left-content .row:nth-child(2) {
             font-size: 60px; /* or any other desired size */
         }
+        
         .container1 .left-content img {
             width: 300px; /* Adjust the width of the logo */
             margin-top: 20px; /* Add some space between text and logo */
             padding-left: 50px;
         }
+        
         .container1 .right-content{
             display: flex;
             flex-direction: column;
@@ -41,113 +47,133 @@
             align-items: flex-start;
             padding-left: 200px; /* Adjust the right padding to move it to the right */
         }
+        
         .container1 .right-content .row:nth-child(1) {
             display: flex;
             flex-direction: row;
             font-size: 50px; /* or any other desired size */
         }
+        
         .container1 .right-content .row:nth-child(2) {
             display: flex;
             flex-direction: column;
             font-size: 30px; /* or any other desired size */
             line-height: 0.1;
         }
+        
         .container2 {
             display: grid;
             grid-template-rows: 100px; /* Adjust the height of the first container here */
         }
+        
         .container2 .row{
             font-size: 50px;
             justify-content: center;
             align-self: flex-start;
             padding-top: 30px;
         }
+        
         .container3 {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             grid-template-rows: 520px; /* Adjust the height of the first container here */
         }
+        
         .container3 .colomn1 {
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 24px;
         }
+        
         .container3 .column1 img {
             width: 200px; /* Adjust the width of the image */
             height: auto; /* Maintain aspect ratio */
             padding-top: 20px;
             padding-left: 50px;
         }
+        
         .caption {
             text-align: center;
             font-size: 30px;
             padding-top: 10px;
         }
+        
         .container3 .colomn2 {
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 24px;
         }
+        
         .container3 .column2 img {
             width: 200px; /* Adjust the width of the image */
             height: auto; /* Maintain aspect ratio */
             padding-top: 20px;
             padding-left: 50px;
         }
+        
         .container3 .colomn3 {
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 24px;
         }
+        
         .container3 .column3 img {
             width: 200px; /* Adjust the width of the image */
             height: auto; /* Maintain aspect ratio */
             padding-top: 20px;
             padding-left: 50px;
         }
+        
         .container3 .colomn4 {
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 24px;
         }
+        
         .container3 .column4 img {
             width: 200px; /* Adjust the width of the image */
             height: auto; /* Maintain aspect ratio */
             padding-top: 20px;
             padding-left: 50px;
         }
+        
         .container3 .colomn5 {
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 24px;
         }
+        
         .container3 .column5 img {
             width: 200px; /* Adjust the width of the image */
             height: auto; /* Maintain aspect ratio */
             padding-top: 20px;
             padding-left: 50px;
         }
+        
         .container4 {
             display: grid;
             grid-template-rows: 100px; /* Adjust the height of the first container here */
         }
+        
         .container4 .row{
             font-size: 50px;
             justify-content: center;
             align-self: flex-start;
             padding-top: 30px;
         }
+        
         .container5 {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             padding: 20px;
         }
+        
         .marquee-container {
             overflow: hidden;
             white-space: nowrap;
@@ -156,8 +182,8 @@
         }
 
         .marquee-content {
-            display: inline-block;
-            animation: marquee 15s linear infinite;
+            display: inline-flex;
+            animation: marquee 30s linear infinite;
         }
 
         @keyframes marquee {
@@ -168,48 +194,72 @@
                 transform: translateX(-100%);
             }
         }
+        
         .card {
             display: inline-block;
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
-            border-radius: 10px;
             width: 200px;
-            margin: 10px;
-            text-align: center;
+            background: rgba(255, 255, 255, 1);
+            border-radius: 16px;
+            box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.25);
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-right: 20px;
+            margin-bottom: 50px;
+            position: relative;
+            transition: transform 0.3s ease-in-out;
         }
+        
+        .card:hover {
+            transform: scale(1.03);
+        }
+        
         .card img {
             width: 100%;
             height: auto;
-        }
-        .card-content {
-            padding: 15px;
-            color: black;
-        }
-        .card-content h2 {
-            font-size: 20px;
             margin: 0;
+            position: relative;
+            background: rgb(225, 225, 225);
+            border-radius: 10px 10px 0px 0px;
+            transition: transform 0.3s ease-in-out, background 0.3s ease-in-out; /* Added background transition */
         }
-        .card-content p {
+        
+        .card:hover img {
+            background: rgb(100, 100, 100);
+            transform: scale(1.05);
+        }
+        
+        .card .content {
+            padding: 15px;
+        }
+        
+        .card .content h2 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            font-family: 'Interstate', sans-serif;
+        }
+        
+        .card .content p {
             margin: 5px 0;
             font-size: 16px;
         }
+        
         .container6 {
             display: grid;
             grid-template-rows: 100px; /* Adjust the height of the first container here */
         }
+        
         .container6 .row{
             font-size: 50px;
             justify-content: center;
             align-self: flex-start;
             padding-top: 30px;
         }
+        
         .container7 {
             display: grid;
-            grid-template-rows: 600px; /* Adjust the height of the first container here */
+            grid-template-rows: auto; /* Adjust the height of the first container here */
             grid-template-columns: 1fr 1fr;
         }
+        
         .container7 .left-content {
             display: flex;
             flex-direction: column;
@@ -218,132 +268,292 @@
             padding-left: 80px;
             padding-bottom: 30px;
         }
+        
         .ranking-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
+        
         .ranking-table th, .ranking-table td {
             border: 1px solid #ccc;
             padding: 15px; /* Increased padding for more space */
             text-align: left;
         }
+        
         .container7 .right-content {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             padding-left: 60px;
         }
+        
         .container7 .right-content h2 {
             font-size: 50px; /* Adjust the font size for headings */
         }
         .container7 .right-content li {
             font-size: 25px; /* Adjust the font size for list items */
         }
+        
         .top-three-container {
             display: flex;
             justify-content: space-around;
             align-items: center;
         }
+        
         .container7 .right-content .player-name {
             font-size: 20px; /* Adjust the desired font size */
         }
+        
         .container8 {
             display: grid;
             grid-template-rows: 100px; /* Adjust the height of the first container here */
         }
+        
         .container8 .row{
             font-size: 50px;
             justify-content: center;
             align-self: flex-start;
             padding-top: 30px;
         }
+        
         .container9 {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            justify-content: center;
             grid-template-rows: 350px; /* Adjust the height of the first container here */
         }
-        .container9 .column1 img {
-            width: 200px; /* Adjust the width of the image */
-            height: auto; /* Maintain aspect ratio */
-            padding-top: 70px;
-            padding-left: 150px;
+        
+        .wrapper {
+            max-width: 1100px;
+            width: 100%;
+            position: relative;
         }
-        .container9 .column2 img {
-            width: 200px; /* Adjust the width of the image */
-            height: auto; /* Maintain aspect ratio */
-            padding-top: 70px;
-            padding-left: 150px;
+
+        .wrapper i {
+            height: 50px;
+            width: 50px;
+            background: rgb(0 0 0);
+            text-align: center;
+            line-height: 50px;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            font-size: 1.25rem;
+            transform: translateY(-50%);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.23);
         }
-        .container9 .column3 img {
-            width: 200px; /* Adjust the width of the image */
-            height: auto; /* Maintain aspect ratio */
-            padding-top: 70px;
-            padding-left: 150px;
+
+        .wrapper i:first-child {
+            left: -100px;
         }
-        .container10 {
+
+        .wrapper i:last-child {
+            right: -40px;
+        }
+
+        .carousel {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: 180px; /* Adjust the height of the first container here */
+            grid-auto-flow: column;
+            grid-auto-columns: calc((100% / 3) - -18px);
+            gap: 16px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            scrollbar-width: 0;
+            justify-content: start;
         }
-        .container11 {
+
+        .carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel :where(.card, .img) {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel.dragging {
+            scroll-snap-type: none;
+            scroll-behavior: auto;
+        }
+
+        .carousel.no-transition {
+            scroll-behavior: auto;
+        }
+
+        .carousel.dragging .card {
+            cursor: grab;
+            user-select: none;
+        }
+         
+        h2New {
+                padding-left: 10px;
+                padding-right: 10px;
+                padding-top: 10px;
+                padding-bottom: 0px;
+                font-size: 19px;
+            }
+
+        .cardNew {
+            width: 250px;
+            position: relative;
+            color: black;
+            overflow: hidden;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            font-family: Arial, sans-serif;
+            align-items: flex-start;
+            box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+            transition: transform 0.2s ease-in-out;
+            background: white;
+            margin-bottom: 10px;
+            margin-top: 10px;
+            height: 250px;
+        }
+
+        .cardNew:hover {
+            transform: scale(1.05);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .cardNew img {
+            width: 100%;
+            height: auto;
+        }
+
+        .cardNew-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .cardNew:hover .cardNew-overlay {
+            opacity: 1;
+        }
+
+        .cardNew-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            width: 90%; /* Adjust as needed */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .cardNew-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        @media screen and (max-width: 900px) {
+            .wrapper .carousel {
+                grid-auto-columns: calc((100% / 2) - 9px);
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .wrapper .carousel {
+                grid-auto-columns: 100%;
+            }
+        }
+            
+        .container10 {
             display: grid;
             grid-template-rows: 100px; /* Adjust the height of the first container here */
         }
-        .container11 .row{
+        
+        .container10 .row{
             font-size: 50px;
             justify-content: center;
             align-self: flex-start;
             padding-top: 30px;
         }
-        .container12 {
+        
+        .container11 {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             grid-template-rows: 500px; /* Adjust the height of the first container here */
         }
-        .container13 {
+        
+        .container12 {
             display: grid;
             grid-template-rows: 100px; /* Adjust the height of the first container here */
         }
-        .container13 .row{
+        
+        .container12 .row{
             font-size: 50px;
             justify-content: center;
             align-self: flex-start;
             padding-top: 30px;
         }
-        .container14 {
+        
+        .container13 {
             display: grid;
             grid-template-rows: 500px; /* Adjust the height of the first container here */
         }
-        .container15 {
+        
+        .container14 {
             display: grid;
             background-image: url('clip.jpg' ); /* Specify the path to your image */
             background-size: cover; /* Cover the entire container */
-            background-position: 10% 30%; /* Center the image */
-            grid-template-rows: 200px; /* Adjust the height of the first container here */
+            background-position: 10% 60%; /* Center the image */
+            grid-template-rows: 500px; /* Adjust the height of the first container here */
+            filter: blur(2px);
         }
+        
+        .container15 {
+            display: grid;
+            grid-template-rows: 150px; /* Adjust the height of the first container here */
+        }
+        
         .container15 .row{
-            font-size: 50px;
+            font-size: 45px;
             justify-content: center;
             align-self: flex-start;
             padding-top: 30px;
         }
+        
         .row {
             display: flex;
             justify-content: flex-start;
             align-items: center;
             font-size: 24px;
         }
+        
         .black {
             background-color: black;
             color: white;
         }
+        
         .white {
             background-color: white;
             color: black;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
     <script>
      document.addEventListener("DOMContentLoaded", function() {
          fetch('/api/teamStats')
@@ -377,20 +587,40 @@
                         </div>`;
                     $(containerId).append(cardHtml);
                 });
-            });
-        }
+            });    
+        }    
         
         function loadAndSortPlayers(url, containerId) {
             $.get(url, function(players) {
                 var tableHtml = '<table class="ranking-table"><tr><th>Ranking</th><th>Name</th><th>Position</th><th>Points</th></tr>';
+                var rankingCounter = 4;
                 players.forEach((player, index) => {
-                    tableHtml += `
-                        <tr>
-                            <td>${index + 1}</td> <!-- Add 1 to index because rankings usually start from 1, not 0 -->
-                            <td>${player.name}</td>
-                            <td>${player.position}</td>
-                            <td>${player.points}</td>
-                        </tr>`;
+                    var image = '';
+                    if (index < 3) {
+                        if (index === 0) {
+                            image = '<img src="first.png" alt="First Image" style="width: 50px; height: auto;">';
+                        } else if (index === 1) {
+                            image = '<img src="second.png" alt="First Image" style="width: 50px; height: auto;">';
+                        } else if (index === 2) {
+                            image = '<img src="third.png" alt="First Image" style="width: 50px; height: auto;">';
+                        }
+                        tableHtml += `
+                            <tr>
+                                <td>${image}</td>
+                                <td>${player.name}</td>
+                                <td>${player.position}</td>
+                                <td>${player.points}</td>
+                            </tr>`;
+                    } else {
+                        tableHtml += `
+                            <tr>
+                                <td>${rankingCounter}</td>
+                                <td>${player.name}</td>
+                                <td>${player.position}</td>
+                                <td>${player.points}</td>
+                            </tr>`;
+                        rankingCounter++;
+                    }
                 });
                 tableHtml += '</table>';
                 $(containerId).html(tableHtml);
@@ -418,11 +648,204 @@
                 });
             });
         }
-    </script>
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('new.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('container9').innerHTML = data;
+                })
+                .catch(error => console.error('Error loading new.html:', error));
+        });
+        
+         document.addEventListener("DOMContentLoaded", function () {
+                const carousel = document.getElementById("carousel");
+                const arrowBtns = document.querySelectorAll(".wrapper i");
+                const wrapper = document.querySelector(".wrapper");
+                const firstCardWidth = 370;
 
- </script>
+
+                let isDragging = false,
+                        startX,
+                        startScrollLeft,
+                        timeoutId;
+
+                const dragStart = (e) => {
+                    isDragging = true;
+                    carousel.classList.add("dragging");
+                    startX = e.pageX;
+                    startScrollLeft = carousel.scrollLeft;
+                };
+
+                const dragging = (e) => {
+                    if (!isDragging)
+                        return;
+
+                    const newScrollLeft = startScrollLeft - (e.pageX - startX);
+
+                    if (newScrollLeft <= 0 || newScrollLeft >= carousel.scrollWidth - carousel.offsetWidth) {
+                        isDragging = false;
+                        return;
+                    }
+
+                    carousel.scrollLeft = newScrollLeft;
+                };
+
+                const dragStop = () => {
+                    isDragging = false;
+                    carousel.classList.remove("dragging");
+                };
+
+                const autoPlay = () => {
+                    if (window.innerWidth < 800)
+                        return;
+
+                    const totalCardWidth = carousel.scrollWidth;
+                    const maxScrollLeft = totalCardWidth - carousel.offsetWidth;
+
+                    if (carousel.scrollLeft >= maxScrollLeft)
+                        return;
+
+                    timeoutId = setTimeout(() =>
+                        carousel.scrollLeft += firstCardWidth, 2500);
+                };
+
+                carousel.addEventListener("mousedown", dragStart);
+                carousel.addEventListener("mousemove", dragging);
+                document.addEventListener("mouseup", dragStop);
+                wrapper.addEventListener("mouseenter", () =>
+                    clearTimeout(timeoutId));
+                wrapper.addEventListener("mouseleave", autoPlay);
+
+                arrowBtns.forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        carousel.scrollLeft += btn.id === "left" ?
+                                -firstCardWidth : firstCardWidth;
+                    });
+                });
+
+                fetch("https://rss.app/feeds/2VTxg78EWQqdiWVL.xml")
+                        .then(response => response.text())
+                        .then(data => {
+                            // Parse the XML response
+                            const parser = new DOMParser();
+                            const xmlDoc = parser.parseFromString(data, "text/xml");
+
+                            // Get the items from the XML
+                            const items = xmlDoc.querySelectorAll("item");
+
+                            // Display each item
+                            items.forEach(item => {
+                                const title = item.querySelector("title").textContent;
+                                const link = item.querySelector("link").textContent;
+                                const description = item.querySelector("description").textContent;
+
+                                // Extract image URL from description
+                                const parser = new DOMParser();
+                                const descDoc = parser.parseFromString(description, "text/xml");
+                                const imageUrl = descDoc.querySelector("img").getAttribute("src");
+
+                                // Create card element
+                                const card = document.createElement("a");
+                                card.classList.add("cardNew");
+                                card.href = link; // Set the link for the card
+
+                                // Create elements for image, title, and description
+                                const imageDiv = document.createElement("div");
+                                imageDiv.classList.add("img");
+                                const image = document.createElement("img");
+                                image.src = imageUrl;
+
+                                const newsTitle = document.createElement("h2New");
+                                newsTitle.textContent = title;
+
+                                const newsDescription = document.createElement("span");
+                                newsDescription.textContent = description;
+
+                                // Append elements to card
+                                imageDiv.appendChild(image);
+                                card.appendChild(imageDiv);
+                                card.appendChild(newsTitle);
+
+                                // Append card to carousel
+                                carousel.appendChild(card);
+                            });
+                        })
+                        .catch(error => console.error("Error fetching the RSS feed:", error));
+            });
+            
+            document.addEventListener("DOMContentLoaded", function (event) {
+                fetch('/locations/api/graph-data')
+                        .then(response => response.json())
+                        .then(data => {
+                            createGraph(data);
+                        });
+                function createGraph(data) {
+                    const links = data;
+                    const nodesArray = Array.from(new Set(data.flatMap(link => [link.source, link.target])));
+                    const nodes = nodesArray.map(id => ({id}));
+                    const width = 800, height = 600;
+                    const svg = d3.select("#graph").append("svg")
+                            .attr("width", width)
+                            .attr("height", height);
+                    const simulation = d3.forceSimulation(nodes)
+                            .force("link", d3.forceLink(links).id(d => d.id).distance(150))
+                            .force("charge", d3.forceManyBody().strength(-500))
+                            .force("center", d3.forceCenter(width / 2, height / 2));
+                    const link = svg.selectAll(".link")
+                            .data(links)
+                            .enter().append("line")
+                            .attr("class", "link")
+                            .style("stroke", "black")
+                            .style("stroke-width", 2);
+                    const node = svg.selectAll(".node")
+                            .data(nodes)
+                            .enter().append("circle")
+                            .attr("class", "node")
+                            .attr("r", 10)
+                            .style("fill", "red");
+                    const text = svg.selectAll(".text")
+                            .data(nodes)
+                            .enter().append("text")
+                            .attr("class", "text")
+                            .text(d => d.id) // Display node id (city name)
+                            .style("text-anchor", "middle")
+                            .style("font-size", "12px")
+                            .style("font-weight", "bold") // Make the font bold
+                            .style("fill", "black")
+                            .attr("dx", 12)
+                            .attr("dy", "-0.7em"); // Move text a few em above the node
+
+                    const edgeText = svg.selectAll(".edgeText")
+                            .data(links)
+                            .enter().append("text")
+                            .attr("class", "edgeText")
+                            .text(d => d.distance) // Display distance on edge
+                            .style("text-anchor", "middle")
+                            .style("font-size", "12px")
+                            .style("font-weight", "bold") // Make the font bold
+                            .style("fill", "blue")
+                            .attr("dx", d => (d.source.x + d.target.x) / 2)
+                            .attr("dy", d => (d.source.y + d.target.y) / 2);
+                    simulation.on("tick", () => {
+                        link.attr("x1", d => d.source.x)
+                                .attr("y1", d => d.source.y)
+                                .attr("x2", d => d.target.x)
+                                .attr("y2", d => d.target.y);
+                        node.attr("cx", d => d.x)
+                                .attr("cy", d => d.y);
+                        text.attr("x", d => d.x)
+                                .attr("y", d => d.y);
+                        edgeText.attr("dx", d => (d.source.x + d.target.x) / 2)
+                                .attr("dy", d => (d.source.y + d.target.y) / 2);
+                    });
+                }
+            });
+    </script>
 </head>
 <body>
+    <link rel="stylesheet" href="../header-style.css">
+
     <div class="container1 white">
         <div class="left-content">
             <div class="row">SPURS</div>
@@ -481,66 +904,46 @@
                 </div>
                 <div class="right-content">
                      <h2>Top Three Players</h2>
-                    <div class="top-three-container" id="topThreeContainer"></div>
+                    <div class="top-three-container" id="topThreeContainer" style="color: black;"></div>
                 </div>
             </div>
         <div class="container8 white">
-            <div class="row">FUTURE MATCH</div>
+            <div class="row">NEWS</div>
         </div>
-        <div class="container9 white">
-            <div class="column1">
-                <img src="clippers.png" alt="Schedule1">
+    <div class="container9 white">
+        <div class="wrapper">
+            <i id="left" class="fa-solid fas fa-angle-left"></i>
+            <div class="carousel" id="carousel">
+                <!-- Content will be dynamically added here -->
             </div>
-            <div class="column2">
-                <img src="wolves.png" alt="Schedule2">
-            </div>
-            <div class="column3">
-                <img src="mavericks.png" alt="Schedule3">
-            </div>
+            <i id="right" class="fa-solid fas fa-angle-right"></i>
         </div>
-        <div class="container10 white">
-            <div class="column1">
-                <div class="caption">TUES 20 MAY 2025</div>
-                <div class="caption">6.30pm MDT</div>
-                <div class="caption">FROST BANK CENTER</div>
-            </div>
-            <div class="column2">
-                <div class="caption">FRI 23 MAY 2025</div>
-                <div class="caption">8.30pm MDT</div>
-                <div class="caption">FROST BANK CENTER</div>
-            </div>
-            <div class="column3">
-                <div class="caption">WED 28 MAY 2025</div>
-                <div class="caption">4.30pm MDT</div>
-                <div class="caption">American Airlines Center</div>
-            </div>
     </div>
-        <div class="container11 black">
+        <div class="container10 black">
             <div class="row">HIGHLIGHTS</div>
         </div>
-        <div class="container12 black">
-           <div class="column1" style="padding-left: 50px; padding-top: 40px">
-                <video controls width="700">
-                    <source src="highlight1.mp4" type="video/mp4"> 
-                </video>
-                <div class="caption">SAS vs MIL</div>
+        <div class="container11 black">
+           <div class="column1" style="padding-left: 20px; padding-top: 40px">
+               <iframe width="700" height="315" src="https://www.youtube.com/embed/ZQI1SC1m52Q?si=jI6lgW3Z-scbD01_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+               <div class="caption">SAS vs PHX</div>
             </div>
             <div class="column2" style="padding-left: 50px; padding-top: 40px">
-                <video controls width="700">
-                    <source src="highlight2.mp4" type="video/mp4">
-                </video>
+                <iframe width="700" height="315" src="https://www.youtube.com/embed/Nn-oABj0beY?si=8zL3r-boVbmwKJr9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 <div class="caption">SAS vs OKC</div>
             </div>
         </div>
-        <div class="container13 white">
+        <div class="container12 white">
             <div class="row">PATHWAY MATCH</div>
         </div>
-        <div class="container14 white">
-            
+        <div class="container13 white">
+             <div id="graph" style="display: flex; justify-content: center; align-items: center;"></div>
         </div>
-        <div class="container15 black" style">
+        <div class="container14 black"></div>
+        <div class="container15 black">
             <div class="row" style="padding-top: 40px; padding-left: 50px;">"Basketball is a pretty simple game. What wins is consistency and competitiveness"</div>
             <div class="caption" style="font-size: 20px; text-align: left; padding-left: 50px; padding-bottom: 50px;">~ Gregg Popovich</div>
         </div>
+
+    <div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>
