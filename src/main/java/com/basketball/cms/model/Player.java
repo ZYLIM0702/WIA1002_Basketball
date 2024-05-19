@@ -91,9 +91,6 @@ public class Player{
     @Transient
     private boolean isStarPlayer;
     
-    //@Column(name = "", table = "")
-    //private int injuryId;
-    
 
     public double getOverallScore() {
         return overallScore;
@@ -295,17 +292,11 @@ public class Player{
     }
 
     public int getStarred() {
-        return starred; //-------------------------------------
+        return starred; 
     }
 
     public void setStarred(int starred) {
         this.starred = starred;
-//        if(starred == 1)
-//            this.starred = true;
-//        else if(starred == 0)
-//            this.starred = false;
-//        else
-//            this.starred = false; //-------------------------------------
     }
 
     public int getDroppedZone() {
@@ -315,13 +306,5 @@ public class Player{
     public void setDroppedZone(int droppedZone) {
         this.droppedZone = droppedZone;
     }
-    
-//    public int getInjuryId(){
-//        return injuryId;
-//    }
-//    
-//    public void setInjuryId(int id){
-//        this.injuryId = id;
-//    }
     
 }

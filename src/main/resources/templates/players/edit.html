@@ -1,298 +1,297 @@
 <!DOCTYPE html>
-        <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Edit Player</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
-<meta name="msapplication-TileColor" content="#da532c">
-<meta name="theme-color" content="#ffffff">
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Edit Player</title>
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+            <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+                <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+                    <link rel="manifest" href="/site.webmanifest">
+                        <meta name="msapplication-TileColor" content="#da532c">
+                            <meta name="theme-color" content="#ffffff">
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+                                <style>
+                                    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0; 
-            padding: 0;
-            background: black url('https://cdn.nba.com/logos/nba/1610612759/primary/L/logo.svg') no-repeat center center fixed;
-            background-size: contain;
-            color: #FFFFFF;
-            font-size: 18px;
-        }
-        .container {
-            background-color: rgba(0, 0, 0, 0.85);
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 800px;
-            margin: 50px auto;
-            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
-            display: flex;
-            flex-direction: row;
-            gap: 20px;
-        }
-        h2 {
-            text-align: center;
-            color: #C4CED4;
-            margin-bottom: 20px;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-        }
-        label {
-            margin-bottom: 5px;
-            color: #C4CED4;
-            font-weight: 700;
-            padding-bottom: 10px;
-        }
-        input, select {
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 2px solid #C4CED4;
-            border-radius: 20px;
-            background-color: #2E2E2E;
-            color: #FFFFFF;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #fff;
-            color: #000000;
-            border: none;
-            cursor: pointer;
-            border-radius: 20px;
-            transition: background-color 0.3s ease;
-            font-weight: 700;
-            font-size: 18px;
-        }
-        button:hover {
-            background-color: #A0A0A0;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .header img {
-            width: 150px;
-        }
-        .left-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .player-image {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .player-image img {
-            max-width: 100%;
-            border-radius: 20px;
-            border: 2px solid #C4CED4;
-        }
-        .player-image input {
-            width: calc(100% - 16px);
-        }
-        .slider-container {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .slider-container input[type="number"] {
-            max-width: 80px;
-            margin-left: 10px;
-        }
-        input[type="range"] {
-            margin-bottom: 15px;
-            width: 100%;
-            -webkit-appearance: none;
-            background-color: #2E2E2E;
-            height: 12px; /* Adjust the height of the slider track */
-            border-radius: 20px;
-        }
+                                    body {
+                                        font-family: Arial, sans-serif;
+                                        margin: 0;
+                                        padding: 0;
+                                        background: black url('https://cdn.nba.com/logos/nba/1610612759/primary/L/logo.svg') no-repeat center center fixed;
+                                        background-size: contain;
+                                        color: #FFFFFF;
+                                        font-size: 18px;
+                                    }
+                                    .container {
+                                        background-color: rgba(0, 0, 0, 0.85);
+                                        padding: 20px;
+                                        border-radius: 10px;
+                                        max-width: 800px;
+                                        margin: 50px auto;
+                                        box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+                                        display: flex;
+                                        flex-direction: row;
+                                        gap: 20px;
+                                    }
+                                    h2 {
+                                        text-align: center;
+                                        color: #C4CED4;
+                                        margin-bottom: 20px;
+                                    }
+                                    form {
+                                        display: flex;
+                                        flex-direction: column;
+                                        flex: 1;
+                                    }
+                                    label {
+                                        margin-bottom: 5px;
+                                        color: #C4CED4;
+                                        font-weight: 700;
+                                        padding-bottom: 10px;
+                                    }
+                                    input, select {
+                                        padding: 8px;
+                                        margin-bottom: 10px;
+                                        border: 2px solid #C4CED4;
+                                        border-radius: 20px;
+                                        background-color: #2E2E2E;
+                                        color: #FFFFFF;
+                                    }
+                                    button {
+                                        padding: 10px 20px;
+                                        background-color: #fff;
+                                        color: #000000;
+                                        border: none;
+                                        cursor: pointer;
+                                        border-radius: 20px;
+                                        transition: background-color 0.3s ease;
+                                        font-weight: 700;
+                                        font-size: 18px;
+                                    }
+                                    button:hover {
+                                        background-color: #A0A0A0;
+                                    }
+                                    .header {
+                                        text-align: center;
+                                        margin-bottom: 20px;
+                                    }
+                                    .header img {
+                                        width: 150px;
+                                    }
+                                    .left-section {
+                                        flex: 1;
+                                        display: flex;
+                                        flex-direction: column;
+                                        align-items: center;
+                                        justify-content: center;
+                                    }
+                                    .player-image {
+                                        text-align: center;
+                                        margin-bottom: 10px;
+                                    }
+                                    .player-image img {
+                                        max-width: 100%;
+                                        border-radius: 20px;
+                                        border: 2px solid #C4CED4;
+                                    }
+                                    .player-image input {
+                                        width: calc(100% - 16px);
+                                    }
+                                    .slider-container {
+                                        display: flex;
+                                        align-items: center;
+                                        margin-bottom: 15px;
+                                    }
+                                    .slider-container input[type="number"] {
+                                        max-width: 80px;
+                                        margin-left: 10px;
+                                    }
+                                    input[type="range"] {
+                                        margin-bottom: 15px;
+                                        width: 100%;
+                                        -webkit-appearance: none;
+                                        background-color: #2E2E2E;
+                                        height: 12px;
+                                        border-radius: 20px;
+                                    }
 
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 10px; /* Adjust the width of the slider thumb */
-            height: 10px; /* Adjust the height of the slider thumb */
-            background: #C4CED4;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
+                                    input[type="range"]::-webkit-slider-thumb {
+                                        -webkit-appearance: none;
+                                        appearance: none;
+                                        width: 10px;
+                                        height: 10px;
+                                        background: #C4CED4;
+                                        border-radius: 50%;
+                                        cursor: pointer;
+                                        transition: background-color 0.3s, box-shadow 0.3s;
+                                    }
 
-        input[type="range"]:active::-webkit-slider-thumb {
-            background: #FFFFFF;
-            box-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF, 0 0 30px #FFFFFF;
-        }
+                                    input[type="range"]:active::-webkit-slider-thumb {
+                                        background: #FFFFFF;
+                                        box-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF, 0 0 30px #FFFFFF;
+                                    }
 
-        input[type="range"]::-moz-range-thumb {
-            width: 10px; /* Adjust the width of the slider thumb */
-            height: 10px; /* Adjust the height of the slider thumb */
-            background: #C4CED4;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
+                                    input[type="range"]::-moz-range-thumb {
+                                        width: 10px;
+                                        height: 10px;
+                                        background: #C4CED4;
+                                        border-radius: 50%;
+                                        cursor: pointer;
+                                        transition: background-color 0.3s, box-shadow 0.3s;
+                                    }
 
-        input[type="range"]:active::-moz-range-thumb {
-            background: #FFFFFF;
-            box-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF, 0 0 30px #FFFFFF;
-        }
+                                    input[type="range"]:active::-moz-range-thumb {
+                                        background: #FFFFFF;
+                                        box-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF, 0 0 30px #FFFFFF;
+                                    }
 
-        input[type="range"]::-ms-thumb {
-            width: 10px; /* Adjust the width of the slider thumb */
-            height: 10px; /* Adjust the height of the slider thumb */
-            background: #C4CED4;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
+                                    input[type="range"]::-ms-thumb {
+                                        width: 10px;
+                                        height: 10px;
+                                        background: #C4CED4;
+                                        border-radius: 50%;
+                                        cursor: pointer;
+                                        transition: background-color 0.3s, box-shadow 0.3s;
+                                    }
 
-        input[type="range"]:active::-ms-thumb {
-            background: #FFFFFF;
-            box-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF, 0 0 30px #FFFFFF;
-        }
-        .left-section form {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
+                                    input[type="range"]:active::-ms-thumb {
+                                        background: #FFFFFF;
+                                        box-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF, 0 0 30px #FFFFFF;
+                                    }
+                                    .left-section form {
+                                        display: flex;
+                                        flex-direction: column;
+                                        flex: 1;
+                                    }
 
-    </style>
-</head>
-<body>
-                    <link rel="stylesheet" href="/header-style.css">
-        <div th:replace="fragments/header :: header"></div>
+                                </style>
+                                </head>
+                                <body>
+                                    <link rel="stylesheet" href="/header-style.css">
+                                        <div th:replace="fragments/header :: header"></div>
 
-    <div class="header">
-        <img src="https://cdn.nba.com/logos/nba/1610612759/primary/L/logo.svg" alt="San Antonio Spurs Logo">
-    </div>
-    <div class="container">
-                    
-
-        <form action="/players/update" method="post" th:action="@{/players/update}" th:object="${player}">
-            <div th:if="${#authorization.expression('isAuthenticated()')}" 
-                 style="color: white;padding: 50px; text-align: center; font-size: 35px; font-weight: 800; position: relative; z-index: 1300; cursor: pointer;">
-                Edit Profile
-            </div>
-            <div class="player-image">
-                <img th:src="${player.Image}" alt="Player Image"/>
-            </div>
-            <input type="text" id="Image" name="Image" th:value="${player.Image}" />
-
-<input type="hidden" id="playerId" name="playerId" th:value="${player.playerId}" />
-
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" th:value="${player.name}" />
-
-            <label for="age">Age:</label>
-            <div class="slider-container">
-                <input type="range" id="age" name="age" min="0" max="100" th:value="${player.age}" oninput="updateSliderValue(this, 'ageValue')" />
-                <input type="number" id="ageValue" min="0" max="100" th:value="${player.age}" oninput="updateRangeValue(this, 'age')" />
-            </div>
-
-            <label for="height">Height:</label>
-            <div class="slider-container">
-                <input type="range" id="height" name="height" min="0" max="300" step="0.1" th:value="${player.height}" oninput="updateSliderValue(this, 'heightValue')" />
-                <input type="number" id="heightValue" min="0" max="300" step="0.1" th:value="${player.height}" oninput="updateRangeValue(this, 'height')" />
-            </div>
-
-            <label for="weight">Weight:</label>
-            <div class="slider-container">
-                <input type="range" id="weight" name="weight" min="0" max="500" step="0.1" th:value="${player.weight}" oninput="updateSliderValue(this, 'weightValue')" />
-                <input type="number" id="weightValue" min="0" max="500" step="0.1" th:value="${player.weight}" oninput="updateRangeValue(this, 'weight')" />
-            </div>
-
-            <label for="jerseyNum">Jersey Number:</label>
-            <div class="slider-container">
-                <input type="range" id="jerseyNum" name="jerseyNum" min="0" max="99" th:value="${player.jerseyNum}" oninput="updateSliderValue(this, 'jerseyNumValue')" />
-                <input type="number" id="jerseyNumValue" min="0" max="99" th:value="${player.jerseyNum}" oninput="updateRangeValue(this, 'jerseyNum')" />
-            </div>
-
-            <label for="country">Country:</label>
-            <input type="text" id="country" name="country" th:value="${player.country}" />
-
-            <label for="position">Position:</label>
-            <input type="text" id="position" name="position" th:value="${player.position}" />
-
-            <label for="salary">Salary:</label>
-            <div class="slider-container">
-                <input type="range" id="salary" name="salary" min="0" max="10000000" step="0.01"  th:value="${player.salary}" oninput="updateSliderValue(this, 'salaryValue')" />
-                <input type="number" id="salaryValue" min="0" max="10000000" step="0.01" th:value="${player.salary}" oninput="updateRangeValue(this, 'salary')" />
-            </div>
-
-            <label for="points">Points:</label>
-            <div class="slider-container">
-                <input type="range" id="points" name="points" min="0" max="100" step="0.001"  th:value="${player.points}" oninput="updateSliderValue(this, 'pointsValue')" />
-                <input type="number" id="pointsValue" min="0" max="100" step="0.001" th:value="${player.points}" oninput="updateRangeValue(this, 'points')" />
-            </div>
-
-            <label for="blocks">Blocks:</label>
-            <div class="slider-container">
-                <input type="range" id="blocks" name="blocks" min="0" max="100" step="0.001" th:field="*{blocks}" oninput="updateSliderValue(this, 'blocksValue')" />
-                <input type="number" id="blocksValue" min="0" max="100" step="0.001" th:value="${player.blocks}" oninput="updateRangeValue(this, 'blocks')" />
-            </div>
-
-            <label for="steals">Steals:</label>
-            <div class="slider-container">
-                <input type="range" id="steals" name="steals" min="0" max="100" step="0.001"  th:field="*{steals}" oninput="updateSliderValue(this, 'stealsValue')" />
-                <input type="number" id="stealsValue" min="0" max="100" step="0.001" th:value="${player.steals}" oninput="updateRangeValue(this, 'steals')" />
-            </div>
-
-            <label for="assists">Assists:</label>
-            <div class="slider-container">
-                <input type="range" id="assists" name="assists" min="0" max="100" step="0.001"  th:field="*{assists}" oninput="updateSliderValue(this, 'assistsValue')" />
-                <input type="number" id="assistsValue" min="0" max="100" step="0.001" th:value="${player.assists}" oninput="updateRangeValue(this, 'assists')" />
-            </div>
-
-            <label for="rebounds">Rebounds:</label>
-            <div class="slider-container">
-                <input type="range" id="rebounds" name="rebounds" min="0" max="100" step="0.001" th:field="*{rebounds}" oninput="updateSliderValue(this, 'reboundsValue')" />
-                <input type="number" id="reboundsValue" min="0" max="100" step="0.001" th:value="${player.rebounds}" oninput="updateRangeValue(this, 'rebounds')" />
-            </div>
+                                        <div class="header">
+                                            <img src="https://cdn.nba.com/logos/nba/1610612759/primary/L/logo.svg" alt="San Antonio Spurs Logo">
+                                        </div>
+                                        <div class="container">
 
 
-            <button type="submit">Update Player</button>
-                        <button type="button" onclick="removePlayer()" style="margin-top:  20px; background-color: red;color:white;">Remove Player</button>
+                                            <form action="/players/update" method="post" th:action="@{/players/update}" th:object="${player}">
+                                                <div th:if="${#authorization.expression('isAuthenticated()')}" 
+                                                     style="color: white;padding: 50px; text-align: center; font-size: 35px; font-weight: 800; position: relative; z-index: 1300; cursor: pointer;">
+                                                    Edit Profile
+                                                </div>
+                                                <div class="player-image">
+                                                    <img th:src="${player.Image}" alt="Player Image"/>
+                                                </div>
+                                                <input type="text" id="Image" name="Image" th:value="${player.Image}" />
 
-        </form>
-    </div>
+                                                <input type="hidden" id="playerId" name="playerId" th:value="${player.playerId}" />
 
-    <script>
-        function updateSliderValue(slider, inputId) {
-            document.getElementById(inputId).value = slider.value;
-        }
+                                                <label for="name">Name:</label>
+                                                <input type="text" id="name" name="name" th:value="${player.name}" />
 
-        function updateRangeValue(input, sliderId) {
-            document.getElementById(sliderId).value = input.value;
-        }
-                 function removePlayer() {
-            var playerId = document.getElementById("playerId").value;
-            if (confirm("Are you sure you want to remove this player?")) {
-                // Send a POST request to remove the player
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "/players/remove", true);
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        // Player removed, redirect or update UI as needed
-                        alert("Player removed successfully!");
-                        window.location.href = "/players"; // Redirect to players page
-                    }
-                };
-                xhr.send("playerId=" + playerId);
-            }
-        }
+                                                <label for="age">Age:</label>
+                                                <div class="slider-container">
+                                                    <input type="range" id="age" name="age" min="0" max="100" th:value="${player.age}" oninput="updateSliderValue(this, 'ageValue')" />
+                                                    <input type="number" id="ageValue" min="0" max="100" th:value="${player.age}" oninput="updateRangeValue(this, 'age')" />
+                                                </div>
+
+                                                <label for="height">Height:</label>
+                                                <div class="slider-container">
+                                                    <input type="range" id="height" name="height" min="0" max="300" step="0.1" th:value="${player.height}" oninput="updateSliderValue(this, 'heightValue')" />
+                                                    <input type="number" id="heightValue" min="0" max="300" step="0.1" th:value="${player.height}" oninput="updateRangeValue(this, 'height')" />
+                                                </div>
+
+                                                <label for="weight">Weight:</label>
+                                                <div class="slider-container">
+                                                    <input type="range" id="weight" name="weight" min="0" max="500" step="0.1" th:value="${player.weight}" oninput="updateSliderValue(this, 'weightValue')" />
+                                                    <input type="number" id="weightValue" min="0" max="500" step="0.1" th:value="${player.weight}" oninput="updateRangeValue(this, 'weight')" />
+                                                </div>
+
+                                                <label for="jerseyNum">Jersey Number:</label>
+                                                <div class="slider-container">
+                                                    <input type="range" id="jerseyNum" name="jerseyNum" min="0" max="99" th:value="${player.jerseyNum}" oninput="updateSliderValue(this, 'jerseyNumValue')" />
+                                                    <input type="number" id="jerseyNumValue" min="0" max="99" th:value="${player.jerseyNum}" oninput="updateRangeValue(this, 'jerseyNum')" />
+                                                </div>
+
+                                                <label for="country">Country:</label>
+                                                <input type="text" id="country" name="country" th:value="${player.country}" />
+
+                                                <label for="position">Position:</label>
+                                                <input type="text" id="position" name="position" th:value="${player.position}" />
+
+                                                <label for="salary">Salary:</label>
+                                                <div class="slider-container">
+                                                    <input type="range" id="salary" name="salary" min="0" max="10000000" step="0.01"  th:value="${player.salary}" oninput="updateSliderValue(this, 'salaryValue')" />
+                                                    <input type="number" id="salaryValue" min="0" max="10000000" step="0.01" th:value="${player.salary}" oninput="updateRangeValue(this, 'salary')" />
+                                                </div>
+
+                                                <label for="points">Points:</label>
+                                                <div class="slider-container">
+                                                    <input type="range" id="points" name="points" min="0" max="100" step="0.001"  th:value="${player.points}" oninput="updateSliderValue(this, 'pointsValue')" />
+                                                    <input type="number" id="pointsValue" min="0" max="100" step="0.001" th:value="${player.points}" oninput="updateRangeValue(this, 'points')" />
+                                                </div>
+
+                                                <label for="blocks">Blocks:</label>
+                                                <div class="slider-container">
+                                                    <input type="range" id="blocks" name="blocks" min="0" max="100" step="0.001" th:field="*{blocks}" oninput="updateSliderValue(this, 'blocksValue')" />
+                                                    <input type="number" id="blocksValue" min="0" max="100" step="0.001" th:value="${player.blocks}" oninput="updateRangeValue(this, 'blocks')" />
+                                                </div>
+
+                                                <label for="steals">Steals:</label>
+                                                <div class="slider-container">
+                                                    <input type="range" id="steals" name="steals" min="0" max="100" step="0.001"  th:field="*{steals}" oninput="updateSliderValue(this, 'stealsValue')" />
+                                                    <input type="number" id="stealsValue" min="0" max="100" step="0.001" th:value="${player.steals}" oninput="updateRangeValue(this, 'steals')" />
+                                                </div>
+
+                                                <label for="assists">Assists:</label>
+                                                <div class="slider-container">
+                                                    <input type="range" id="assists" name="assists" min="0" max="100" step="0.001"  th:field="*{assists}" oninput="updateSliderValue(this, 'assistsValue')" />
+                                                    <input type="number" id="assistsValue" min="0" max="100" step="0.001" th:value="${player.assists}" oninput="updateRangeValue(this, 'assists')" />
+                                                </div>
+
+                                                <label for="rebounds">Rebounds:</label>
+                                                <div class="slider-container">
+                                                    <input type="range" id="rebounds" name="rebounds" min="0" max="100" step="0.001" th:field="*{rebounds}" oninput="updateSliderValue(this, 'reboundsValue')" />
+                                                    <input type="number" id="reboundsValue" min="0" max="100" step="0.001" th:value="${player.rebounds}" oninput="updateRangeValue(this, 'rebounds')" />
+                                                </div>
 
 
-    </script>
-            <div th:replace="fragments/footer :: footer"></div>
+                                                <button type="submit">Update Player</button>
+                                                <button type="button" onclick="removePlayer()" style="margin-top:  20px; background-color: red;color:white;">Remove Player</button>
 
-</body>
-</html>
+                                            </form>
+                                        </div>
+
+                                        <script>
+                                            function updateSliderValue(slider, inputId) {
+                                                document.getElementById(inputId).value = slider.value;
+                                            }
+
+                                            function updateRangeValue(input, sliderId) {
+                                                document.getElementById(sliderId).value = input.value;
+                                            }
+                                            function removePlayer() {
+                                                var playerId = document.getElementById("playerId").value;
+                                                if (confirm("Are you sure you want to remove this player?")) {
+                                                    var xhr = new XMLHttpRequest();
+                                                    xhr.open("POST", "/players/remove", true);
+                                                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                                                    xhr.onreadystatechange = function () {
+                                                        if (xhr.readyState === 4 && xhr.status === 200) {
+                                                            // Player removed, redirect or update UI as needed
+                                                            alert("Player removed successfully!");
+                                                            window.location.href = "/players";
+                                                        }
+                                                    };
+                                                    xhr.send("playerId=" + playerId);
+                                                }
+                                            }
+
+
+                                        </script>
+                                        <div th:replace="fragments/footer :: footer"></div>
+
+                                </body>
+                                </html>

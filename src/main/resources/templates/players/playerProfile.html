@@ -40,9 +40,6 @@
                             <div class="flag">
                                 <i style="" th:class="'fi fi-' + ${player.country.toLowerCase()}"></i>
                             </div>
-
-                            <!--<p data-label="age"><strong>Age : </strong><span th:text="${player.age}"></span> Years Old</p>-->
-                            <!--<p data-label="age">< 30 Years Old</p>-->
                         </div>
 
                         <div class="positioning">
@@ -70,25 +67,19 @@
                     </div>
                 </div>
 
-                <!--------------------divider-------------------->
                 <div class="divider">
                     <h1>PERFORMANCE</h1>  
                 </div>
-                <!------------Statistics----------->
                 <div class="bottom">
                     <div class="bg">
                         <img src="https://storage.googleapis.com/pod_public/1300/180358.jpg"></img>
                         <div class="score-top">
                             <h1 label="score"><span th:text="${#numbers.formatDecimal(player.overallScore, 1, 'POINT', 2, 'POINT')}"></span></h1>
-                            <!--<h3 label="desc">Overall Score</h3>-->
                         </div>
 
                         <div class="stat">
                             <h1 class="stat-desc">Overall Score</h1>
                         </div>
-                        <!--</div>-->
-
-                        <!--<div class="bottom-right">-->
                         <div class="radar">
                             <span id='points' th:text="${player.points}"></span>
                             <span id='blocks' th:text="${player.blocks}"></span>
@@ -97,10 +88,8 @@
                             <span id='rebounds' th:text="${player.rebounds}"></span>
                             <canvas id="nbaRadarChart"></canvas>
                         </div>
-                        <!--</div>-->
 
                     </div>
-                    <!--<div class="bottom-left">-->
                 </div>
             </div>
             <div th:if="${#authorization.expression('isAuthenticated()')}" 
@@ -109,7 +98,6 @@
                 Edit Profile
             </div>
 
-            <!--FOOTER-->              
             <div th:replace="fragments/footer :: footer"></div>
     </body>
 
@@ -128,7 +116,7 @@
             labels: ['Steals', 'Blocks', 'Assists', 'Rebounds', 'Points'],
             datasets: [{
                     label: ['Steals', 'Blocks', 'Assists', 'Rebounds', 'Points'],
-                    data: [steals, blocks, assists, rebounds, points], // Example data
+                    data: [steals, blocks, assists, rebounds, points], 
                     backgroundColor: 'rgba(237,173,169,0.3)',
                     borderColor: 'rgb(255,255,255)',
                     borderWidth: 5
@@ -146,17 +134,17 @@
                         },
 
                         grid: {
-                            color: 'rgba(240, 216, 225)' // Change this to your desired color
+                            color: 'rgba(240, 216, 225)'
                         },
                         suggestedMin: 0,
                         suggestedMax: 5,
                         ticks: {
-                            display: false // Hide the scale labels
+                            display: false 
                         },
                         pointLabels: {
                             color: 'rgba(255,255,255,1)',
                             font: {
-                                size: 24, // Increase the font size here
+                                size: 24,
                                 color: 'rgba(255, 255, 255, 1)'
                             }
                         }
@@ -236,17 +224,17 @@
 
         .playerName {
             display: flex;
-            align-items: center; /* Ensure alignment of items in the center */
+            align-items: center;
         }
 
         .playerName p[data-label="name"]{
-            font-size: 80px; /* Adjust the font size as needed */
+            font-size: 80px;
             font-family: knockout wide, sans-serif;
             font-weight: 550;
         }
 
         .namename .player-name {
-            font-size: 80px; /* Adjust the font size as needed */
+            font-size: 80px; 
             font-family: knockout wide, sans-serif;
             font-weight: 500;
             width: 75%;
@@ -287,21 +275,18 @@
         table.title td,
         table.title th {
             padding: 10px;
-            border-right: 5px solid #000000; /* Add border to the right side of each cell */
+            border-right: 5px solid #000000; 
         }
 
-        /* Remove border-right for the last column to avoid double borders */
         table.title th:last-child,
         table.title td:last-child {
             border-right: none;
         }
 
-        /* Specific styling for the height, weight, and jersey cells if needed */
         table.title td span {
             font-weight: bold;
         }
 
-        /* Adjust text alignment in specific cells if necessary */
         table.title th,
         table.title td {
             text-align: center;
@@ -335,7 +320,6 @@
             overflow: hidden;
         }
 
-        /* Header row styling */
         table.title th {
             color: #8b8b8b;
             padding: 10px;
@@ -344,7 +328,6 @@
         }
 
 
-        /* Ensure the last child has no border */
         .top-container > div:last-child {
             border-left: none;
         }
@@ -409,7 +392,7 @@
 
         }
 
-        .stat-desc{ /*overall score*/
+        .stat-desc{
             color: white;
             font-size: 20px;
             position: relative;

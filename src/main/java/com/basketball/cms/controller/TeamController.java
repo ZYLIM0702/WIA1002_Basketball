@@ -11,7 +11,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -117,7 +116,6 @@ public class TeamController {
     @ResponseBody
     @PostMapping("/save")
     public ResponseEntity<String> savePlayers(@RequestBody List<String> playerIds) {
-        // Convert player IDs from String to Integer
         List<Integer> playerIntIds = playerIds.stream()
                 .map(Integer::valueOf)
                 .collect(Collectors.toList());

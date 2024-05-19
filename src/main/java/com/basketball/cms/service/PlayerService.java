@@ -12,7 +12,6 @@ import com.basketball.cms.controller.PlayerDropRequest;
 import com.basketball.cms.model.Player;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +30,7 @@ public class PlayerService {
     }
     public List<PlayerDropRequest> getAllPlayerDropRequestPositions() {
         List<PlayerDropRequest> playerDropRequests = new ArrayList<>();
-        List<Player> players = playerRepository.findAll(); // Fetch all players from the database
+        List<Player> players = playerRepository.findAll(); 
         for (Player player : players) {
             PlayerDropRequest playerDropRequest = new PlayerDropRequest();
             playerDropRequest.setPlayerId(player.getPlayerId());

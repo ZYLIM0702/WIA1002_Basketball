@@ -44,14 +44,12 @@ public class TeamStatsService {
         
         try {
             Document doc = Jsoup.connect(url).get();
-            // Select the div with class TeamHeader_record__wzofp
             Element recordElement = doc.selectFirst("div.TeamHeader_record__wzofp");
             if (recordElement != null) {
-                // The ranking information is within the second <span> element in this div
                 String[] recordTextParts = recordElement.text().split("\\|");
                 if (recordTextParts.length > 1) {
                     String rankingPart = recordTextParts[1].trim();
-                    String ranking = rankingPart.split(" ")[0]; // Extract the ranking number
+                    String ranking = rankingPart.split(" ")[0]; 
                     System.out.println("Ranking: " + ranking);
                     return ranking;
                 }

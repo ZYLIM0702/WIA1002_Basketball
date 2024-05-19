@@ -13,6 +13,7 @@ import java.util.Comparator;
  * @author szeyu
  */
 public class LocationNodeList implements Comparable<LocationNodeList> {
+
     private LocationNode city;
     private ArrayList<LocationNodeList> neighbour = new ArrayList<>();
     private ArrayList<Double> neighbourDistance = new ArrayList<>();
@@ -52,7 +53,7 @@ public class LocationNodeList implements Comparable<LocationNodeList> {
     public ArrayList<Double> getNeighbourDistance() {
         return neighbourDistance;
     }
-    
+
     // Method to sort neighbors and their corresponding distances in ascending order
     public void sortNeighboursByDistance() {
         ArrayList<Pair> pairs = new ArrayList<>();
@@ -73,6 +74,7 @@ public class LocationNodeList implements Comparable<LocationNodeList> {
 
     // Helper class to store pairs of nodeList and distance
     private class Pair {
+
         LocationNodeList nodeList;
         double distance;
 
@@ -85,7 +87,7 @@ public class LocationNodeList implements Comparable<LocationNodeList> {
             return distance;
         }
     }
-    
+
 // Implementing compareTo method from Comparable interface
     @Override
     public int compareTo(LocationNodeList other) {
@@ -96,6 +98,5 @@ public class LocationNodeList implements Comparable<LocationNodeList> {
     public String toString() {
         return "LocationNodeList{" + "city=" + city + '}';
     }
-    
-    
+
 }

@@ -59,7 +59,7 @@
             .error-message {
                 color: red;
                 font-size: 18px;
-                display: none; /* Initially hide the error message */
+                display: none;
             }
             form {
                 display: flex;
@@ -130,18 +130,14 @@
             </div>
         </div>
         <script>
-            // Get references to the input fields and the error message element
             const usernameInput = document.getElementById('username');
             const passwordInput = document.getElementById('password');
             const errorMessage = document.getElementById('error-message');
 
             // Add event listener to the form submission
             document.querySelector('form').addEventListener('submit', function (event) {
-                // Check if username and password are incorrect
                 if (usernameInput.value !== 'HokkienMee' || passwordInput.value !== 'HokkienMeeIsRed2024') {
-                    // Prevent the default form submission
                     event.preventDefault();
-                    // Display the error message
                     errorMessage.style.display = 'block';
                 }
             });

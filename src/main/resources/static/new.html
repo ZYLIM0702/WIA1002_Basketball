@@ -258,30 +258,23 @@
                 fetch("https://rss.app/feeds/2VTxg78EWQqdiWVL.xml")
                         .then(response => response.text())
                         .then(data => {
-                            // Parse the XML response
                             const parser = new DOMParser();
                             const xmlDoc = parser.parseFromString(data, "text/xml");
-
-                            // Get the items from the XML
                             const items = xmlDoc.querySelectorAll("item");
 
-                            // Display each item
                             items.forEach(item => {
                                 const title = item.querySelector("title").textContent;
                                 const link = item.querySelector("link").textContent;
                                 const description = item.querySelector("description").textContent;
 
-                                // Extract image URL from description
                                 const parser = new DOMParser();
                                 const descDoc = parser.parseFromString(description, "text/xml");
                                 const imageUrl = descDoc.querySelector("img").getAttribute("src");
 
-                                // Create card element
                                 const card = document.createElement("a");
                                 card.classList.add("card");
-                                card.href = link; // Set the link for the card
+                                card.href = link;
 
-                                // Create elements for image, title, and description
                                 const imageDiv = document.createElement("div");
                                 imageDiv.classList.add("img");
                                 const image = document.createElement("img");
@@ -293,12 +286,10 @@
                                 const newsDescription = document.createElement("span");
                                 newsDescription.textContent = description;
 
-                                // Append elements to card
                                 imageDiv.appendChild(image);
                                 card.appendChild(imageDiv);
                                 card.appendChild(newsTitle);
 
-                                // Append card to carousel
                                 carousel.appendChild(card);
                             });
                         })

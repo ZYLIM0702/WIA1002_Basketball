@@ -1,318 +1,305 @@
 <!DOCTYPE html>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <title>NBA Contract Status</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
-<meta name="msapplication-TileColor" content="#da532c">
-<meta name="theme-color" content="#ffffff">
+    <head>
+        <meta charset="UTF-8"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <title>NBA Contract Status</title>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+            <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+                <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+                    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+                        <link rel="manifest" href="/site.webmanifest">
+                            <meta name="msapplication-TileColor" content="#da532c">
+                                <meta name="theme-color" content="#ffffff">
 
-    <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #F0F0F0;
-            color: #000;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            background: url('https://cdn.freebiesupply.com/logos/large/2x/san-antonio-spurs-logo.png') no-repeat center center fixed;
-            background-size: 200px 200px;
-        }
-        .table-title {
-            font-size: 35px;
-            font-weight: 700;
-            color: #000;
-            margin-top: 30px;
-            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.3);
-        }
-        .contract-table {
-            width: 90%;
-            margin: 20px auto;
-            border-collapse: collapse;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-            background-color: #FFFFFF;
-            border: 2px solid #D3D3D3;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .contract-table th, .contract-table td {
-            padding: 10px;
-            text-align: left;
-            font-size: 16px;
-        }
-        .contract-table th {
-            background-color: #000000;
-            color: #FFFFFF;
-            font-size: 18px;
-            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
-        }
-        .contract-table tbody tr:nth-child(odd) {
-            background-color: #F7F7F7;
-        }
-        .contract-table tbody tr:nth-child(even) {
-            background-color: #EAEAEA;
-        }
-        .contract-table tbody tr {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease-in-out;
-        }
-        .contract-table tbody tr:hover {
-            background-color: #D6D6D6;
-            transform: scale(1.01);
-        }
-        .contract-status-dropdown, .expiration-date-picker {
-            padding: 10px;
-            width: 100%;
-            box-sizing: border-box;
-            font-size: 16px;
-            border: 1px solid #D3D3D3;
-            border-radius: 20px;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        .calendar-dropdown {
-            display: none;
-        }
-        .save-form button, .remove-form button {
-            background-color: #C4CED4;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: #000;
-            cursor: pointer;
-            border-radius: 20px;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-        }
-        .save-form button:hover, .remove-form button:hover {
-            background-color: #A0A9AD;
-        }
-        /* Add upper and lower margins to each row except the first one */
-        .contract-table tbody tr + tr {
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-        .contract-table tbody tr + tr > td {
-            padding-top: 10px;
-            padding-bottom: 10px;
-        }
-    </style>
-</head>
-<body>
-        <link rel="stylesheet" href="/header-style.css">
-        <div th:replace="fragments/header :: header"></div>
+                                    <style>
+                                        body {
+                                            font-family: 'Montserrat', sans-serif;
+                                            background-color: #F0F0F0;
+                                            color: #000;
+                                            margin: 0;
+                                            padding: 0;
+                                            text-align: center;
+                                            background: url('https://cdn.freebiesupply.com/logos/large/2x/san-antonio-spurs-logo.png') no-repeat center center fixed;
+                                            background-size: 200px 200px;
+                                        }
+                                        .table-title {
+                                            font-size: 35px;
+                                            font-weight: 700;
+                                            color: #000;
+                                            margin-top: 30px;
+                                            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.3);
+                                        }
+                                        .contract-table {
+                                            width: 90%;
+                                            margin: 20px auto;
+                                            border-collapse: collapse;
+                                            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+                                            background-color: #FFFFFF;
+                                            border: 2px solid #D3D3D3;
+                                            border-radius: 10px;
+                                            overflow: hidden;
+                                        }
+                                        .contract-table th, .contract-table td {
+                                            padding: 10px;
+                                            text-align: left;
+                                            font-size: 16px;
+                                        }
+                                        .contract-table th {
+                                            background-color: #000000;
+                                            color: #FFFFFF;
+                                            font-size: 18px;
+                                            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+                                        }
+                                        .contract-table tbody tr:nth-child(odd) {
+                                            background-color: #F7F7F7;
+                                        }
+                                        .contract-table tbody tr:nth-child(even) {
+                                            background-color: #EAEAEA;
+                                        }
+                                        .contract-table tbody tr {
+                                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                                            transition: transform 0.2s ease-in-out;
+                                        }
+                                        .contract-table tbody tr:hover {
+                                            background-color: #D6D6D6;
+                                            transform: scale(1.01);
+                                        }
+                                        .contract-status-dropdown, .expiration-date-picker {
+                                            padding: 10px;
+                                            width: 100%;
+                                            box-sizing: border-box;
+                                            font-size: 16px;
+                                            border: 1px solid #D3D3D3;
+                                            border-radius: 20px;
+                                            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+                                        }
+                                        .calendar-dropdown {
+                                            display: none;
+                                        }
+                                        .save-form button, .remove-form button {
+                                            background-color: #C4CED4;
+                                            border: none;
+                                            padding: 10px 20px;
+                                            font-size: 16px;
+                                            color: #000;
+                                            cursor: pointer;
+                                            border-radius: 20px;
+                                            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+                                        }
+                                        .save-form button:hover, .remove-form button:hover {
+                                            background-color: #A0A9AD;
+                                        }
+                                        .contract-table tbody tr + tr {
+                                            margin-top: 10px;
+                                            margin-bottom: 10px;
+                                        }
+                                        .contract-table tbody tr + tr > td {
+                                            padding-top: 10px;
+                                            padding-bottom: 10px;
+                                        }
+                                    </style>
+                                    </head>
+                                    <body>
+                                        <link rel="stylesheet" href="/header-style.css">
+                                            <div th:replace="fragments/header :: header"></div>
 
-    <!-- Contract Table Title -->
-    <div class="table-title">Contract</div>
+                                            <div class="table-title">Contract</div>
+                                            <table class="contract-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Player ID</th>
+                                                        <th>Player Name</th>
+                                                        <th>Star Player</th>
+                                                        <th>Date of Contract Created</th>
+                                                        <th>Date of Contract Expiration</th>
+                                                        <th>Contract Status</th>
+                                                        <th>Set New Contract Expiration Date</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr th:each="player, iterStat : ${players}">
+                                                        <td th:text="${player.playerId}"></td>
+                                                        <td th:text="${player.name}"></td>
+                                                        <td th:text="${player.getIsStarPlayer}"></td>
+                                                        <td th:text="${#dates.format(player.dateCreated, 'yyyy-MM-dd')}" class="creation-date"></td>
+                                                        <td class="expiration-date"></td> 
+                                                        <td th:text="${player.getContractStatus}"></td>
+                                                        <td th:if="${iterStat.index == 0}"> 
+                                                            <select class="contract-status-dropdown" onchange="handleDropdownChange(this)">
+                                                                <option value="Renew">Renew</option>
+                                                                <option value="Remove">Remove</option>
+                                                                <option value="Extend">Extend</option>
+                                                            </select>
+                                                        </td>
+                                                        <td th:if="${iterStat.index != 0}"> 
+                                                        </td>
+                                                        <td th:if="${iterStat.index != 0}"> 
+                                                        </td>
+                                                        <td class="calendar-dropdown">
+                                                            <input type="date" class="expiration-date-picker">
+                                                        </td>
+                                                        <td th:if="${iterStat.index == 0}">
+                                                            <form class="save-form" method="post">
+                                                                <input type="hidden" name="playerId" th:value="${player.playerId}" />
+                                                                <input type="hidden" name="contractStatus" class="contract-status" />
+                                                                <input type="hidden" name="dateCreated" class="date-created-input" />
+                                                                <button type="submit">Save</button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
 
-    <!-- Table 1 -->
-    <table class="contract-table">
-        <thead>
-            <tr>
-                <th>Player ID</th>
-                <th>Player Name</th>
-                <th>Star Player</th>
-                <th>Date of Contract Created</th>
-                <th>Date of Contract Expiration</th>
-                <th>Contract Status</th>
-                <th>Set New Contract Expiration Date</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="player, iterStat : ${players}">
-                <td th:text="${player.playerId}"></td>
-                <td th:text="${player.name}"></td>
-                <td th:text="${player.getIsStarPlayer}"></td>
-                <td th:text="${#dates.format(player.dateCreated, 'yyyy-MM-dd')}" class="creation-date"></td>
-                <td class="expiration-date"></td> 
-                <td th:text="${player.getContractStatus}"></td>
-                <td th:if="${iterStat.index == 0}"> 
-                    <select class="contract-status-dropdown" onchange="handleDropdownChange(this)">
-                        <option value="Renew">Renew</option>
-                        <option value="Remove">Remove</option>
-                        <option value="Extend">Extend</option>
-                    </select>
-                </td>
-                <td th:if="${iterStat.index != 0}"> 
-                </td>
-                <td th:if="${iterStat.index != 0}"> 
-                </td>
-                <td class="calendar-dropdown">
-                    <input type="date" class="expiration-date-picker">
-                </td>
-                <td th:if="${iterStat.index == 0}">
-                    <form class="save-form" method="post">
-                        <input type="hidden" name="playerId" th:value="${player.playerId}" />
-                        <input type="hidden" name="contractStatus" class="contract-status" />
-                        <input type="hidden" name="dateCreated" class="date-created-input" />
-                        <button type="submit">Save</button>
-                    </form>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                                            <div class="table-title">New Player</div>
 
-    <!-- New Player Table Title -->
-    <div class="table-title">New Player</div>
+                                            <table class="contract-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Player ID</th>
+                                                        <th>Player Name</th>
+                                                        <th>Star Player</th>
+                                                        <th>Date of Contract Created</th>
+                                                        <th>Date of Contract Expiration</th>
+                                                        <th>Contract Status</th>
+                                                        <th>Remove Contract</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>        
+                                                    <tr th:each="player : ${unaddedPlayers}" th:unless="${#dates.format(player.dateCreated, 'yyyy-MM-dd') == '0001-01-01'}">
+                                                        <td th:text="${player.playerId}"></td>
+                                                        <td th:text="${player.name}"></td>
+                                                        <td th:text="${player.getIsStarPlayer}"></td>
+                                                        <td th:text="${#dates.format(player.dateCreated, 'yyyy-MM-dd')}" class="creation-date"></td>
+                                                        <td class="expiration-date"></td> 
+                                                        <td th:text="${player.getContractStatus}"></td>
+                                                        <td>
+                                                            <form class="remove-form" method="post">
+                                                                <input type="hidden" name="playerId" th:value="${player.playerId}" />
+                                                                <button type="submit">Remove</button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div style="padding-bottom: 100px;"></div>
 
-    <!-- Table 2 -->
-    <table class="contract-table">
-        <thead>
-            <tr>
-                <th>Player ID</th>
-                <th>Player Name</th>
-                <th>Star Player</th>
-                <th>Date of Contract Created</th>
-                <th>Date of Contract Expiration</th>
-                <th>Contract Status</th>
-                <th>Remove Contract</th>
-            </tr>
-        </thead>
-        <tbody>        
-            <tr th:each="player : ${unaddedPlayers}" th:unless="${#dates.format(player.dateCreated, 'yyyy-MM-dd') == '0001-01-01'}">
-                <td th:text="${player.playerId}"></td>
-                <td th:text="${player.name}"></td>
-                <td th:text="${player.getIsStarPlayer}"></td>
-                <td th:text="${#dates.format(player.dateCreated, 'yyyy-MM-dd')}" class="creation-date"></td>
-                <td class="expiration-date"></td> 
-                <td th:text="${player.getContractStatus}"></td>
-                <td>
-                    <form class="remove-form" method="post">
-                        <input type="hidden" name="playerId" th:value="${player.playerId}" />
-                        <button type="submit">Remove</button>
-                    </form>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <div style="padding-bottom: 100px;"></div>
+                                            <script>
+                                                // JavaScript function to handle dropdown change
+                                                function handleDropdownChange(dropdown) {
+                                                    const parentRow = dropdown.parentNode.parentNode;
+                                                    const calendarDropdown = parentRow.querySelector('.calendar-dropdown');
+                                                    const expirationDateInput = parentRow.querySelector('.expiration-date-picker');
 
-    <script>
-        // JavaScript function to handle dropdown change
-        function handleDropdownChange(dropdown) {
-            const parentRow = dropdown.parentNode.parentNode;
-            const calendarDropdown = parentRow.querySelector('.calendar-dropdown');
-            const expirationDateInput = parentRow.querySelector('.expiration-date-picker');
+                                                    if (dropdown.value === 'Extend') {
+                                                        calendarDropdown.style.display = 'table-cell';
+                                                    } else {
+                                                        calendarDropdown.style.display = 'none';
+                                                        if (dropdown.value === 'Remove') {
+                                                            expirationDateInput.value = "0001-01-01";
+                                                        }
+                                                    }
+                                                    parentRow.querySelector('.date-created-input').value = expirationDateInput.value;
+                                                    parentRow.querySelector('.contract-status').value = dropdown.value;
+                                                }
 
-            if (dropdown.value === 'Extend') {
-                calendarDropdown.style.display = 'table-cell';
-            } else {
-                calendarDropdown.style.display = 'none';
-                if (dropdown.value === 'Remove') {
-                    expirationDateInput.value = "0001-01-01";
-                }
-            }
-            parentRow.querySelector('.date-created-input').value = expirationDateInput.value;
-            parentRow.querySelector('.contract-status').value = dropdown.value;
-        }
+                                                // Add event listeners for dropdown changes and button clicks
+                                                document.addEventListener('DOMContentLoaded', function () {
+                                                    const dropdowns = document.querySelectorAll('.contract-status-dropdown');
+                                                    dropdowns.forEach(dropdown => {
+                                                        dropdown.addEventListener('change', function () {
+                                                            const parentRow = this.parentNode.parentNode;
+                                                            const calendarDropdown = parentRow.querySelector('.calendar-dropdown');
+                                                            if (this.value === 'Extend') {
+                                                                calendarDropdown.style.display = 'table-cell';
+                                                                // Set expiration date to today's date
+                                                                const expirationDateInput = parentRow.querySelector('.expiration-date-picker');
+                                                                const today = new Date();
+                                                                const formattedExpirationDate = today.toISOString().split('T')[0];
+                                                                expirationDateInput.value = formattedExpirationDate;
+                                                                parentRow.querySelector('.date-created-input').value = formattedExpirationDate;
+                                                            } else {
+                                                                calendarDropdown.style.display = 'none';
+                                                            }
+                                                        });
+                                                    });
 
-        // Add event listeners for dropdown changes and button clicks
-        document.addEventListener('DOMContentLoaded', function () {
-            const dropdowns = document.querySelectorAll('.contract-status-dropdown');
-            dropdowns.forEach(dropdown => {
-                dropdown.addEventListener('change', function () {
-                    const parentRow = this.parentNode.parentNode;
-                    const calendarDropdown = parentRow.querySelector('.calendar-dropdown');
-                    if (this.value === 'Extend') {
-                        calendarDropdown.style.display = 'table-cell';
-                        // Set expiration date to today's date
-                        const expirationDateInput = parentRow.querySelector('.expiration-date-picker');
-                        const today = new Date();
-                        const formattedExpirationDate = today.toISOString().split('T')[0];
-                        expirationDateInput.value = formattedExpirationDate;
-                        parentRow.querySelector('.date-created-input').value = formattedExpirationDate;
-                    } else {
-                        calendarDropdown.style.display = 'none';
-                    }
-                });
-            });
+                                                    dropdowns.forEach(dropdown => {
+                                                        handleDropdownChange(dropdown);
+                                                    });
 
-            // Trigger the change event for initial setup
-            dropdowns.forEach(dropdown => {
-                handleDropdownChange(dropdown);
-            });
+                                                });
 
-        });
+                                                function calculateExpirationDate() {
+                                                    var creationDates = document.querySelectorAll('.creation-date');
+                                                    var expirationDates = document.querySelectorAll('.expiration-date');
 
-        function calculateExpirationDate() {
-            var creationDates = document.querySelectorAll('.creation-date');
-            var expirationDates = document.querySelectorAll('.expiration-date');
+                                                    creationDates.forEach(function (creationDate, index) {
+                                                        var date = new Date(creationDate.innerText);
+                                                        date.setFullYear(date.getFullYear() + 3);
+                                                        var expirationDateString = date.toISOString().split('T')[0];
 
-            creationDates.forEach(function (creationDate, index) {
-                var date = new Date(creationDate.innerText);
-                date.setFullYear(date.getFullYear() + 3);
-                var expirationDateString = date.toISOString().split('T')[0];
+                                                        if (expirationDateString !== '0004-01-01') {
+                                                            expirationDates[index].innerText = expirationDateString;
+                                                        } else {
+                                                            expirationDates[index].innerText = '-';
+                                                            creationDates[index].innerText = '-';
+                                                        }
+                                                    });
+                                                }
 
-                if (expirationDateString !== '0004-01-01') {
-                    expirationDates[index].innerText = expirationDateString;
-                } else {
-                    expirationDates[index].innerText = '-';
-                    creationDates[index].innerText = '-';
-                }
-            });
-        }
+                                                window.onload = function () {
+                                                    calculateExpirationDate();
+                                                };
 
-        window.onload = function () {
-            calculateExpirationDate();
-        };
+                                                function saveContract(form) {
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        url: "contract/save",
+                                                        data: $(form).serialize(),
+                                                        success: function (response) {
+                                                            window.location.href = "/players/contract";
+                                                        },
+                                                        error: function (xhr, status, error) {
+                                                            console.error("Error saving contract:", error);
+                                                        }
+                                                    });
+                                                }
 
-        function saveContract(form) {
-            // Submit the form via AJAX
-            $.ajax({
-                type: "POST",
-                url: "contract/save",
-                data: $(form).serialize(), // Serialize form data
-                success: function (response) {
-                    // Redirect to the contract page after successful save
-                    window.location.href = "/players/contract";
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error saving contract:", error);
-                }
-            });
-        }
+                                                function removeContract(form) {
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        url: "contract/remove",
+                                                        data: $(form).serialize(),
+                                                        success: function (response) {
+                                                            var parentRow = $(form).closest('tr');
+                                                            parentRow.find('.creation-date').text("0001-01-01");
+                                                            // Redirect to the contract page after successful save
+                                                            window.location.href = "/players/contract";
+                                                        },
+                                                        error: function (xhr, status, error) {
+                                                            console.error("Error removing contract:", error);
+                                                        }
+                                                    });
+                                                }
 
-        function removeContract(form) {
-            // Submit the form via AJAX
-            $.ajax({
-                type: "POST",
-                url: "contract/remove",
-                data: $(form).serialize(), // Serialize form data
-                success: function (response) {
-                    var parentRow = $(form).closest('tr');
-                    parentRow.find('.creation-date').text("0001-01-01");
-                    // Redirect to the contract page after successful save
-                    window.location.href = "/players/contract";
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error removing contract:", error);
-                }
-            });
-        }
+                                                $(document).ready(function () {
+                                                    $(".expiration-date-picker").change(function () {
+                                                        var expirationDate = $(this).val();
+                                                        $(this).closest('tr').find('.date-created-input').val(expirationDate);
+                                                    });
+                                                    $(".save-form").submit(function (event) {
+                                                        event.preventDefault();
+                                                        saveContract(this);
+                                                    });
+                                                    $(".remove-form").submit(function (event) {
+                                                        event.preventDefault();
+                                                        removeContract(this);
+                                                    });
+                                                });
+                                            </script>
+                                            <div th:replace="fragments/footer :: footer"></div>
 
-        $(document).ready(function () {
-            $(".expiration-date-picker").change(function() {
-                // Get the selected value from expiration date picker
-                var expirationDate = $(this).val();
-                $(this).closest('tr').find('.date-created-input').val(expirationDate);
-            });
-            $(".save-form").submit(function (event) {
-                event.preventDefault();
-                // Call saveContract function with form data
-                saveContract(this);
-            });
-            $(".remove-form").submit(function (event) {
-                event.preventDefault();
-                // Call removeContract function with form data
-                removeContract(this);
-            });
-        });
-    </script>
-        <div th:replace="fragments/footer :: footer"></div>
-
-</body>
-</html>
+                                    </body>
+                                    </html>

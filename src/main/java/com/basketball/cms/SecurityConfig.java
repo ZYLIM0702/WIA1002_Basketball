@@ -8,20 +8,15 @@ package com.basketball.cms;
  *
  * @author limziyang
  */
-import java.util.Arrays;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 public class SecurityConfig {
@@ -45,18 +40,17 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .requestMatchers("/").permitAll() // Allow access to homepage
+                .requestMatchers("/").permitAll() 
                 .requestMatchers("/players/api/**").permitAll()
                 .requestMatchers("/locations/**").permitAll()
                 .requestMatchers("/players/profile/**").permitAll()
-                .requestMatchers("/players/**").authenticated()// Require authentication for other requests
-                .requestMatchers("/team/**").authenticated()// Require authentication for other requests
+                .requestMatchers("/players/**").authenticated()
+                .requestMatchers("/team/**").authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login") // Specifies the custom login page URL
-                .defaultSuccessUrl("/players", true) // Redirect to /dashboard after successful login
-
-                .permitAll(); // Allow access to the custom login page without authentication
+                .loginPage("/login") 
+                .defaultSuccessUrl("/players", true)
+                .permitAll();
         http.formLogin();
         return http.build();
     }

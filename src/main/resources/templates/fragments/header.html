@@ -10,70 +10,68 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
-<meta name="msapplication-TileColor" content="#da532c">
-<meta name="theme-color" content="#ffffff">
+                        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+                            <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+                                <link rel="manifest" href="/site.webmanifest">
+                                    <meta name="msapplication-TileColor" content="#da532c">
+                                        <meta name="theme-color" content="#ffffff">
 
-                    </head>
-                    <body class="body-css" style="margin: 0;font-family: Arial, sans-serif;">
-                        <header style="background-color: black;
-                                color: white;
-                                position: sticky;
-                                top: 0;
-                                z-index: 1000;
-                                width: 100%;
-                                ">
-                            <div class="container-header" style="display: flex;
-                                 justify-content: space-between;
-                                 align-items: center;
-                                 padding: 10px;">
-                                <div>
-                                    <img src="/spurs.png" alt="Logo" style="width: 83px; margin-top: 6px; margin-bottom: 2px; margin-left: 60px;" onclick="window.location.href = '/';">
-                                </div>
-                                <nav>
-                                    <!-- Render guest menu if user is not authenticated -->
-                                    <ul th:if="${not #authorization.expression('isAuthenticated()')}">
-                                        <li>
-                                            <a href="/">Home</a>
-                                        </li>
-                                        <li>
-                                            <a href="https://www.nba.com/team/1610612759">About Us</a>
-                                        </li>
-                                        <li>
-                                            <a href='/'>Rank</a>
-                                        </li>
-                                        <li>
-                                            <a href="/#players">Players</a>
-                                        </li>
-                                        <li>
-                                            <a href="/locations">NBA Season</a>
-                                        </li>
-                                    </ul>
-                                    <!-- Render admin menu if user has ROLE_ADMIN -->
-                                    <ul th:if="${#authorization.expression('isAuthenticated()')}">
-                                        <li>
-                                            <a href="/players/search">Players</a>
-                                        </li>
-                                        <li>
-                                            <a href="/players/contract">Contract</a>
-                                        </li>
-                                        <li>
-                                            <a href="/team">Team</a>
-                                        </li>
-                                        <li>
-                                            <a href="/locations">NBA Season</a>
-                                        </li>
-                                        <li>
-                                            <a href="/team/gameplay">New Match</a>
-                                        </li>
-                                        <li style="border: 2px solid #fff; border-radius: 20px; width: 104px; text-align: center; padding-top: 3px; padding-bottom: 3px;">
-                                            <a href="/players">Dashboard</a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </header>
-                    </body>
-                    </html>
+                                            </head>
+                                            <body class="body-css" style="margin: 0;font-family: Arial, sans-serif;">
+                                                <header style="background-color: black;
+                                                        color: white;
+                                                        position: sticky;
+                                                        top: 0;
+                                                        z-index: 1000;
+                                                        width: 100%;
+                                                        ">
+                                                    <div class="container-header" style="display: flex;
+                                                         justify-content: space-between;
+                                                         align-items: center;
+                                                         padding: 10px;">
+                                                        <div>
+                                                            <img src="/spurs.png" alt="Logo" style="width: 83px; margin-top: 6px; margin-bottom: 2px; margin-left: 60px;" onclick="window.location.href = '/';">
+                                                        </div>
+                                                        <nav>
+                                                            <ul th:if="${not #authorization.expression('isAuthenticated()')}">
+                                                                <li>
+                                                                    <a href="/">Home</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="https://www.nba.com/team/1610612759">About Us</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href='/'>Rank</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="/#players">Players</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="/locations">NBA Season</a>
+                                                                </li>
+                                                            </ul>
+                                                            <ul th:if="${#authorization.expression('isAuthenticated()')}">
+                                                                <li>
+                                                                    <a href="/players/search">Players</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="/players/contract">Contract</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="/team">Team</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="/locations">NBA Season</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="/team/gameplay">New Match</a>
+                                                                </li>
+                                                                <li style="border: 2px solid #fff; border-radius: 20px; width: 104px; text-align: center; padding-top: 3px; padding-bottom: 3px;">
+                                                                    <a href="/players">Dashboard</a>
+                                                                </li>
+                                                            </ul>
+                                                        </nav>
+                                                    </div>
+                                                </header>
+                                            </body>
+                                            </html>

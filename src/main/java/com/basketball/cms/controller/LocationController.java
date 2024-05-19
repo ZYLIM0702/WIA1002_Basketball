@@ -32,20 +32,20 @@ import java.util.Set;
 @Controller
 @RequestMapping("/locations")
 public class LocationController {
-    
+
     @Autowired
     private LocationNodeRepository repoNode;
-    
+
     @Autowired
     private LocationEdgeRepository repoEdge;
-    
+
     private ArrayList<LocationNodeList> nodeLists = new ArrayList<>();
     private Map<LocationNode, LocationNodeList> nodeMap = new HashMap<>();
-    
+
     private LocationNode sourceLocationNode;
     public static List<LocationNodeList> shortestPath = new ArrayList<>();
     private double minDistance = Double.MAX_VALUE;
-    
+
     @PostConstruct
     private void init() {
         sourceLocationNode = repoNode.findById(1).orElse(null);
@@ -53,33 +53,31 @@ public class LocationController {
         buildGraph();
     }
 
-    @GetMapping({"","/"})
+    @GetMapping({"", "/"})
     public String showLocationGraph(Model model) {
-                shortestPath.clear();
-        minDistance = Double.MAX_VALUE; //reset the min distance to infinity
+        shortestPath.clear();
+        minDistance = Double.MAX_VALUE;
         nodeLists.clear();
         nodeMap.clear();
         init();
 
         if (sourceLocationNode == null || nodeMap.get(sourceLocationNode) == null) {
             System.out.println("null node fetched.");
-            // Handle error if source location not found
             return "redirect:/locations";
         }
 
-        
         dfsPathDist(nodeMap.get(sourceLocationNode), new ArrayList<>(), new HashSet<>(), 0.0);
-        
+
         // Print the path and total distance traveled
         System.out.println("Optimal travel path: " + shortestPath);
         System.out.println("Optimal distance: " + minDistance);
-        
+
         model.addAttribute("path", shortestPath);
         model.addAttribute("optimumDist", minDistance);
         return "locations/index";
 
     }
-    
+
     private void buildGraph() {
         List<LocationEdge> nodeEdges = repoEdge.findAll();
 
@@ -100,16 +98,16 @@ public class LocationController {
             nodeMap.put(city, cityNodeList);
             nodeMap.put(neighbour, neighbourNodeList);
         }
-        
+
         // Populate nodeLists from nodeMap
         nodeLists.addAll(nodeMap.values());
         System.out.println("Node list : " + nodeLists);
     }
-    
+
     @GetMapping("/dfs/path")
     public String showDfsPath(Model model) {
         shortestPath.clear();
-        minDistance = Double.MAX_VALUE; //reset the min distance to infinity
+        minDistance = Double.MAX_VALUE;
         nodeLists.clear();
         nodeMap.clear();
         init();
@@ -120,13 +118,11 @@ public class LocationController {
             return "redirect:/locations";
         }
 
-        
         dfsPathDist(nodeMap.get(sourceLocationNode), new ArrayList<>(), new HashSet<>(), 0.0);
-        
         // Print the path and total distance traveled
         System.out.println("Optimal travel path: " + shortestPath);
         System.out.println("Optimal distance: " + minDistance);
-        
+
         model.addAttribute("path", shortestPath);
         model.addAttribute("optimumDist", minDistance);
         return "locations/index";
@@ -163,48 +159,42 @@ public class LocationController {
         visited.remove(current);
         path.remove(path.size() - 1);
     }
-   
-    
+
     @GetMapping("/dijkstra/path/{destinationId}")
     public String showDijkstra(@PathVariable int destinationId, Model model) {
         nodeLists.clear();
         nodeMap.clear();
         init();
-        
+
         System.out.println("Destination ID : " + destinationId);
         LocationNode destLocationNode = repoNode.findById(destinationId).orElse(null);
 
-        if (sourceLocationNode == null || destLocationNode == null || nodeMap.get(sourceLocationNode) == null 
-                || nodeMap.get(destLocationNode) == null ||destinationId == 1) {
+        if (sourceLocationNode == null || destLocationNode == null || nodeMap.get(sourceLocationNode) == null
+                || nodeMap.get(destLocationNode) == null || destinationId == 1) {
             // Handle error if source location not found
             return "redirect:/locations";
         }
-        
+
         // Print statements for troubleshooting
         System.out.println("Source Location Node: " + sourceLocationNode.getCityName());
         System.out.println("Destination Location Node: " + destLocationNode.getCityName());
-        
-        
+
         LocationNodeList source = nodeMap.get(sourceLocationNode);
         LocationNodeList destination = nodeMap.get(destLocationNode);
-        
+
         calculateShortestPathDijkstra(source);
         shortestPath = getShortestPathDijkstra(destination);
         minDistance = shortestPath.get(shortestPath.size() - 1).getShortestDistFromSun();
-        
+
         // Print the path and total distance traveled
         System.out.println("Optimal travel path: " + shortestPath);
         System.out.println("Optimal distance: " + minDistance);
 
-        // Add necessary attributes to the model
         model.addAttribute("path", shortestPath);
         model.addAttribute("optimumDist", minDistance);
-
-        //model.addAttribute("destination", destLocationNode);
         return "locations/index";
     }
-    
-    
+
     public static void calculateShortestPathDijkstra(LocationNodeList source) {
         source.setShortestDistFromSun(0.0);
         PriorityQueue<LocationNodeList> priorityQueue = new PriorityQueue<>();

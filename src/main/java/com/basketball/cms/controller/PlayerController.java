@@ -10,29 +10,20 @@ package com.basketball.cms.controller;
  */
 import com.basketball.cms.model.Player;
 import com.basketball.cms.service.PlayerRepository;
-import com.basketball.cms.service.PlayerService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,11 +31,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -61,7 +50,6 @@ public class PlayerController {
         return "players/index";
     }
 
-    
     @GetMapping("/edit")
     public String showEditPlayerPage(@RequestParam int playerId, Model model) {
         Player player = repo.findById(playerId).orElse(null);
@@ -103,18 +91,18 @@ public class PlayerController {
         repo.save(player);
         return "redirect:/players";
     }
-        @PostMapping("/remove")
+
+    @PostMapping("/remove")
     public String removePlayer(@RequestParam("playerId") Integer playerId) {
         // Retrieve the player by ID
         Player player = repo.findById(playerId).orElse(null);
-        
+
         if (player != null) {
             repo.delete(player);
         }
-        
+
         return "redirect:/players";
     }
-
 
     @GetMapping("/search")
     public String searchPlayers(@RequestParam(required = false) String name,
@@ -129,7 +117,6 @@ public class PlayerController {
             @RequestParam(required = false) String rankBy,
             @RequestParam(required = false, defaultValue = "false") boolean starred,
             @RequestParam(required = false) Integer injury,
-            //@RequestParam(required = false) boolean starred,
             Model model) {
 
         List<Player> players;
@@ -219,12 +206,6 @@ public class PlayerController {
                     .collect(Collectors.toList());
         }
 
-//        if (starred) { //not done yet cannot 
-//    players = players.stream()
-//                    .filter(Player::getStarred)
-//                    .collect(Collectors.toList());
-//}
-//
         model.addAttribute("players", players);
         return "players/search";
     }
@@ -241,7 +222,6 @@ public class PlayerController {
     @ModelAttribute("allCountries")
     public List<String> allCountries() {
         String[] cc = {"AT", "AU", "BS", "CA", "CD", "CH", "CM", "DE", "DO", "FI", "FR", "GB", "GR", "HR", "IT", "JP", "LC", "LT", "LV", "ME", "NG", "RS", "SI", "SS", "TR", "UA", "US"};
-        //List<String>countries = new ArrayList<>(Arrays.asList(cc));
         List<String> countries = new ArrayList<>();
         for (int i = 0; i < cc.length; i++) {
             countries.add(cc[i]);
@@ -249,56 +229,14 @@ public class PlayerController {
         return countries;
     }
 
-//    @ModelAttribute("allInjuries") delete injury in search page
-//    public List<Integer> allInjuries() {
-//        //String[]injury = {"0 - No Injuries", "1 - Ankle Sprains", "2 - Facial Cuts", "3 - Knee Injuries", "4 - Jammed Fingers", "5 - Calf Strains / Achilles Tears", "6 - Thigh Bruises"};
-//        Integer[] injury = {0, 1, 2, 3, 4, 5, 6};
-//        //List<String>countries = new ArrayList<>(Arrays.asList(cc));
-//        List<Integer> injuries = new ArrayList<>();
-//        for (int i = 0; i < injury.length; i++) {
-//            injuries.add(injury[i]);
-//        }
-//        return injuries;
-//    }
     @GetMapping("/sort")
-//    public String sortPlayersByOverallScore(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
-//        List<Player> players = repo.findAll();
-//
-//        // Calculate overall score for each player
-//        for (Player player : players) {
-//            player.setOverallScore();
-//        }
-//
-//        if ("asc".equals(order)) {
-//            players = players.stream()
-//                    .sorted(Comparator.comparingDouble(Player::getOverallScore))
-//                    .collect(Collectors.toList());
-//        } else if ("desc".equals(order)) {
-//            players = players.stream()
-//                    .sorted(Comparator.comparingDouble(Player::getOverallScore).reversed())
-//                    .collect(Collectors.toList());
-//        }
-//
-//        model.addAttribute("players", players);
-//        model.addAttribute("order", order); // Add order pass the sort order to the view
-//        return "players/sort"; 
-//    }
     public String sortStarredPlayersByOverallScore(@RequestParam(required = false, defaultValue = "name") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String order,
             Model model) {
         List<Player> players = repo.findAll();
-
-        //    // Filter and calculate overall score for only starred players
-        //    List<Player> starredPlayers = players.stream()
-        //            .filter(Player::getIsStarPlayer)
-        //            .peek(Player::setOverallScore) // Calculate overall score
-        //            .collect(Collectors.toList());
-        // Find all added players
         List<Player> addedPlayers = players.stream()
                 .filter(player -> player.getIs_added() > 0)
                 .collect(Collectors.toList());
-
-        // Calculate overall score for each player
         for (Player player : addedPlayers) {
             player.setOverallScore();
         }
@@ -334,75 +272,60 @@ public class PlayerController {
 
         return "players/sort";
     }
-//        if ("asc".equals(order)) {
-//            addedPlayers = addedPlayers.stream()
-//                    .sorted(Comparator.comparingDouble(Player::getOverallScore))
-//                    .collect(Collectors.toList());
-//        } else if ("desc".equals(order)) {
-//            addedPlayers = addedPlayers.stream()
-//                    .sorted(Comparator.comparingDouble(Player::getOverallScore).reversed())
-//                    .collect(Collectors.toList());
-//        }
-//
-//        model.addAttribute("players", addedPlayers);
-//        model.addAttribute("order", order); // Add order to pass the sort order to the view
-//        return "players/sort";
-//    }
 
     @GetMapping("/contract")
-public String sortStarredPlayersByPriority(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
-    List<Player> players = repo.findAll();
-    List<Player> addedPlayers = players.stream()
-            .filter(player -> player.getIs_added() > 0)
-            .collect(Collectors.toList());
+    public String sortStarredPlayersByPriority(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {
+        List<Player> players = repo.findAll();
+        List<Player> addedPlayers = players.stream()
+                .filter(player -> player.getIs_added() > 0)
+                .collect(Collectors.toList());
 
-    List<Player> unaddedPlayers = players.stream()
-            .filter(player -> player.getIs_added() == 0)
-            .collect(Collectors.toList());
+        List<Player> unaddedPlayers = players.stream()
+                .filter(player -> player.getIs_added() == 0)
+                .collect(Collectors.toList());
 
-    // Calculate contract status for each player
-    for (Player player : addedPlayers) {
-        LocalDate currentDate = LocalDate.now();
-        LocalDate expirationDate = player.getDateCreated().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusYears(3);
-        Date dateCreated = player.getDateCreated();
+        // Calculate contract status for each player
+        for (Player player : addedPlayers) {
+            LocalDate currentDate = LocalDate.now();
+            LocalDate expirationDate = player.getDateCreated().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusYears(3);
+            Date dateCreated = player.getDateCreated();
 
-        String contractStatus;
-        if (isMinDate(dateCreated)) {
-            contractStatus = "No Contract";
-        } else if (expirationDate.isBefore(currentDate)) {
-            contractStatus = "Expired";
-        } else if (currentDate.plusMonths(3).isAfter(expirationDate)) {
-            contractStatus = "Almost Expired";
-        } else {
-            contractStatus = "Active";
+            String contractStatus;
+            if (isMinDate(dateCreated)) {
+                contractStatus = "No Contract";
+            } else if (expirationDate.isBefore(currentDate)) {
+                contractStatus = "Expired";
+            } else if (currentDate.plusMonths(3).isAfter(expirationDate)) {
+                contractStatus = "Almost Expired";
+            } else {
+                contractStatus = "Active";
+            }
+
+            player.setContractStatus(contractStatus);
         }
 
-        player.setContractStatus(contractStatus);
-    }
+        // Create a comparator for sorting players
+        Comparator<Player> playerComparator = Comparator.comparing((Player player) -> {
+            if ("Active".equals(player.getContractStatus()) && player.getIsStarPlayer()) {
+                return 1; // Lower priority for active star players, sorting based on dateCreated
+            } else {
+                return 0; // Higher priority for almost expired or expired star players and non-star players
+            }
+        }).thenComparing(Player::getIsStarPlayer, Comparator.reverseOrder())
+                .thenComparing(Player::getDateCreated);
 
-    // Create a comparator for sorting players
-    Comparator<Player> playerComparator = Comparator.comparing((Player player) -> {
-        if ("Active".equals(player.getContractStatus()) && player.getIsStarPlayer()) {
-            return 1; // Lower priority for active star players, sorting based on dateCreated
-        } else {
-            return 0; // Higher priority for almost expired or expired star players and non-star players
+        // Sort addedPlayers based on the comparator
+        if ("asc".equals(order)) {
+            addedPlayers.sort(playerComparator);
+        } else if ("desc".equals(order)) {
+            addedPlayers.sort(playerComparator.reversed());
         }
-    }).thenComparing(Player::getIsStarPlayer, Comparator.reverseOrder())
-      .thenComparing(Player::getDateCreated);
 
-    // Sort addedPlayers based on the comparator
-    if ("asc".equals(order)) {
-        addedPlayers.sort(playerComparator);
-    } else if ("desc".equals(order)) {
-        addedPlayers.sort(playerComparator.reversed());
+        model.addAttribute("players", addedPlayers);
+        model.addAttribute("unaddedPlayers", unaddedPlayers);
+        model.addAttribute("order", order); // Add order to pass the sort order to the view
+        return "players/contract";
     }
-
-    model.addAttribute("players", addedPlayers);
-    model.addAttribute("unaddedPlayers", unaddedPlayers);
-    model.addAttribute("order", order); // Add order to pass the sort order to the view
-    return "players/contract";
-}
-
 
     private boolean isMinDate(Date date) {
         Calendar cal = Calendar.getInstance();
@@ -438,24 +361,24 @@ public String sortStarredPlayersByPriority(@RequestParam(required = false, defau
         return "redirect:/players/contract";
     }
 
-@PostMapping("/contract/remove")
-public String removeContract(@RequestParam("playerId") Integer playerId, Model model) {
-    // Retrieve player from the database
-    Optional<Player> playerOptional = repo.findById(playerId);
-    if (playerOptional.isPresent()) {
-        Player player = playerOptional.get();
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(1, Calendar.JANUARY, 1); // Setting date to "0001-01-01"
-        Date date = calendar.getTime();
-        player.setDateCreated(date);
-        String contractStatus = "No Contract";
-        player.setContractStatus(contractStatus);
-        repo.save(player);
-    }
+    @PostMapping("/contract/remove")
+    public String removeContract(@RequestParam("playerId") Integer playerId, Model model) {
+        // Retrieve player from the database
+        Optional<Player> playerOptional = repo.findById(playerId);
+        if (playerOptional.isPresent()) {
+            Player player = playerOptional.get();
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(1, Calendar.JANUARY, 1); // Setting date to "0001-01-01"
+            Date date = calendar.getTime();
+            player.setDateCreated(date);
+            String contractStatus = "No Contract";
+            player.setContractStatus(contractStatus);
+            repo.save(player);
+        }
 
-    // Redirect back to the contract page
-    return "redirect:/players/contract";
-}
+        // Redirect back to the contract page
+        return "redirect:/players/contract";
+    }
 
     @ResponseBody
     @PostMapping("/toggleStar")
