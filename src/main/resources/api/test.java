@@ -93,8 +93,8 @@ public class test {
         int id = 2303;
 
         while(fetch){
-            //fetch = getPlayers(id);
-            fetch = getAvg(id);
+            fetch = getPlayers(id);
+            //fetch = getAvg(id);
              if(fetch==true){
                id++;
              }

@@ -103,7 +103,8 @@ public class PlayerController {
 
         return "redirect:/players";
     }
-
+    
+    //this class is to for the search bar to check the conditions for filtering and dynamic searching
     @GetMapping("/search")
     public String searchPlayers(@RequestParam(required = false) String name,
             @RequestParam(required = false) Integer minAge,
@@ -209,16 +210,17 @@ public class PlayerController {
         model.addAttribute("players", players);
         return "players/search";
     }
-
+    //dropbox position
     @ModelAttribute("allPositions")
     public List<String> populatePositions() {
-        List<String> positions = new ArrayList<>(); //later need to edit the positions 
+        List<String> positions = new ArrayList<>(); 
         positions.add("GUARD");
         positions.add("FORWARD");
         positions.add("CENTER");
         return positions;
     }
-
+    
+    //dropbox for country code
     @ModelAttribute("allCountries")
     public List<String> allCountries() {
         String[] cc = {"AT", "AU", "BS", "CA", "CD", "CH", "CM", "DE", "DO", "FI", "FR", "GB", "GR", "HR", "IT", "JP", "LC", "LT", "LV", "ME", "NG", "RS", "SI", "SS", "TR", "UA", "US"};
@@ -228,7 +230,8 @@ public class PlayerController {
         }
         return countries;
     }
-
+    
+    //do sorting for all when selected
     @GetMapping("/sort")
     public String sortStarredPlayersByOverallScore(@RequestParam(required = false, defaultValue = "name") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String order,
@@ -260,10 +263,10 @@ public class PlayerController {
                 break;
         }
 
-        if ("desc".equals(order)) {
+        if ("desc".equals(order)) { //when desc is clicked can reverse
             comparator = comparator.reversed();
         }
-
+ 
         addedPlayers.sort(comparator);
 
         model.addAttribute("players", addedPlayers);
@@ -271,7 +274,7 @@ public class PlayerController {
         model.addAttribute("sortBy", sortBy);
 
         return "players/sort";
-    }
+    }//end dynamic searching
 
     @GetMapping("/contract")
     public String sortStarredPlayersByPriority(@RequestParam(required = false, defaultValue = "asc") String order, Model model) {

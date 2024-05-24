@@ -104,23 +104,24 @@ public class Player{
     public double getOverallScore() {
         return overallScore;
     }
-
+    
+    //calculate all the overallScore. These formulas are searched online the way for us to calculate the OverallScore
     public void setOverallScore() {
-        if (position.equalsIgnoreCase("GUARD")) {
+        if (position.equalsIgnoreCase("GUARD")) { //formula for GUARD
             overallScore = (0.3 * assists / 36) + (0.2 * steals / 36) + (0.25 * points / 36) + (0.15 * blocks / 36) + (0.1 * rebounds / 36);
-        } else if (position.equalsIgnoreCase("FORWARD")) {
+        } else if (position.equalsIgnoreCase("FORWARD")) { //formula for FORWARD
             overallScore = (0.25 * assists / 36) + (0.15 * steals / 36) + (0.3 * points / 36) + (0.2 * blocks / 36) + (0.1 * rebounds / 36);
-        } else if (position.equalsIgnoreCase("CENTER")) {
+        } else if (position.equalsIgnoreCase("CENTER")) { //formula for CENTER
             overallScore = (0.15 * assists / 36) + (0.1 * steals / 36) + (0.3 * points / 36) + (0.3 * blocks / 36) + (0.15 * rebounds / 36);
-        } else if (position.equalsIgnoreCase("FORWARD-CENTER") || position.equalsIgnoreCase("CENTER-FORWARD")) {
+        } else if (position.equalsIgnoreCase("FORWARD-CENTER") || position.equalsIgnoreCase("CENTER-FORWARD")) { //formula consist of CENTER-FORWARD
             double forwardScore = (0.25 * assists / 36) + (0.15 * steals / 36) + (0.3 * points / 36) + (0.2 * blocks / 36) + (0.1 * rebounds / 36);
             double centerScore = (0.15 * assists / 36) + (0.1 * steals / 36) + (0.3 * points / 36) + (0.3 * blocks / 36) + (0.15 * rebounds / 36);
             overallScore = Math.max(forwardScore, centerScore);
-        } else if (position.equalsIgnoreCase("FORWARD-GUARD") || position.equalsIgnoreCase("GUARD-FORWARD")) {
+        } else if (position.equalsIgnoreCase("FORWARD-GUARD") || position.equalsIgnoreCase("GUARD-FORWARD")) { //formula consist of GUARD-FORWARD
             double forwardScore = (0.25 * assists / 36) + (0.15 * steals / 36) + (0.3 * points / 36) + (0.2 * blocks / 36) + (0.1 * rebounds / 36);
             double guardScore = (0.3 * assists / 36) + (0.2 * steals / 36) + (0.25 * points / 36) + (0.15 * blocks / 36) + (0.1 * rebounds / 36);
             overallScore = Math.max(forwardScore, guardScore);
-        } else { // guard and center
+        } else { // formula for GUARD-CENTER
             double guardScore = (0.3 * assists / 36) + (0.2 * steals / 36) + (0.25 * points / 36) + (0.15 * blocks / 36) + (0.1 * rebounds / 36);
             double centerScore = (0.15 * assists / 36) + (0.1 * steals / 36) + (0.3 * points / 36) + (0.3 * blocks / 36) + (0.15 * rebounds / 36);
             overallScore = Math.max(guardScore, centerScore);
