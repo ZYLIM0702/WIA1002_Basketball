@@ -183,7 +183,7 @@ public class TeamController {
 
     @GetMapping("/gameplay")
     public String playerManagementInGame(Model model) {
-        List<Player> players = repo.findIsAddedPlayers();
+        List<Player> players = repo.findIsAddedPlayers(); // fetch the added players only
         model.addAttribute("players", players);
         return "team/gameplay";
     }

@@ -6,7 +6,7 @@ package com.basketball.cms.model;
 
 /**
  *
- * @author limziyang
+ * @author szeyu
  */
 import jakarta.persistence.*;
 

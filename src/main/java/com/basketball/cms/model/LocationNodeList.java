@@ -14,11 +14,11 @@ import java.util.Comparator;
  */
 public class LocationNodeList implements Comparable<LocationNodeList> {
 
-    private LocationNode city;
-    private ArrayList<LocationNodeList> neighbour = new ArrayList<>();
-    private ArrayList<Double> neighbourDistance = new ArrayList<>();
-    private LocationNodeList parentPath;
-    private double shortestDistFromSun;
+    private LocationNode city; // to store it own location class information
+    private ArrayList<LocationNodeList> neighbour = new ArrayList<>(); // to store neighbour node
+    private ArrayList<Double> neighbourDistance = new ArrayList<>(); // to store the distance to neighbour node
+    private LocationNodeList parentPath; // for the usage of Dijkstra Algorithm
+    private double shortestDistFromSun; // for the usage of Dijkstra Algorithm
 
     public LocationNodeList(LocationNode city) {
         this.city = city;
@@ -60,9 +60,10 @@ public class LocationNodeList implements Comparable<LocationNodeList> {
         for (int i = 0; i < neighbour.size(); i++) {
             pairs.add(new Pair(neighbour.get(i), neighbourDistance.get(i)));
         }
-
+        
         Collections.sort(pairs, Comparator.comparingDouble(Pair::getDistance));
-
+        
+        // clear the neighbour and neighbourDistance arraylist
         neighbour.clear();
         neighbourDistance.clear();
 
@@ -88,7 +89,7 @@ public class LocationNodeList implements Comparable<LocationNodeList> {
         }
     }
 
-// Implementing compareTo method from Comparable interface
+    // Implementing compareTo method from Comparable interface
     @Override
     public int compareTo(LocationNodeList other) {
         return Double.compare(this.shortestDistFromSun, other.shortestDistFromSun);

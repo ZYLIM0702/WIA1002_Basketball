@@ -35,7 +35,7 @@ public class PlayerRestController {
     @Autowired
     private PlayerRepository repo;
 
-    private Stack<Player> injuryStack = new Stack<>();
+    private Stack<Player> injuryStack = new Stack<>(); // stack to push injured player
     private List<Player> bench = new ArrayList<>();
 
     @GetMapping("/bench")

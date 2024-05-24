@@ -40,32 +40,37 @@ public class LocationController {
     private LocationEdgeRepository repoEdge;
 
     private ArrayList<LocationNodeList> nodeLists = new ArrayList<>();
-    private Map<LocationNode, LocationNodeList> nodeMap = new HashMap<>();
+    
+    // to get the location node list class directly without implement linear search to find the object
+    private Map<LocationNode, LocationNodeList> nodeMap = new HashMap<>(); 
 
-    private LocationNode sourceLocationNode;
+    private LocationNode sourceLocationNode; // the source will be Sans
     public static List<LocationNodeList> shortestPath = new ArrayList<>();
     private double minDistance = Double.MAX_VALUE;
 
     @PostConstruct
     private void init() {
-        sourceLocationNode = repoNode.findById(1).orElse(null);
+        sourceLocationNode = repoNode.findById(1).orElse(null); // the first ID refer to Sans
         System.out.println(sourceLocationNode);
-        buildGraph();
+        buildGraph(); // call build graph method to build an array list of location objects linking to each other
     }
 
     @GetMapping({"", "/"})
     public String showLocationGraph(Model model) {
+        // clear to default value and then initialise again
         shortestPath.clear();
         minDistance = Double.MAX_VALUE;
         nodeLists.clear();
         nodeMap.clear();
         init();
-
+        
+        // handle the exception when the source is null
         if (sourceLocationNode == null || nodeMap.get(sourceLocationNode) == null) {
             System.out.println("null node fetched.");
             return "redirect:/locations";
         }
-
+        
+        // the index page for location showing dfs by default
         dfsPathDist(nodeMap.get(sourceLocationNode), new ArrayList<>(), new HashSet<>(), 0.0);
 
         // Print the path and total distance traveled
@@ -79,6 +84,7 @@ public class LocationController {
     }
 
     private void buildGraph() {
+        // fetch all the city node relation from Database
         List<LocationEdge> nodeEdges = repoEdge.findAll();
 
         for (LocationEdge nodeEdge : nodeEdges) {
@@ -106,19 +112,21 @@ public class LocationController {
 
     @GetMapping("/dfs/path")
     public String showDfsPath(Model model) {
+        // clear to default value and then initialise again
         shortestPath.clear();
         minDistance = Double.MAX_VALUE;
         nodeLists.clear();
         nodeMap.clear();
         init();
 
+        // Handle error if source location not found
         if (sourceLocationNode == null || nodeMap.get(sourceLocationNode) == null) {
             System.out.println("null node fetched.");
-            // Handle error if source location not found
             return "redirect:/locations";
         }
 
         dfsPathDist(nodeMap.get(sourceLocationNode), new ArrayList<>(), new HashSet<>(), 0.0);
+        
         // Print the path and total distance traveled
         System.out.println("Optimal travel path: " + shortestPath);
         System.out.println("Optimal distance: " + minDistance);
@@ -127,25 +135,29 @@ public class LocationController {
         model.addAttribute("optimumDist", minDistance);
         return "locations/index";
     }
-
+    
+    // recursion
     private void dfsPathDist(LocationNodeList current, List<LocationNodeList> path, Set<LocationNodeList> visited, double currentDist) {
-        visited.add(current);
-        path.add(current);
+        visited.add(current); // mark the current location node as visited when added to visited array list
+        path.add(current); // add the current in the path for tracking
 
         // Check if all nodes are visited
+        // when all nodes are visited, the visited length will be equal to the nodeMap length
         if (visited.size() == nodeMap.size()) {
+            // check if the current distance break the lowest record or not
             if (currentDist < minDistance) {
-                minDistance = currentDist;
+                minDistance = currentDist; // set the lowest distance record
                 shortestPath = new ArrayList<>(path); // Copy the path to shortestPath
             }
         } else {
             boolean deadEnd = true;
             for (int i = 0; i < current.getNeighbour().size(); i++) {
+                // get its neighbour one by one
                 LocationNodeList neighbour = current.getNeighbour().get(i);
                 if (!visited.contains(neighbour)) {
                     deadEnd = false; // There's still a way to proceed
                     double distance = current.getNeighbourDistance().get(i);
-                    dfsPathDist(neighbour, path, visited, currentDist + distance);
+                    dfsPathDist(neighbour, path, visited, currentDist + distance); // recursive call
                 }
             }
 
@@ -162,6 +174,7 @@ public class LocationController {
 
     @GetMapping("/dijkstra/path/{destinationId}")
     public String showDijkstra(@PathVariable int destinationId, Model model) {
+        // clear to default value and then initialise again
         nodeLists.clear();
         nodeMap.clear();
         init();
@@ -169,9 +182,9 @@ public class LocationController {
         System.out.println("Destination ID : " + destinationId);
         LocationNode destLocationNode = repoNode.findById(destinationId).orElse(null);
 
+        // Handle error if source and destination location not found
         if (sourceLocationNode == null || destLocationNode == null || nodeMap.get(sourceLocationNode) == null
                 || nodeMap.get(destLocationNode) == null || destinationId == 1) {
-            // Handle error if source location not found
             return "redirect:/locations";
         }
 
@@ -196,11 +209,12 @@ public class LocationController {
     }
 
     public static void calculateShortestPathDijkstra(LocationNodeList source) {
-        source.setShortestDistFromSun(0.0);
+        source.setShortestDistFromSun(0.0); //initialise default value
         PriorityQueue<LocationNodeList> priorityQueue = new PriorityQueue<>();
         priorityQueue.add(source);
 
         while (!priorityQueue.isEmpty()) {
+            // pop the least distance from Sans from the queue
             LocationNodeList current = priorityQueue.poll();
 
             for (int i = 0; i < current.getNeighbour().size(); i++) {
@@ -210,7 +224,7 @@ public class LocationController {
 
                 if (newShortestDist < neighbour.getShortestDistFromSun()) {
                     neighbour.setShortestDistFromSun(newShortestDist);
-                    neighbour.setParentPath(current);
+                    neighbour.setParentPath(current); // set its parent path so that can trace back
                     priorityQueue.add(neighbour);
                 }
             }
@@ -222,6 +236,7 @@ public class LocationController {
         for (LocationNodeList node = destination; node != null; node = node.getParentPath()) {
             shortestPath.add(node);
         }
+        // reverse the shortest path because the path is tracked from the end until Sans
         Collections.reverse(shortestPath);
         return shortestPath;
     }

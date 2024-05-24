@@ -58,6 +58,7 @@ public class LocationRestController {
     @GetMapping("/path-data")
     public ResponseEntity<String> getShortestPathData() {
         System.out.println("path-data");
+        // get the shortest path from calculated before
         List<LocationNodeList> shortestPath = LocationController.shortestPath;
         System.out.println("shortest path : " + shortestPath);
         if (shortestPath == null || shortestPath.isEmpty()) {
