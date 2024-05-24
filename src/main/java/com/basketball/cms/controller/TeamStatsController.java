@@ -23,7 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class TeamStatsController {
 
     private final TeamStatsService teamStatsService;
-
+    
+    //Constructor for TeamStatsController
     public TeamStatsController(TeamStatsService teamStatsService) {
         this.teamStatsService = teamStatsService;
     }
@@ -31,10 +32,15 @@ public class TeamStatsController {
     @GetMapping("/teamStats")
     public Map<String, String> getTeamStats() {
         Map<String, String> stats = new HashMap<>();
+        // Fetch and add team ranking to the stats map
         stats.put("teamRanking", teamStatsService.getRanking());
+        // Fetch and add points per game to the stats map
         stats.put("ppg", teamStatsService.getStat("PPG"));
+        // Fetch and add rebounds per game to the stats map
         stats.put("rpg", teamStatsService.getStat("RPG"));
+        // Fetch and add assists per game to the stats map
         stats.put("apg", teamStatsService.getStat("APG"));
+        // Fetch and add opponent points per game to the stats map
         stats.put("oppg", teamStatsService.getStat("OPPG"));
         return stats;
     }
