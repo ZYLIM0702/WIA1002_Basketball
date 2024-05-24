@@ -21,12 +21,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class Player{
 
-   
+    
+    // Primary key for the Player entity
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "player_id")
     private int playerId;
-
+    
+    // Basic player information
     @Column(name = "name", columnDefinition = "TEXT")
     private String name;
     @Column(name = "age", table = "PLAYER")
@@ -39,14 +41,16 @@ public class Player{
     private String Image;
     @Column(name = "jersey_num", table = "PLAYER")
     private int jerseyNum;
-
+    
+    // Player position and salary
     @Column(name = "position", table = "PLAYER", columnDefinition = "TEXT")
     private String position;
     @Column(name = "salary", table = "PLAYER")
     private double salary;
     @Column(name = "Is_Added", table = "PLAYER")
     private int is_added;
-
+    
+    // Player statistics
     @Column(name = "points", table = "STATISTIC")
     private double points;
 
@@ -61,18 +65,21 @@ public class Player{
 
     @Column(name = "steals", table = "STATISTIC")
     private double steals;
-
+    
+    // Contract details
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "date_created", table = "CONTRACT")
     private Date dateCreated;
 
     @Column(name = "contract_status", table = "CONTRACT")
     private String contractStatus;
-
+    
+    // Relationship with Status entity
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "status_id", insertable = false, updatable = false)
     private Status status;
-
+    
+    // Additional player attributes
     @Column(name = "status_id", table = "PLAYER") //injury
     private int statusId;
 
@@ -85,13 +92,15 @@ public class Player{
     @Column(name = "droppedZone", table = "PLAYER")
     private int droppedZone;
     
+    // Transient attributes for additional processing
     @Transient
     private double overallScore;
     
     @Transient
     private boolean isStarPlayer;
     
-
+    
+     // Constructor, getters, setters, and additional methods omitted for brevity
     public double getOverallScore() {
         return overallScore;
     }
